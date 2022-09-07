@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[43,)"
+issueTrackerURL = "https://github.com/ThreeTAG/PalladiumCore/issues"
+license = "MIT License"
+
+[[mods]]
+modId = "palladiumcore"
+version = "${version}"
+displayName = "PalladiumCore"
+authors = "Lucraft, Suff"
+description = '''
+Core mod to make multi-platform developing easier!
+'''
+#logoFile = ""
+
+[[dependencies.palladiumcore]]
+modId = "forge"
+mandatory = true
+versionRange = "[43,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.palladiumcore]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19.2,)"
+ordering = "NONE"
+side = "BOTH"

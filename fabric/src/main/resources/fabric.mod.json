@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "palladiumcore",
+  "version": "${version}",
+  "name": "PalladiumCore",
+  "description": "Core mod to make multi-platform developing easier!",
+  "authors": [
+    "Lucraft",
+    "Suff"
+  ],
+  "contact": {
+    "sources": "https://github.com/ThreeTAG/PalladiumCore"
+  },
+  "license": "MIT License",
+  "icon": "assets/palladiumcore/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.threetag.palladiumcore.fabric.PalladiumCoreFabric"
+    ]
+  },
+  "mixins": [
+    "palladiumcore.mixins.json",
+    "palladiumcore-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.19.2"
+  }
+}
