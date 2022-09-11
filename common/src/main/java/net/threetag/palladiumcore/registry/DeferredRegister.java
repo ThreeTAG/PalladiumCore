@@ -20,4 +20,8 @@ public abstract class DeferredRegister<T> {
         throw new AssertionError();
     }
 
+    public static <T> DeferredRegister<T> create(String modid, PalladiumRegistry<T> registry) {
+        return create(modid, registry.getRegistryKey());
+    }
+
 }

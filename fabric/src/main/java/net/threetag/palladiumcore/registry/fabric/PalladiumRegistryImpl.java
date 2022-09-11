@@ -2,6 +2,8 @@ package net.threetag.palladiumcore.registry.fabric;
 
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
 
@@ -20,6 +22,11 @@ public class PalladiumRegistryImpl<T> extends PalladiumRegistry<T> {
 
     public PalladiumRegistryImpl(MappedRegistry<T> parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public ResourceKey<? extends Registry<T>> getRegistryKey() {
+        return this.parent.key();
     }
 
     @Override

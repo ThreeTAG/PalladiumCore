@@ -1,5 +1,7 @@
 package net.threetag.palladiumcore.registry.forge;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,6 +25,11 @@ public class PalladiumRegistryImpl<T> extends PalladiumRegistry<T> {
 
     public PalladiumRegistryImpl(Supplier<IForgeRegistry<T>> parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public ResourceKey<? extends Registry<T>> getRegistryKey() {
+        return this.parent.get().getRegistryKey();
     }
 
     @Override
