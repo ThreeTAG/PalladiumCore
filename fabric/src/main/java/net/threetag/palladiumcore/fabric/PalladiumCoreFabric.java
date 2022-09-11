@@ -1,7 +1,7 @@
 package net.threetag.palladiumcore.fabric;
 
-import net.threetag.palladiumcore.PalladiumCore;
 import net.fabricmc.api.ModInitializer;
+import net.threetag.palladiumcore.PalladiumCore;
 
 public class PalladiumCoreFabric implements ModInitializer {
 
@@ -9,5 +9,5 @@ public class PalladiumCoreFabric implements ModInitializer {
     public void onInitialize() {
         PalladiumCore.init();
     }
-    
+
 }
