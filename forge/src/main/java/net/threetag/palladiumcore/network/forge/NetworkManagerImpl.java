@@ -1,12 +1,11 @@
 package net.threetag.palladiumcore.network.forge;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraft.world.entity.Entity;
+import net.minecraftforge.network.*;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.threetag.palladiumcore.PalladiumCore;
 import net.threetag.palladiumcore.network.MessageC2S;
@@ -52,6 +51,10 @@ public class NetworkManagerImpl extends NetworkManager {
         this.channel.send(PacketDistributor.PLAYER.with(() -> player), new ToClient(message));
     }
 
+    public static Packet<?> createAddEntityPacket(Entity entity) {
+        return NetworkHooks.getEntitySpawningPacket(entity);
+    }
+
     public class ToServer {
 
         private final MessageC2S message;
@@ -80,7 +83,7 @@ public class NetworkManagerImpl extends NetworkManager {
 
         public static void handle(ToServer msg, Supplier<NetworkEvent.Context> ctx) {
             if(msg.message != null) {
-                ctx.get().enqueueWork(msg.message::handle);
+                ctx.get().enqueueWork(() -> msg.message.handle(() -> ctx.get().getSender()));
             }
             ctx.get().setPacketHandled(true);
         }
@@ -115,7 +118,7 @@ public class NetworkManagerImpl extends NetworkManager {
 
         public static void handle(ToClient msg, Supplier<NetworkEvent.Context> ctx) {
             if(msg.message != null) {
-                ctx.get().enqueueWork(msg.message::handle);
+                ctx.get().enqueueWork(() -> msg.message.handle(() -> null));
             }
             ctx.get().setPacketHandled(true);
         }
