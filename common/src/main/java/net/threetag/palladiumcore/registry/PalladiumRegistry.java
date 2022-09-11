@@ -4,6 +4,7 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Set;
@@ -17,8 +18,10 @@ public abstract class PalladiumRegistry<T> {
 
     public abstract ResourceKey<? extends Registry<T>> getRegistryKey();
 
+    @Nullable
     public abstract T get(ResourceLocation key);
 
+    @Nullable
     public abstract ResourceLocation getKey(T object);
 
     public abstract Set<ResourceLocation> getKeys();
