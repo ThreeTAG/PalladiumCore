@@ -40,6 +40,11 @@ public class PalladiumRegistryImpl<T> extends PalladiumRegistry<T> {
     }
 
     @Override
+    public boolean containsKey(ResourceLocation key) {
+        return this.parent.containsKey(key);
+    }
+
+    @Override
     public Set<ResourceLocation> getKeys() {
         return this.parent.keySet();
     }

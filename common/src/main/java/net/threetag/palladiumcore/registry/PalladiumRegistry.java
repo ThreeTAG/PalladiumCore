@@ -24,6 +24,8 @@ public abstract class PalladiumRegistry<T> {
     @Nullable
     public abstract ResourceLocation getKey(T object);
 
+    public boolean containsKey(ResourceLocation key);
+
     public abstract Set<ResourceLocation> getKeys();
 
     public abstract Collection<T> getValues();
