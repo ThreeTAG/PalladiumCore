@@ -4,14 +4,19 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "ClientLevelMixin",
-    "EntityRenderDispatcherMixin"
+    "EntityRenderDispatcherMixin",
+    "KeyboardHandlerMixin",
+    "MouseHandlerMixin",
+    "ScreenMixin"
   ],
   "mixins": [
     "AttributeSupplierBuilderMixin",
     "AttributeSupplierMixin",
     "DefaultAttributesMixin",
     "LivingEntityMixin",
+    "PlayerListMixin",
     "PlayerMixin",
+    "ServerEntityMixin",
     "ServerLevelMixin",
     "ServerPlayerMixin"
   ],

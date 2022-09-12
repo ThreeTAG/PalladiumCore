@@ -17,6 +17,12 @@
   "entrypoints": {
     "main": [
       "net.threetag.palladiumcore.fabric.PalladiumCoreFabric"
+    ],
+    "client": [
+      "net.threetag.palladiumcore.fabric.PalladiumCoreClientFabric"
+    ],
+    "server": [
+      "net.threetag.palladiumcore.fabric.PalladiumCoreServerFabric"
     ]
   },
   "mixins": [

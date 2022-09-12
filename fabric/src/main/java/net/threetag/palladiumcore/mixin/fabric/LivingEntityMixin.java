@@ -21,4 +21,14 @@ public class LivingEntityMixin {
         }
     }
 
+    @Inject(at = @At("HEAD"),
+            method = "actuallyHurt",
+            cancellable = true)
+    private void actuallyHurt(DamageSource pDamageSource, float pDamageAmount, CallbackInfo ci) {
+        var entity = (LivingEntity) (Object) this;
+        if (!entity.isInvulnerableTo(pDamageSource) && LivingEntityEvents.HURT.invoker().livingEntityHurt(entity, pDamageSource, pDamageAmount).cancelsEvent()) {
+            ci.cancel();
+        }
+    }
+
 }
