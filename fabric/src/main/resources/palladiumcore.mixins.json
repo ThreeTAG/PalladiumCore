@@ -6,6 +6,7 @@
     "ClientLevelMixin",
     "EntityRenderDispatcherMixin",
     "KeyboardHandlerMixin",
+    "LocalPlayerMixin",
     "MouseHandlerMixin",
     "ScreenMixin"
   ],

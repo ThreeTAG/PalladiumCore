@@ -31,4 +31,10 @@ public class LivingEntityMixin {
         }
     }
 
+    @Inject(at = @At("HEAD"), method = "tick")
+    private void tick(CallbackInfo callbackInfo) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        LivingEntityEvents.UPDATE.invoker().livingEntityUpdate(entity);
+    }
+
 }

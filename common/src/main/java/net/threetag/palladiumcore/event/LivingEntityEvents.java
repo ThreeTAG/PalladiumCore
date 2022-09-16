@@ -9,6 +9,12 @@ public class LivingEntityEvents {
 
     public static final Event<Hurt> HURT = new Event<>(Hurt.class, listeners -> (e, s, a) -> Event.result(listeners, hurt -> hurt.livingEntityHurt(e, s, a)));
 
+    public static final Event<Tick> TICK = new Event<>(Tick.class, listeners -> (e) -> {
+        for (Tick listener : listeners) {
+            listener.livingEntityTick(e);
+        }
+    });
+
     @FunctionalInterface
     public interface Death {
 
@@ -20,6 +26,13 @@ public class LivingEntityEvents {
     public interface Hurt {
 
         EventResult livingEntityHurt(LivingEntity entity, DamageSource damageSource, float amount);
+
+    }
+
+    @FunctionalInterface
+    public interface Tick {
+
+        void livingEntityTick(LivingEntity entity);
 
     }
 

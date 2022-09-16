@@ -3,6 +3,7 @@ package net.threetag.palladiumcore.event.forge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -49,6 +50,11 @@ public class PalladiumCoreEventHandler {
         if (LivingEntityEvents.HURT.invoker().livingEntityHurt(e.getEntity(), e.getSource(), e.getAmount()).cancelsEvent()) {
             e.setCanceled(true);
         }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void livingTick(LivingEvent.LivingTickEvent e) {
+        LivingEntityEvents.TICK.invoker().livingEntityTick(e.getEntity());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

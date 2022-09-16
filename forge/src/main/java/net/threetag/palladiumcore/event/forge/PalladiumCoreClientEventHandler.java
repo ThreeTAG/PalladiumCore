@@ -3,6 +3,7 @@ package net.threetag.palladiumcore.event.forge;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,6 +30,11 @@ public class PalladiumCoreClientEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void inputMousePost(InputEvent.MouseButton.Post e) {
         InputEvents.MOUSE_CLICKED_POST.invoker().mouseClickedPost(Minecraft.getInstance(), e.getButton(), e.getAction(), e.getModifiers());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void screenInitPost(MovementInputUpdateEvent e) {
+        InputEvents.MOVEMENT_INPUT_UPDATE.invoker().movementInputUpdate(e.getEntity(), e.getInput());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
