@@ -36,6 +36,14 @@ public class PlatformImpl {
         return FMLEnvironment.dist == Dist.DEDICATED_SERVER;
     }
 
+    public static boolean isForge() {
+        return true;
+    }
+
+    public static boolean isFabric() {
+        return false;
+    }
+
     public static MinecraftServer getCurrentServer() {
         return ServerLifecycleHooks.getCurrentServer();
     }
@@ -53,4 +61,5 @@ public class PlatformImpl {
             return null;
         }
     }
+
 }

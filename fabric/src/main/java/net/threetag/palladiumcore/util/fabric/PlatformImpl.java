@@ -37,6 +37,14 @@ public class PlatformImpl {
         return FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER;
     }
 
+    public static boolean isForge() {
+        return false;
+    }
+
+    public static boolean isFabric() {
+        return true;
+    }
+
     public static MinecraftServer getCurrentServer() {
         if (CACHED_SERVER != null) {
             return CACHED_SERVER;
@@ -69,7 +77,7 @@ public class PlatformImpl {
     public static Platform.Mod getMod(String modId) {
         var mod = FabricLoader.getInstance().getModContainer(modId).orElse(null);
 
-        if(mod != null) {
+        if (mod != null) {
             return new Platform.Mod(mod.getMetadata().getId(), mod.getMetadata().getVersion().getFriendlyString(), mod.getMetadata().getName(), mod.getMetadata().getDescription());
         } else {
             return null;
