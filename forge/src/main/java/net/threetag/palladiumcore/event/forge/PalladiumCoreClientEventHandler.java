@@ -1,6 +1,7 @@
 package net.threetag.palladiumcore.event.forge;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -15,6 +16,8 @@ import net.threetag.palladiumcore.event.ClientTickEvents;
 import net.threetag.palladiumcore.event.InputEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.event.ScreenEvents;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class PalladiumCoreClientEventHandler {
@@ -42,6 +45,19 @@ public class PalladiumCoreClientEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void screenInitPost(ScreenEvent.Opening e) {
+        AtomicReference<Screen> newScreen = new AtomicReference<>(e.getNewScreen());
+
+        if (ScreenEvents.OPENING.invoker().screenOpening(e.getCurrentScreen(), newScreen).cancelsEvent()) {
+            e.setCanceled(true);
+        }
+
+        if (newScreen.get() != e.getNewScreen()) {
+            e.setNewScreen(newScreen.get());
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public static void screenInitPre(ScreenEvent.Init.Pre e) {
         if (ScreenEvents.INIT_PRE.invoker().screenInitPre(e.getScreen()).cancelsEvent()) {
             e.setCanceled(true);
@@ -65,7 +81,7 @@ public class PalladiumCoreClientEventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void clientTick(TickEvent.ClientTickEvent e) {
-        if(e.phase == TickEvent.Phase.START) {
+        if (e.phase == TickEvent.Phase.START) {
             ClientTickEvents.CLIENT_PRE.invoker().clientTick(Minecraft.getInstance());
         } else {
             ClientTickEvents.CLIENT_POST.invoker().clientTick(Minecraft.getInstance());
