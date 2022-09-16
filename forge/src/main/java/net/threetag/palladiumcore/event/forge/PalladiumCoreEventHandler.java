@@ -6,14 +6,12 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.*;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.palladiumcore.PalladiumCore;
-import net.threetag.palladiumcore.event.CommandEvents;
-import net.threetag.palladiumcore.event.EntityEvents;
-import net.threetag.palladiumcore.event.LivingEntityEvents;
-import net.threetag.palladiumcore.event.PlayerEvents;
+import net.threetag.palladiumcore.event.*;
 
 @Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PalladiumCoreEventHandler {
@@ -65,6 +63,31 @@ public class PalladiumCoreEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void stopTracking(PlayerEvent.StopTracking e) {
         PlayerEvents.STOP_TRACKING.invoker().playerTracking(e.getEntity(), e.getTarget());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void serverAboutToStart(ServerAboutToStartEvent e) {
+        LifecycleEvents.SERVER_ABOUT_TO_START.invoker().server(e.getServer());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void serverStarting(ServerStartingEvent e) {
+        LifecycleEvents.SERVER_STARTING.invoker().server(e.getServer());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void serverStarted(ServerStartedEvent e) {
+        LifecycleEvents.SERVER_STARTED.invoker().server(e.getServer());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void serverStopping(ServerStoppingEvent e) {
+        LifecycleEvents.SERVER_STOPPING.invoker().server(e.getServer());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void serverStopped(ServerStoppedEvent e) {
+        LifecycleEvents.SERVER_STOPPED.invoker().server(e.getServer());
     }
 
 }

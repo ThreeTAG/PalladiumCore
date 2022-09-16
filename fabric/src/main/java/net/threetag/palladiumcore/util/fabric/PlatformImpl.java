@@ -1,13 +1,19 @@
 package net.threetag.palladiumcore.util.fabric;
 
 import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
+import net.threetag.palladiumcore.event.LifecycleEvents;
 
 import java.util.Collection;
 
 public class PlatformImpl {
+
+    public static MinecraftServer CACHED_SERVER = null;
 
     public static boolean isProduction() {
         return !FabricLoader.getInstance().isDevelopmentEnvironment();
@@ -28,4 +34,27 @@ public class PlatformImpl {
     public static boolean isServer() {
         return FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER;
     }
+
+    public static MinecraftServer getCurrentServer() {
+        if (CACHED_SERVER != null) {
+            return CACHED_SERVER;
+        }
+
+        if (isClient()) {
+            return getFromClient();
+        }
+
+        return null;
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static MinecraftServer getFromClient() {
+        return Minecraft.getInstance().getSingleplayerServer();
+    }
+
+    public static void init() {
+        LifecycleEvents.SERVER_ABOUT_TO_START.register(server -> CACHED_SERVER = server);
+        LifecycleEvents.SERVER_STOPPED.register(server -> CACHED_SERVER = null);
+    }
+
 }

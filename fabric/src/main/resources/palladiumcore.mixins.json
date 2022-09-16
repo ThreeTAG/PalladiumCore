@@ -15,7 +15,10 @@
   "mixins": [
     "AttributeSupplierBuilderMixin",
     "AttributeSupplierMixin",
+    "DedicatedServerMixin",
     "DefaultAttributesMixin",
+    "GameTestServerMixin",
+    "IntegratedServerMixin",
     "LivingEntityMixin",
     "PlayerListMixin",
     "PlayerMixin",
