@@ -5,6 +5,7 @@ import dev.architectury.injectables.annotations.PlatformOnly;
 import dev.architectury.injectables.targets.ArchitecturyTarget;
 import net.minecraft.server.MinecraftServer;
 
+import java.nio.file.Path;
 import java.util.Collection;
 
 public class Platform {
@@ -38,6 +39,11 @@ public class Platform {
 
     @ExpectPlatform
     public static MinecraftServer getCurrentServer() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static Path getFolder() {
         throw new AssertionError();
     }
 }

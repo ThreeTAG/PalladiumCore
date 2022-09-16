@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 
+import java.nio.file.Path;
 import java.util.Collection;
 
 public class PlatformImpl {
@@ -55,6 +56,13 @@ public class PlatformImpl {
     public static void init() {
         LifecycleEvents.SERVER_ABOUT_TO_START.register(server -> CACHED_SERVER = server);
         LifecycleEvents.SERVER_STOPPED.register(server -> CACHED_SERVER = null);
+    }
+
+    public static Path getFolder() {
+        return FabricLoader.getInstance()
+                .getGameDir()
+                .toAbsolutePath()
+                .normalize();
     }
 
 }

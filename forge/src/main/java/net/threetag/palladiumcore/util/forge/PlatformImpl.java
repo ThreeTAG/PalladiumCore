@@ -5,9 +5,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import java.nio.file.Path;
 import java.util.Collection;
 
 public class PlatformImpl {
@@ -34,5 +36,9 @@ public class PlatformImpl {
 
     public static MinecraftServer getCurrentServer() {
         return ServerLifecycleHooks.getCurrentServer();
+    }
+
+    public static Path getFolder() {
+        return FMLPaths.GAMEDIR.get();
     }
 }
