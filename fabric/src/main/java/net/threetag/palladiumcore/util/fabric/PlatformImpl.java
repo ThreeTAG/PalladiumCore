@@ -8,6 +8,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.threetag.palladiumcore.event.LifecycleEvents;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.nio.file.Path;
 import java.util.Collection;
@@ -63,6 +64,16 @@ public class PlatformImpl {
                 .getGameDir()
                 .toAbsolutePath()
                 .normalize();
+    }
+
+    public static Platform.Mod getMod(String modId) {
+        var mod = FabricLoader.getInstance().getModContainer(modId).orElse(null);
+
+        if(mod != null) {
+            return new Platform.Mod(mod.getMetadata().getId(), mod.getMetadata().getVersion().getFriendlyString(), mod.getMetadata().getName(), mod.getMetadata().getDescription());
+        } else {
+            return null;
+        }
     }
 
 }

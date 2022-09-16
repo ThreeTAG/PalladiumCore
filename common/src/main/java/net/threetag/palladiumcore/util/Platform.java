@@ -5,6 +5,7 @@ import dev.architectury.injectables.annotations.PlatformOnly;
 import dev.architectury.injectables.targets.ArchitecturyTarget;
 import net.minecraft.server.MinecraftServer;
 
+import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.Collection;
 
@@ -46,4 +47,15 @@ public class Platform {
     public static Path getFolder() {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    @Nullable
+    public static Mod getMod(String modId) {
+        throw new AssertionError();
+    }
+
+    public record Mod(String modId, String version, String name, String description) {
+
+    }
+
 }

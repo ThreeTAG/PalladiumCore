@@ -8,9 +8,11 @@ import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import net.threetag.palladiumcore.util.Platform;
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Objects;
 
 public class PlatformImpl {
 
@@ -40,5 +42,15 @@ public class PlatformImpl {
 
     public static Path getFolder() {
         return FMLPaths.GAMEDIR.get();
+    }
+
+    public static Platform.Mod getMod(String modId) {
+        var mod = ModList.get().getMods().stream().filter(modInfo -> Objects.equals(modInfo.getModId(), modId)).findFirst().orElse(null);
+
+        if(mod != null) {
+            return new Platform.Mod(mod.getModId(), mod.getVersion().toString(), mod.getDisplayName(), mod.getDescription());
+        } else {
+            return null;
+        }
     }
 }
