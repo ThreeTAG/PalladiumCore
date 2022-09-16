@@ -4,9 +4,11 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "ClientLevelMixin",
+    "ClientPacketListenerMixin",
     "EntityRenderDispatcherMixin",
     "KeyboardHandlerMixin",
     "LocalPlayerMixin",
+    "MinecraftMixin",
     "MouseHandlerMixin",
     "ScreenMixin"
   ],

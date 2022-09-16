@@ -3,7 +3,8 @@
   "package": "net.threetag.palladiumcore.mixin.forge",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "ExtendedEntitySpawnDataMixin"
+    "ExtendedEntitySpawnDataMixin",
+    "ClientLevelMixin"
   ],
   "mixins": [
   ],

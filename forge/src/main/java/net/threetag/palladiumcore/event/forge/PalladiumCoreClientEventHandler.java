@@ -2,14 +2,18 @@ package net.threetag.palladiumcore.event.forge;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.palladiumcore.PalladiumCore;
+import net.threetag.palladiumcore.event.ClientTickEvents;
 import net.threetag.palladiumcore.event.InputEvents;
+import net.threetag.palladiumcore.event.PlayerEvents;
 import net.threetag.palladiumcore.event.ScreenEvents;
 
 @Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -47,6 +51,25 @@ public class PalladiumCoreClientEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void screenInitPost(ScreenEvent.Init.Post e) {
         ScreenEvents.INIT_POST.invoker().screenInitPost(e.getScreen());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void playerJoin(ClientPlayerNetworkEvent.LoggingIn e) {
+        PlayerEvents.CLIENT_JOIN.invoker().playerJoin(e.getPlayer());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void playerQuit(ClientPlayerNetworkEvent.LoggingOut e) {
+        PlayerEvents.CLIENT_QUIT.invoker().playerQuit(e.getPlayer());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void clientTick(TickEvent.ClientTickEvent e) {
+        if(e.phase == TickEvent.Phase.START) {
+            ClientTickEvents.CLIENT_PRE.invoker().clientTick(Minecraft.getInstance());
+        } else {
+            ClientTickEvents.CLIENT_POST.invoker().clientTick(Minecraft.getInstance());
+        }
     }
 
 }
