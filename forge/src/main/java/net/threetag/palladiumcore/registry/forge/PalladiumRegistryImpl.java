@@ -18,18 +18,20 @@ public class PalladiumRegistryImpl<T> extends PalladiumRegistry<T> {
     public static <T> PalladiumRegistry<T> create(Class<T> clazz, ResourceLocation id) {
         DeferredRegister<T> deferredRegister = DeferredRegister.create(id, id.getNamespace());
         deferredRegister.register(FMLJavaModLoadingContext.get().getModEventBus());
-        return new PalladiumRegistryImpl<>(deferredRegister.makeRegistry(RegistryBuilder::new));
+        return new PalladiumRegistryImpl<>(id, deferredRegister.makeRegistry(RegistryBuilder::new));
     }
 
     private final Supplier<IForgeRegistry<T>> parent;
+    private final ResourceKey<? extends Registry<T>> resourceKey;
 
-    public PalladiumRegistryImpl(Supplier<IForgeRegistry<T>> parent) {
+    public PalladiumRegistryImpl(ResourceLocation id, Supplier<IForgeRegistry<T>> parent) {
         this.parent = parent;
+        this.resourceKey = ResourceKey.createRegistryKey(id);
     }
 
     @Override
     public ResourceKey<? extends Registry<T>> getRegistryKey() {
-        return this.parent.get().getRegistryKey();
+        return this.resourceKey;
     }
 
     @Override
