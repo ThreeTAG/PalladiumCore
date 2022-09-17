@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.threetag.palladiumcore.PalladiumCore;
 import net.threetag.palladiumcore.event.CommandEvents;
 import net.threetag.palladiumcore.event.LifecycleEvents;
+import net.threetag.palladiumcore.registry.fabric.EntityAttributeRegistryImpl;
 import net.threetag.palladiumcore.util.fabric.PlatformImpl;
 
 public class PalladiumCoreFabric implements ModInitializer {
@@ -24,6 +25,8 @@ public class PalladiumCoreFabric implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> LifecycleEvents.SERVER_STARTED.invoker().server(server));
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> LifecycleEvents.SERVER_STOPPING.invoker().server(server));
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> LifecycleEvents.SERVER_STOPPED.invoker().server(server));
+
+        LifecycleEvents.SETUP.register(EntityAttributeRegistryImpl::modifyAttributes);
     }
 
 }
