@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class OverlayRegistryImpl {
 
     private static final Map<String, OverlayRegistry.IIngameOverlay> OVERLAYS = new HashMap<>();
