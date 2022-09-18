@@ -24,7 +24,7 @@ public class DeferredRegisterImpl {
         private final List<RegistrySupplier<T>> entries;
 
         public Impl(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
-            this.register = net.minecraftforge.registries.DeferredRegister.create(resourceKey, modid);
+            this.register = net.minecraftforge.registries.DeferredRegister.createOptional(resourceKey, modid);
             this.entries = new ArrayList<>();
         }
 
