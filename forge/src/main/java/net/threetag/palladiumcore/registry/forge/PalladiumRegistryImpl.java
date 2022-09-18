@@ -17,8 +17,9 @@ public class PalladiumRegistryImpl<T> extends PalladiumRegistry<T> {
 
     public static <T> PalladiumRegistry<T> create(Class<T> clazz, ResourceLocation id) {
         DeferredRegister<T> deferredRegister = DeferredRegister.create(id, id.getNamespace());
+        var supplier = deferredRegister.makeRegistry(RegistryBuilder::new);
         deferredRegister.register(FMLJavaModLoadingContext.get().getModEventBus());
-        return new PalladiumRegistryImpl<>(id, deferredRegister.makeRegistry(RegistryBuilder::new));
+        return new PalladiumRegistryImpl<>(id, supplier);
     }
 
     private final Supplier<IForgeRegistry<T>> parent;
