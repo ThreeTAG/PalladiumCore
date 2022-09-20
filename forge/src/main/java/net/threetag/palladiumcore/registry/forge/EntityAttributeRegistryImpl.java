@@ -4,6 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,6 +28,11 @@ public class EntityAttributeRegistryImpl {
 
     public static void registerModification(Supplier<EntityType<? extends LivingEntity>> typeSupplier, Supplier<Attribute> attributeSupplier, Double value) {
         MODIFICATIONS.add(new Modification(typeSupplier, attributeSupplier, value));
+    }
+
+    @SubscribeEvent
+    public static void onAttributeCreation(EntityAttributeCreationEvent e) {
+        ATTRIBUTES.forEach((supplier, builderSupplier) -> e.put(supplier.get(), builderSupplier.get().build()));
     }
 
     @SubscribeEvent

@@ -17,8 +17,8 @@ public class OverlayRegistryImpl {
 
     private static final Map<String, OverlayRegistry.IIngameOverlay> OVERLAYS = new HashMap<>();
 
-    public static void registerOverlay(String displayName, OverlayRegistry.IIngameOverlay overlay) {
-        OVERLAYS.put(displayName, overlay);
+    public static void registerOverlay(String id, OverlayRegistry.IIngameOverlay overlay) {
+        OVERLAYS.put(id, overlay);
     }
 
     @SubscribeEvent

@@ -10,7 +10,7 @@ import net.minecraft.client.gui.Gui;
 public class OverlayRegistry {
 
     @ExpectPlatform
-    public static void registerOverlay(String displayName, IIngameOverlay overlay) {
+    public static void registerOverlay(String id, IIngameOverlay overlay) {
         throw new AssertionError();
     }
 
