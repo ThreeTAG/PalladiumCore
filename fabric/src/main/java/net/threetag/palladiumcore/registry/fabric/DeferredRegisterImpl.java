@@ -1,6 +1,7 @@
 package net.threetag.palladiumcore.registry.fabric;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -47,7 +48,7 @@ public class DeferredRegisterImpl {
 
         @Override
         public Collection<RegistrySupplier<T>> getEntries() {
-            return this.entries;
+            return ImmutableList.copyOf(this.entries);
         }
     }
 

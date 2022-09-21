@@ -23,18 +23,30 @@ public class EventResult {
         return this.stopListeners;
     }
 
+    /**
+     * @return Cancel the event and prevent further listeners from being executed
+     */
     public static EventResult cancel() {
         return CANCEL;
     }
 
+    /**
+     * @return Mark event as cancelled but still execute next listeners
+     */
     public static EventResult cancelAndContinue() {
         return CANCEL_AND_CONTINUE;
     }
 
+    /**
+     * @return Does not cancel event but stops next listeners from being executed
+     */
     public static EventResult stopListeners() {
         return STOP_LISTENERS;
     }
 
+    /**
+     * @return Does not intervene in the event or the execution of other listeners
+     */
     public static EventResult pass() {
         return PASS;
     }

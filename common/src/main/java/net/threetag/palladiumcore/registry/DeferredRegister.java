@@ -9,12 +9,45 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Supplier;
 
+/**
+ * Utility class to help with managing registry entries.
+ * Maintains a list of all suppliers for entries and registers them automatically.
+ * Suppliers should return NEW instances every time.
+ * Example Usage:
+ * <pre>{@code
+ *   private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MODID, Registry.ITEM_REGISTRY);
+ *   private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(MODID, Registry.BLOCK_REGISTRY);
+ *
+ *   public static final RegistrySupplier<Block> ROCK_BLOCK = BLOCKS.register("rock", () -> new Block(Block.Properties.create(Material.ROCK)));
+ *   public static final RegistrySupplier<Item> ROCK_ITEM = ITEMS.register("rock", () -> new BlockItem(ROCK_BLOCK.get(), new Item.Properties().group(ItemGroup.MISC)));
+ *
+ *   public ExampleMod() {
+ *       ITEMS.register();
+ *       BLOCKS.register();
+ *   }
+ * }</pre>
+ *
+ * @param <T> The base registry type
+ */
 public abstract class DeferredRegister<T> implements Iterable<RegistrySupplier<T>> {
 
+    /**
+     * This MUST be called during mod-initialization to make sure the {@link DeferredRegister} is registed to the event bus on the Forge side
+     */
     public abstract void register();
 
+    /**
+     * Adds a new supplier to the list of entries to be registered, and returns a {@link RegistrySupplier} that will be populated with the created entry automatically.
+     *
+     * @param id       ID for the given registered object
+     * @param supplier Supplier that returns the object to be registered
+     * @return A {@link RegistrySupplier} that will contain the registered object
+     */
     public abstract <R extends T> RegistrySupplier<R> register(String id, Supplier<R> supplier);
 
+    /**
+     * @return Unmodifiable list of all registered objects
+     */
     public abstract Collection<RegistrySupplier<T>> getEntries();
 
     @NotNull
@@ -23,13 +56,29 @@ public abstract class DeferredRegister<T> implements Iterable<RegistrySupplier<T
         return this.getEntries().iterator();
     }
 
+    /**
+     * Creates a new instance of a {@link DeferredRegister} with the given resource key.
+     *
+     * @param modId       The namespace that will be applied to all registered entries
+     * @param resourceKey The resource key for the registry that the entries are registered into
+     * @param <T>         Generic type of the registry
+     * @return A new instance of a {@link DeferredRegister}
+     */
     @ExpectPlatform
-    public static <T> DeferredRegister<T> create(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
+    public static <T> DeferredRegister<T> create(String modId, ResourceKey<? extends Registry<T>> resourceKey) {
         throw new AssertionError();
     }
 
-    public static <T> DeferredRegister<T> create(String modid, PalladiumRegistry<T> registry) {
-        return create(modid, registry.getRegistryKey());
+    /**
+     * Creates a new instance of a {@link DeferredRegister} with the given {@link PalladiumRegistry}
+     *
+     * @param modId    The namespace that will be applied to all registered entries
+     * @param registry Instance of a custom {@link PalladiumRegistry} that will be used
+     * @param <T>      Generic type of the registry
+     * @return A new instance of a {@link DeferredRegister}
+     */
+    public static <T> DeferredRegister<T> create(String modId, PalladiumRegistry<T> registry) {
+        return create(modId, registry.getRegistryKey());
     }
 
 }

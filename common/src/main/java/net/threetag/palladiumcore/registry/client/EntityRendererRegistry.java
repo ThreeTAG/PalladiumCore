@@ -41,4 +41,8 @@ public class EntityRendererRegistry {
         addRenderLayer(type -> type == EntityType.PLAYER, renderLayer);
     }
 
+    public static void addRenderLayerToAll(Function<RenderLayerParent<?, ?>, RenderLayer<?, ?>> renderLayer) {
+        addRenderLayer(type -> true, renderLayer);
+    }
+
 }

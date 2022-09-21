@@ -1,5 +1,6 @@
 package net.threetag.palladiumcore.registry.forge;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -44,7 +45,7 @@ public class DeferredRegisterImpl {
 
         @Override
         public Collection<RegistrySupplier<T>> getEntries() {
-            return this.entries;
+            return ImmutableList.copyOf(this.entries);
         }
     }
 

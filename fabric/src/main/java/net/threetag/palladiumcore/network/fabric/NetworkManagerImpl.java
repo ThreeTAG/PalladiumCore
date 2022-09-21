@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -83,6 +84,37 @@ public class NetworkManagerImpl extends NetworkManager {
         buf.writeUtf(message.getType().getId());
         message.toBytes(buf);
         ServerPlayNetworking.send(player, this.channelName, buf);
+    }
+
+    @Override
+    public void sendToTracking(Entity entity, MessageS2C message) {
+        if (!this.toClient.containsValue(message.getType())) {
+            PalladiumCore.LOGGER.warn("Message type not registered: " + message.getType().getId());
+            return;
+        }
+
+        FriendlyByteBuf buf = PacketByteBufs.create();
+        buf.writeUtf(message.getType().getId());
+        message.toBytes(buf);
+        for (ServerPlayer serverPlayer : PlayerLookup.tracking(entity)) {
+            ServerPlayNetworking.send(serverPlayer, this.channelName, buf);
+        }
+    }
+
+    @Override
+    public void sendToTrackingAndSelf(ServerPlayer player, MessageS2C message) {
+        if (!this.toClient.containsValue(message.getType())) {
+            PalladiumCore.LOGGER.warn("Message type not registered: " + message.getType().getId());
+            return;
+        }
+
+        FriendlyByteBuf buf = PacketByteBufs.create();
+        buf.writeUtf(message.getType().getId());
+        message.toBytes(buf);
+        ServerPlayNetworking.send(player, this.channelName, buf);
+        for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
+            ServerPlayNetworking.send(serverPlayer, this.channelName, buf);
+        }
     }
 
     public static Packet<?> createAddEntityPacket(Entity entity) {

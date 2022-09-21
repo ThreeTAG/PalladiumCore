@@ -33,7 +33,12 @@ allprojects {
     group = rootProject.maven_group
 
     repositories {
-        // Add repositories to retrieve artifacts from in here.
+        maven {
+            url = 'https://maven.parchmentmc.net/'
+            content {
+                includeGroup 'org.parchmentmc.data'
+            }
+        }
     }
 
     tasks.withType(JavaCompile) {

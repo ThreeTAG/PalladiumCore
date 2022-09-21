@@ -51,6 +51,26 @@ public class NetworkManagerImpl extends NetworkManager {
         this.channel.send(PacketDistributor.PLAYER.with(() -> player), new ToClient(message));
     }
 
+    @Override
+    public void sendToTracking(Entity entity, MessageS2C message) {
+        if (!this.toClient.containsValue(message.getType())) {
+            PalladiumCore.LOGGER.warn("Message type not registered: " + message.getType().getId());
+            return;
+        }
+
+        this.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new ToClient(message));
+    }
+
+    @Override
+    public void sendToTrackingAndSelf(ServerPlayer player, MessageS2C message) {
+        if (!this.toClient.containsValue(message.getType())) {
+            PalladiumCore.LOGGER.warn("Message type not registered: " + message.getType().getId());
+            return;
+        }
+
+        this.channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new ToClient(message));
+    }
+
     public static Packet<?> createAddEntityPacket(Entity entity) {
         return NetworkHooks.getEntitySpawningPacket(entity);
     }
