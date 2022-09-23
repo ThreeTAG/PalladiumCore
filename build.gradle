@@ -33,11 +33,17 @@ allprojects {
     group = rootProject.maven_group
 
     repositories {
+        // Parchment
         maven {
             url = 'https://maven.parchmentmc.net/'
             content {
                 includeGroup 'org.parchmentmc.data'
             }
+        }
+
+        // Fabric Permissions API
+        maven {
+            url = 'https://oss.sonatype.org/content/repositories/snapshots'
         }
     }
 

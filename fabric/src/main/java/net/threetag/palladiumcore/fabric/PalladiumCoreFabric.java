@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.threetag.palladiumcore.PalladiumCore;
 import net.threetag.palladiumcore.event.CommandEvents;
 import net.threetag.palladiumcore.event.LifecycleEvents;
+import net.threetag.palladiumcore.permission.fabric.PermissionManagerImpl;
 import net.threetag.palladiumcore.registry.fabric.EntityAttributeRegistryImpl;
 import net.threetag.palladiumcore.util.fabric.PlatformImpl;
 
@@ -15,6 +16,7 @@ public class PalladiumCoreFabric implements ModInitializer {
     public void onInitialize() {
         PalladiumCore.init();
         PlatformImpl.init();
+        PermissionManagerImpl.init();
         this.events();
     }
 
