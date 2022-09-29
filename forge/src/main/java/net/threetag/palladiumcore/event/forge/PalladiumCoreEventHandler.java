@@ -1,5 +1,7 @@
 package net.threetag.palladiumcore.event.forge;
 
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -12,6 +14,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.palladiumcore.PalladiumCore;
 import net.threetag.palladiumcore.event.*;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PalladiumCoreEventHandler {
@@ -88,6 +93,21 @@ public class PalladiumCoreEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void serverStopped(ServerStoppedEvent e) {
         LifecycleEvents.SERVER_STOPPED.invoker().server(e.getServer());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void anvilUpdate(AnvilUpdateEvent e) {
+        AtomicInteger cost = new AtomicInteger(e.getCost());
+        AtomicInteger materialCost = new AtomicInteger(e.getMaterialCost());
+        AtomicReference<ItemStack> output = new AtomicReference<>(e.getOutput());
+
+        if (PlayerEvents.ANVIL_UPDATE.invoker().anvilUpdate(e.getPlayer(), e.getLeft(), e.getRight(), e.getName(), cost, materialCost, output).cancelsEvent()) {
+            e.setCanceled(true);
+        }
+
+        e.setCost(cost.get());
+        e.setMaterialCost(materialCost.get());
+        e.setOutput(output.get());
     }
 
 }

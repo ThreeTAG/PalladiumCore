@@ -2,6 +2,11 @@ package net.threetag.palladiumcore.event;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
+import javax.annotation.Nullable;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public interface PlayerEvents {
 
@@ -61,6 +66,11 @@ public interface PlayerEvents {
         }
     });
 
+    /**
+     * @see AnvilUpdate#anvilUpdate(Player, ItemStack, ItemStack, String, AtomicInteger, AtomicInteger, AtomicReference)
+     */
+    Event<AnvilUpdate> ANVIL_UPDATE = new Event<>(AnvilUpdate.class, listeners -> (p, l, r, n, c, m, o) -> Event.result(listeners, anvilUpdate -> anvilUpdate.anvilUpdate(p, l, r, n, c, m, o)));
+
     @FunctionalInterface
     interface Join {
 
@@ -89,10 +99,26 @@ public interface PlayerEvents {
     interface Tracking {
 
         /**
-         * @param tracker
-         * @param trackedEntity
+         * @param tracker Player that is tracking the given entity
+         * @param trackedEntity Entity being tracked
          */
         void playerTracking(Player tracker, Entity trackedEntity);
+
+    }
+
+    @FunctionalInterface
+    interface AnvilUpdate {
+
+        /**
+         * @param player The player using the anvil
+         * @param left   Item in the left slot
+         * @param right  Item in the right slot
+         * @param name   Name in the input field sent by the client, may be null if the user wishes to clear the name from the item
+         * @param cost   Experience cost for this operation
+         * @param materialCost Material cost for this operation
+         * @param output Output of this operation
+         */
+        EventResult anvilUpdate(Player player, ItemStack left, ItemStack right, @Nullable String name, AtomicInteger cost, AtomicInteger materialCost, AtomicReference<ItemStack> output);
 
     }
 
