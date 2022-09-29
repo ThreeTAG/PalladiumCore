@@ -5,6 +5,7 @@
   "client": [
   ],
   "mixins": [
+    "LightningBoltMixin"
   ],
   "injectors": {
     "defaultRequire": 1
