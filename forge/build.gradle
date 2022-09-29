@@ -44,7 +44,7 @@ processResources {
 
 shadowJar {
     exclude "fabric.mod.json"
-    exclude "palladiumcore.common.json"
+    exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
