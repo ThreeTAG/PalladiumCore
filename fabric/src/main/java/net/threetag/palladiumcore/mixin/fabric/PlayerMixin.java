@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("ConstantConditions")
 @Mixin(Player.class)
@@ -29,6 +30,16 @@ public class PlayerMixin {
         var entity = (LivingEntity) (Object) this;
         if (!entity.isInvulnerableTo(pDamageSource) && LivingEntityEvents.HURT.invoker().livingEntityHurt(entity, pDamageSource, pDamageAmount).cancelsEvent()) {
             ci.cancel();
+        }
+    }
+
+    @Inject(at = @At("HEAD"),
+            method = "hurt",
+            cancellable = true)
+    private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        var entity = (LivingEntity) (Object) this;
+        if (LivingEntityEvents.ATTACK.invoker().livingEntityAttack(entity, source, amount).cancelsEvent()) {
+            cir.setReturnValue(false);
         }
     }
 

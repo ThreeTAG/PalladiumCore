@@ -4,9 +4,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.*;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -51,6 +49,13 @@ public class PalladiumCoreEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void livingHurt(LivingHurtEvent e) {
         if (LivingEntityEvents.HURT.invoker().livingEntityHurt(e.getEntity(), e.getSource(), e.getAmount()).cancelsEvent()) {
+            e.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void livingAttack(LivingAttackEvent e) {
+        if (LivingEntityEvents.ATTACK.invoker().livingEntityAttack(e.getEntity(), e.getSource(), e.getAmount()).cancelsEvent()) {
             e.setCanceled(true);
         }
     }
@@ -108,6 +113,40 @@ public class PalladiumCoreEventHandler {
         e.setCost(cost.get());
         e.setMaterialCost(materialCost.get());
         e.setOutput(output.get());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void livingEntityUseItemStart(LivingEntityUseItemEvent.Start e) {
+        AtomicInteger duration = new AtomicInteger(e.getDuration());
+        if (LivingEntityEvents.ITEM_USE_START.invoker().livingEntityItemUse(e.getEntity(), e.getItem(), duration).cancelsEvent()) {
+            e.setCanceled(true);
+        }
+        e.setDuration(duration.get());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void livingEntityUseItemTick(LivingEntityUseItemEvent.Tick e) {
+        AtomicInteger duration = new AtomicInteger(e.getDuration());
+        if (LivingEntityEvents.ITEM_USE_TICK.invoker().livingEntityItemUse(e.getEntity(), e.getItem(), duration).cancelsEvent()) {
+            e.setCanceled(true);
+        }
+        e.setDuration(duration.get());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void livingEntityUseItemStop(LivingEntityUseItemEvent.Stop e) {
+        AtomicInteger duration = new AtomicInteger(e.getDuration());
+        if (LivingEntityEvents.ITEM_USE_STOP.invoker().livingEntityItemUse(e.getEntity(), e.getItem(), duration).cancelsEvent()) {
+            e.setCanceled(true);
+        }
+        e.setDuration(duration.get());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void livingEntityUseItemFinish(LivingEntityUseItemEvent.Finish e) {
+        AtomicInteger duration = new AtomicInteger(e.getDuration());
+        LivingEntityEvents.ITEM_USE_FINISH.invoker().livingEntityItemUseFinish(e.getEntity(), e.getItem(), duration);
+        e.setDuration(duration.get());
     }
 
 }
