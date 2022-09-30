@@ -12,7 +12,7 @@
     "sources": "https://github.com/ThreeTAG/PalladiumCore"
   },
   "license": "MIT License",
-  "icon": "assets/palladiumcore/icon.png",
+  "icon": "palladiumcore_icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -32,5 +32,10 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.19.2"
+  },
+  "custom": {
+    "catalogue": {
+      "banner": "palladiumcore_banner.png"
+    }
   }
 }

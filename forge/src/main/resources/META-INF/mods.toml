@@ -11,7 +11,11 @@ authors = "Lucraft, Suff"
 description = '''
 Core mod to make multi-platform developing easier!
 '''
-#logoFile = ""
+logoFile = "palladiumcore_banner.png"
+logoBlur = false
+
+[modproperties.palladium]
+catalogueImageIcon = "palladiumcore_icon.png"
 
 [[dependencies.palladiumcore]]
 modId = "forge"
