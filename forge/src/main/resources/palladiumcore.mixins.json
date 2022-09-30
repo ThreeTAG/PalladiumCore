@@ -6,7 +6,8 @@
     "ClientLevelMixin"
   ],
   "mixins": [
-    "ExtendedEntitySpawnDataMixin"
+    "ExtendedEntitySpawnDataMixin",
+    "IPalladiumItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

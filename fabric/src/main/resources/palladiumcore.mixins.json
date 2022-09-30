@@ -21,6 +21,7 @@
     "DefaultAttributesMixin",
     "GameTestServerMixin",
     "IntegratedServerMixin",
+    "InventoryMixin",
     "LivingEntityMixin",
     "PlayerListMixin",
     "PlayerMixin",

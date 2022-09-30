@@ -2,10 +2,12 @@ package net.threetag.palladiumcore.mixin.fabric;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
+import net.threetag.palladiumcore.item.IPalladiumItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -125,6 +127,17 @@ public abstract class LivingEntityMixin {
         LivingEntity entity = (LivingEntity) (Object) this;
         AtomicInteger duration = new AtomicInteger(this.useItemRemaining);
         LivingEntityEvents.ITEM_USE_FINISH.invoker().livingEntityItemUseFinish(entity, this.useItem, duration);
+    }
+
+    @Inject(method = "getEquipmentSlotForItem", at = @At("HEAD"), cancellable = true)
+    private static void getEquipmentSlotForItem(ItemStack item, CallbackInfoReturnable<EquipmentSlot> ci) {
+        if(item.getItem() instanceof IPalladiumItem palladiumItem) {
+            var slot = palladiumItem.getEquipmentSlot(item);
+
+            if(slot != null) {
+                ci.setReturnValue(slot);
+            }
+        }
     }
 
 }
