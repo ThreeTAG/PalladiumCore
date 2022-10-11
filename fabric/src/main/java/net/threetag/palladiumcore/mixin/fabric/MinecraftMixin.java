@@ -62,7 +62,7 @@ public abstract class MinecraftMixin {
             target = "Lcom/mojang/blaze3d/vertex/BufferUploader;reset()V",
             ordinal = 0,
             shift = At.Shift.BY, by = -1),
-            method = "setScreen")
+            method = "setScreen", cancellable = true)
     private void setScreen(@javax.annotation.Nullable Screen pGuiScreen, CallbackInfo ci) {
         AtomicReference<Screen> newScreen = new AtomicReference<>(pGuiScreen);
 
