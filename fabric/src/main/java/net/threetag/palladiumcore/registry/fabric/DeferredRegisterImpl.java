@@ -6,6 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
 
@@ -16,11 +17,13 @@ import java.util.function.Supplier;
 
 public class DeferredRegisterImpl {
 
+    public static final List<RegistrySupplier<PoiType>> POI_TYPES_TO_FIX = new ArrayList<>();
+
     public static <T> DeferredRegister<T> create(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
         return new Impl<>(modid, resourceKey);
     }
 
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
+    @SuppressWarnings({"unchecked", "ConstantConditions", "rawtypes"})
     public static class Impl<T> extends DeferredRegister<T> {
 
         private final String modid;
@@ -43,6 +46,9 @@ public class DeferredRegisterImpl {
             ResourceLocation registeredId = new ResourceLocation(this.modid, id);
             RegistrySupplier<R> registrySupplier = new RegistrySupplier<>(registeredId, Registry.register(this.registry, registeredId, supplier.get()));
             this.entries.add((RegistrySupplier<T>) registrySupplier);
+            if(this.registry == Registry.POINT_OF_INTEREST_TYPE) {
+                POI_TYPES_TO_FIX.add((RegistrySupplier) registrySupplier);
+            }
             return registrySupplier;
         }
 
