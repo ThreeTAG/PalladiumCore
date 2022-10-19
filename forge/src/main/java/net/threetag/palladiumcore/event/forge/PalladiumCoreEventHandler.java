@@ -6,6 +6,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.server.*;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -147,6 +148,20 @@ public class PalladiumCoreEventHandler {
         AtomicInteger duration = new AtomicInteger(e.getDuration());
         LivingEntityEvents.ITEM_USE_FINISH.invoker().livingEntityItemUseFinish(e.getEntity(), e.getItem(), duration);
         e.setDuration(duration.get());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onBlockBreak(BlockEvent.BreakEvent e) {
+        if (BlockEvents.BREAK.invoker().breakBlock(e.getLevel(), e.getPos(), e.getState(), e.getPlayer()).cancelsEvent()) {
+            e.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent e) {
+        if (BlockEvents.PLACE.invoker().placeBlock(e.getLevel(), e.getPos(), e.getPlacedBlock(), e.getPlacedAgainst(), e.getEntity()).cancelsEvent()) {
+            e.setCanceled(true);
+        }
     }
 
 }

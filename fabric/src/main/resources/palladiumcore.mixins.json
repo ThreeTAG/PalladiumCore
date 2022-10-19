@@ -6,12 +6,12 @@
     "ClientLevelMixin",
     "ClientPacketListenerMixin",
     "EntityRenderDispatcherMixin",
+    "IntegratedServerMixin",
     "KeyboardHandlerMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
     "MouseHandlerMixin",
     "RemotePlayerMixin",
-    "IntegratedServerMixin",
     "ScreenMixin"
   ],
   "mixins": [
@@ -20,13 +20,17 @@
     "AttributeSupplierMixin",
     "DedicatedServerMixin",
     "DefaultAttributesMixin",
+    "EndermanLeaveBlockGoalMixin",
+    "FrostWalkerEnchantmentMixin",
     "GameTestServerMixin",
     "InventoryMixin",
+    "BlockItemMixin",
     "LivingEntityMixin",
     "PlayerListMixin",
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",
+    "ServerPlayerGameModeMixin",
     "ServerPlayerMixin"
   ],
   "injectors": {

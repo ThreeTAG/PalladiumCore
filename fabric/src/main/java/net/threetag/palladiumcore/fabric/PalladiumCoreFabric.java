@@ -32,6 +32,8 @@ public class PalladiumCoreFabric implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> LifecycleEvents.SERVER_STOPPING.invoker().server(server));
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> LifecycleEvents.SERVER_STOPPED.invoker().server(server));
 
+
+
         LifecycleEvents.SETUP.register(() -> {
             EntityAttributeRegistryImpl.modifyAttributes();
 
