@@ -10,6 +10,7 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.palladiumcore.PalladiumCore;
+import net.threetag.palladiumcore.item.PalladiumSpawnEggItem;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -33,6 +34,10 @@ public class ColorHandlerRegistryImpl {
 
     @SubscribeEvent
     public static void itemColors(RegisterColorHandlersEvent.Item e) {
+        for (PalladiumSpawnEggItem egg : PalladiumSpawnEggItem.MOD_EGGS) {
+            e.register((stack, layer) -> egg.getColor(layer), egg);
+        }
+
         for (Pair<ItemColor, Supplier<? extends ItemLike>[]> pair : ITEM_COLORS) {
             ItemLike[] items1 = new ItemLike[pair.getRight().length];
             for (int i = 0; i < pair.getRight().length; i++) {

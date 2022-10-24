@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.threetag.palladiumcore.PalladiumCoreClient;
 import net.threetag.palladiumcore.event.LifecycleEvents;
+import net.threetag.palladiumcore.item.PalladiumSpawnEggItem;
 import net.threetag.palladiumcore.network.fabric.SpawnEntityPacket;
 
 public class PalladiumCoreClientFabric implements ClientModInitializer {
@@ -18,7 +19,9 @@ public class PalladiumCoreClientFabric implements ClientModInitializer {
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             LifecycleEvents.SETUP.invoker().run();
             LifecycleEvents.CLIENT_SETUP.invoker().run();
+            PalladiumSpawnEggItem.colorHandlers();
         });
+
         ClientTickEvents.START_CLIENT_TICK.register(instance -> net.threetag.palladiumcore.event.ClientTickEvents.CLIENT_PRE.invoker().clientTick(instance));
         ClientTickEvents.END_CLIENT_TICK.register(instance -> net.threetag.palladiumcore.event.ClientTickEvents.CLIENT_POST.invoker().clientTick(instance));
         ClientTickEvents.START_WORLD_TICK.register(instance -> net.threetag.palladiumcore.event.ClientTickEvents.CLIENT_LEVEL_PRE.invoker().clientLevelTick(Minecraft.getInstance(), instance));

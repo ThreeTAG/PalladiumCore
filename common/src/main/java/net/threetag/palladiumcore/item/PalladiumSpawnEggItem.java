@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 
 public class PalladiumSpawnEggItem extends SpawnEggItem {
 
-    private static final List<PalladiumSpawnEggItem> MOD_EGGS = new ArrayList<>();
+    public static final List<PalladiumSpawnEggItem> MOD_EGGS = new ArrayList<>();
     private static final Map<EntityType<? extends Mob>, PalladiumSpawnEggItem> TYPE_MAP = new IdentityHashMap<>();
     private final Supplier<? extends EntityType<? extends Mob>> typeSupplier;
 
