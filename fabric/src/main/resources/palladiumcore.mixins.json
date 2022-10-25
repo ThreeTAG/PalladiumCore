@@ -21,7 +21,6 @@
     "DedicatedServerMixin",
     "DefaultAttributesMixin",
     "EndermanLeaveBlockGoalMixin",
-    "FrostWalkerEnchantmentMixin",
     "GameTestServerMixin",
     "InventoryMixin",
     "BlockItemMixin",
