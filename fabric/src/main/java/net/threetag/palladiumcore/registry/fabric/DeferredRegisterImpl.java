@@ -1,9 +1,8 @@
 package net.threetag.palladiumcore.registry.fabric;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -32,7 +31,7 @@ public class DeferredRegisterImpl {
 
         public Impl(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
             this.modid = modid;
-            this.registry = (Registry<T>) MoreObjects.firstNonNull(Registry.REGISTRY.get(resourceKey.location()), BuiltinRegistries.REGISTRY.get(resourceKey.location()));
+            this.registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(resourceKey.location());
             this.entries = new ArrayList<>();
         }
 
@@ -46,7 +45,7 @@ public class DeferredRegisterImpl {
             ResourceLocation registeredId = new ResourceLocation(this.modid, id);
             RegistrySupplier<R> registrySupplier = new RegistrySupplier<>(registeredId, Registry.register(this.registry, registeredId, supplier.get()));
             this.entries.add((RegistrySupplier<T>) registrySupplier);
-            if(this.registry == Registry.POINT_OF_INTEREST_TYPE) {
+            if(this.registry == BuiltInRegistries.POINT_OF_INTEREST_TYPE) {
                 POI_TYPES_TO_FIX.add((RegistrySupplier) registrySupplier);
             }
             return registrySupplier;
