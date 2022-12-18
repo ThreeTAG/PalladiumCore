@@ -6,7 +6,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -43,16 +42,6 @@ public class CreativeModeTabRegistry {
      */
     public static void addToTab(CreativeModeTab tab, Consumer<ItemGroupEntries> entriesConsumer) {
         addToTab(() -> tab, entriesConsumer);
-    }
-
-    /**
-     * @param id ID of the tab that is searched for
-     * @return The wanted {@link CreativeModeTab}, or null if not found
-     */
-    @ExpectPlatform
-    @Nullable
-    public static CreativeModeTab getTabByName(ResourceLocation id) {
-        throw new AssertionError();
     }
 
     public interface ItemGroupEntries {

@@ -2,7 +2,6 @@ package net.threetag.palladiumcore.registry.forge;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -31,31 +30,6 @@ public class CreativeModeTabRegistryImpl {
 
     public static void addToTab(Supplier<CreativeModeTab> tab, Consumer<CreativeModeTabRegistry.ItemGroupEntries> entriesConsumer) {
         TAB_MODIFICATIONS.put(tab, entriesConsumer);
-    }
-
-    public static CreativeModeTab getTabByName(ResourceLocation id) {
-        // some IDs differ between Forge & Fabric
-        if (id.toString().equals("minecraft:natural")) {
-            return CreativeModeTabs.NATURAL_BLOCKS;
-        } else if (id.toString().equals("minecraft:functional")) {
-            return CreativeModeTabs.FUNCTIONAL_BLOCKS;
-        } else if (id.toString().equals("minecraft:redstone")) {
-            return CreativeModeTabs.REDSTONE_BLOCKS;
-        } else if (id.toString().equals("minecraft:tools")) {
-            return CreativeModeTabs.TOOLS_AND_UTILITIES;
-        } else if (id.toString().equals("minecraft:food_and_drink")) {
-            return CreativeModeTabs.FOOD_AND_DRINKS;
-        } else if (id.toString().equals("minecraft:hotbar")) {
-            return CreativeModeTabs.HOTBAR;
-        } else if (id.toString().equals("minecraft:search")) {
-            return CreativeModeTabs.SEARCH;
-        } else if (id.toString().equals("minecraft:op")) {
-            return CreativeModeTabs.OP_BLOCKS;
-        } else if (id.toString().equals("minecraft:inventory")) {
-            return CreativeModeTabs.INVENTORY;
-        }
-
-        return net.minecraftforge.common.CreativeModeTabRegistry.getTab(id);
     }
 
     @SubscribeEvent
