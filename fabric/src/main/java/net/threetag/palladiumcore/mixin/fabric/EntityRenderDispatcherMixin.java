@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +33,7 @@ public class EntityRenderDispatcherMixin {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Inject(at = @At("RETURN"), method = "onResourceManagerReload")
     private void onResourceManagerReload(ResourceManager resourceManager, CallbackInfo ci) {
-        for (EntityType entityType : BuiltInRegistries.ENTITY_TYPE) {
+        for (EntityType entityType : Registry.ENTITY_TYPE) {
             try {
                 for (Pair<Predicate<EntityType<?>>, Function<RenderLayerParent<?, ?>, RenderLayer<?, ?>>> pair : EntityRendererRegistryImpl.RENDER_LAYERS) {
                     if (pair.getFirst().test(entityType)) {

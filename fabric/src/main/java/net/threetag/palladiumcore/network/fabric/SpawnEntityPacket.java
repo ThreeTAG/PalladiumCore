@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,7 @@ public class SpawnEntityPacket {
             throw new IllegalStateException("SpawnPacketUtil.create called on the logical client!");
         }
         var buffer = PacketByteBufs.create();
-        buffer.writeVarInt(BuiltInRegistries.ENTITY_TYPE.getId(entity.getType()));
+        buffer.writeVarInt(Registry.ENTITY_TYPE.getId(entity.getType()));
         buffer.writeUUID(entity.getUUID());
         buffer.writeVarInt(entity.getId());
         var position = entity.position();
@@ -67,9 +67,10 @@ public class SpawnEntityPacket {
             var deltaX = buf.readDouble();
             var deltaY = buf.readDouble();
             var deltaZ = buf.readDouble();
+            // Retain this buffer so we can use it in the queued task (EntitySpawnExtension)
             buf.retain();
             consumer.accept(() -> {
-                var entityType = BuiltInRegistries.ENTITY_TYPE.byId(entityTypeId);
+                var entityType = Registry.ENTITY_TYPE.byId(entityTypeId);
                 if (entityType == null) {
                     throw new IllegalStateException("Entity type (" + entityTypeId + ") is unknown, spawning at (" + x + ", " + y + ", " + z + ")");
                 }

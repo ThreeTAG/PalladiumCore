@@ -1,7 +1,7 @@
 package net.threetag.palladiumcore.mixin.fabric;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
@@ -47,7 +47,7 @@ public class ServerPlayerGameModeMixin {
                 cancelEvent = true;
 
             if (!this.player.mayBuild()) {
-                if (itemstack.isEmpty() || !itemstack.hasAdventureModeBreakTagForBlock(level.registryAccess().registryOrThrow(Registries.BLOCK), new BlockInWorld(level, pos, false)))
+                if (itemstack.isEmpty() || !itemstack.hasAdventureModeBreakTagForBlock(level.registryAccess().registryOrThrow(Registry.BLOCK_REGISTRY), new BlockInWorld(level, pos, false)))
                     cancelEvent = true;
             }
         }
