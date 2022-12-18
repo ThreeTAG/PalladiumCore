@@ -1,7 +1,5 @@
 package net.threetag.palladiumcore.registry.forge;
 
-import com.google.common.collect.Lists;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -13,7 +11,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.threetag.palladiumcore.PalladiumCore;
 import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -61,10 +61,7 @@ public class CreativeModeTabRegistryImpl {
     @SubscribeEvent
     public static void buildContents(CreativeModeTabEvent.Register e) {
         for (Map.Entry<TabSupplier, Consumer<CreativeModeTab.Builder>> entry : TABS.entrySet()) {
-            entry.getKey().tab = e.registerCreativeModeTab(entry.getKey().id, builder -> {
-                builder.title(Component.translatable("itemGroup.%s.%s".formatted(entry.getKey().id.getNamespace(), entry.getKey().id.getPath())));
-                entry.getValue().accept(builder);
-            });
+            entry.getKey().tab = e.registerCreativeModeTab(entry.getKey().id, entry.getValue());
         }
     }
 
@@ -138,7 +135,7 @@ public class CreativeModeTabRegistryImpl {
 
         @Override
         public void addAfter(ItemLike afterLast, CreativeModeTab.TabVisibility visibility, ItemLike... item) {
-            for (ItemLike itemLike : Lists.reverse(Arrays.asList(item))) {
+            for (ItemLike itemLike : item) {
                 this.e.getEntries().putAfter(findLast(afterLast), itemLike.asItem().getDefaultInstance(), visibility);
             }
         }
@@ -176,7 +173,7 @@ public class CreativeModeTabRegistryImpl {
 
         @Override
         public void addAfter(ItemLike afterLast, CreativeModeTab.TabVisibility visibility, ItemStack... item) {
-            for (ItemStack stack : Lists.reverse(Arrays.asList(item))) {
+            for (ItemStack stack : item) {
                 this.e.getEntries().putAfter(findLast(afterLast), stack, visibility);
             }
         }

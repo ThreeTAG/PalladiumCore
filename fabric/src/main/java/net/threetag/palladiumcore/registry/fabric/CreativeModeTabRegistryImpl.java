@@ -20,8 +20,7 @@ public class CreativeModeTabRegistryImpl {
     public static Supplier<CreativeModeTab> create(ResourceLocation id, Consumer<CreativeModeTab.Builder> builderConsumer) {
         CreativeModeTab.Builder builder = FabricItemGroup.builder(id);
         builderConsumer.accept(builder);
-        var tab = builder.build();
-        return () -> tab;
+        return builder::build;
     }
 
     public static void addToTab(Supplier<CreativeModeTab> tab, Consumer<CreativeModeTabRegistry.ItemGroupEntries> entriesConsumer) {
