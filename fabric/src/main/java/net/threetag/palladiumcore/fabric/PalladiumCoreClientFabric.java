@@ -8,6 +8,7 @@ import net.threetag.palladiumcore.PalladiumCoreClient;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.item.PalladiumSpawnEggItem;
 import net.threetag.palladiumcore.network.fabric.SpawnEntityPacket;
+import net.threetag.palladiumcore.registry.client.fabric.ParticleProviderRegistryImpl;
 
 public class PalladiumCoreClientFabric implements ClientModInitializer {
 
@@ -20,6 +21,7 @@ public class PalladiumCoreClientFabric implements ClientModInitializer {
             LifecycleEvents.SETUP.invoker().run();
             LifecycleEvents.CLIENT_SETUP.invoker().run();
             PalladiumSpawnEggItem.colorHandlers();
+            ParticleProviderRegistryImpl.load();
         });
 
         ClientTickEvents.START_CLIENT_TICK.register(instance -> net.threetag.palladiumcore.event.ClientTickEvents.CLIENT_PRE.invoker().clientTick(instance));

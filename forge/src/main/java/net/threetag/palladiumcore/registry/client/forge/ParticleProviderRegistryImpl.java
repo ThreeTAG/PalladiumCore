@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ParticleProviderRegistryImpl {
@@ -24,11 +24,13 @@ public class ParticleProviderRegistryImpl {
     private static final Map<Supplier<ParticleType<?>>, ParticleEngine.SpriteParticleRegistration<?>> SPRITES = new HashMap<>();
 
     public static <T extends ParticleOptions> void register(Supplier<ParticleType<T>> type, ParticleProvider<T> provider) {
-        throw new AssertionError();
+        Supplier supplier = type;
+        PROVIDERS.put(supplier, provider);
     }
 
     public static  <T extends ParticleOptions> void register(Supplier<ParticleType<T>> type, ParticleEngine.SpriteParticleRegistration<T> registration) {
-        throw new AssertionError();
+        Supplier supplier = type;
+        SPRITES.put(supplier, registration);
     }
 
     @SubscribeEvent
