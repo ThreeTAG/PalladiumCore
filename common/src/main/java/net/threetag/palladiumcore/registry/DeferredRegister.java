@@ -3,10 +3,15 @@ package net.threetag.palladiumcore.registry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
+import net.threetag.palladiumcore.compat.architectury.ArchDeferredRegisterWrapper;
+import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -30,6 +35,8 @@ import java.util.function.Supplier;
  * @param <T> The base registry type
  */
 public abstract class DeferredRegister<T> implements Iterable<RegistrySupplier<T>> {
+
+    public static final List<RegistrySupplier<PoiType>> POI_TYPES_TO_FIX = new ArrayList<>();
 
     /**
      * This MUST be called during mod-initialization to make sure the {@link DeferredRegister} is registed to the event bus on the Forge side
@@ -64,8 +71,18 @@ public abstract class DeferredRegister<T> implements Iterable<RegistrySupplier<T
      * @param <T>         Generic type of the registry
      * @return A new instance of a {@link DeferredRegister}
      */
-    @ExpectPlatform
+    @SuppressWarnings({"rawtypes", "unchecked", "UnnecessaryLocalVariable"})
     public static <T> DeferredRegister<T> create(String modId, ResourceKey<? extends Registry<T>> resourceKey) {
+        if (Platform.isArchitecturyLoaded()) {
+            ResourceKey key = resourceKey;
+            return ArchDeferredRegisterWrapper.get(modId, key);
+        } else {
+            return createInternal(modId, resourceKey);
+        }
+    }
+
+    @ExpectPlatform
+    public static <T> DeferredRegister<T> createInternal(String modId, ResourceKey<? extends Registry<T>> resourceKey) {
         throw new AssertionError();
     }
 

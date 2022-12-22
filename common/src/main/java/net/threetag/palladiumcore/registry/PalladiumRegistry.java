@@ -4,6 +4,8 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.threetag.palladiumcore.compat.architectury.ArchRegistryWrapper;
+import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,8 +34,16 @@ public abstract class PalladiumRegistry<T> implements Iterable<T> {
      * @param <T>   Generic type of the registry
      * @return A new {@link PalladiumRegistry} instance
      */
-    @ExpectPlatform
     public static <T> PalladiumRegistry<T> create(Class<T> clazz, ResourceLocation id) {
+        if (Platform.isArchitecturyLoaded()) {
+            return ArchRegistryWrapper.get(id, clazz);
+        } else {
+            return createInternal(clazz, id);
+        }
+    }
+
+    @ExpectPlatform
+    private static <T> PalladiumRegistry<T> createInternal(Class<T> clazz, ResourceLocation id) {
         throw new AssertionError();
     }
 

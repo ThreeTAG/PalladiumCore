@@ -9,6 +9,8 @@ import java.util.Collection;
 
 public class Platform {
 
+    private static byte ARCHITECTURY_LOADED = 0;
+
     @ExpectPlatform
     public static boolean isProduction() {
         throw new AssertionError();
@@ -58,6 +60,13 @@ public class Platform {
     @Nullable
     public static Mod getMod(String modId) {
         throw new AssertionError();
+    }
+
+    public static boolean isArchitecturyLoaded() {
+        if (ARCHITECTURY_LOADED == 0) {
+            ARCHITECTURY_LOADED = (byte) (isModLoaded("architectury") ? 2 : 1);
+        }
+        return ARCHITECTURY_LOADED == 2;
     }
 
     public record Mod(String modId, String version, String name, String description) {

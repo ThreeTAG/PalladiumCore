@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class PalladiumRegistryImpl<T> extends PalladiumRegistry<T> {
 
-    public static <T> PalladiumRegistry<T> create(Class<T> clazz, ResourceLocation id) {
+    public static <T> PalladiumRegistry<T> createInternal(Class<T> clazz, ResourceLocation id) {
         return new PalladiumRegistryImpl<>(FabricRegistryBuilder.createSimple(clazz, id).buildAndRegister());
     }
 
