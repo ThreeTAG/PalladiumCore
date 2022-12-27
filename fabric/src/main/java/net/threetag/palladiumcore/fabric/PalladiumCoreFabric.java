@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.threetag.palladiumcore.PalladiumCore;
 import net.threetag.palladiumcore.event.CommandEvents;
 import net.threetag.palladiumcore.event.LifecycleEvents;
+import net.threetag.palladiumcore.item.fabric.PalladiumRecordItemImpl;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
 import net.threetag.palladiumcore.registry.fabric.EntityAttributeRegistryImpl;
@@ -36,6 +37,7 @@ public class PalladiumCoreFabric implements ModInitializer {
 
         LifecycleEvents.SETUP.register(() -> {
             EntityAttributeRegistryImpl.modifyAttributes();
+            PalladiumRecordItemImpl.setupEvents();
 
             for (RegistrySupplier<PoiType> supplier : DeferredRegister.POI_TYPES_TO_FIX) {
                 var key = ResourceKey.create(Registry.POINT_OF_INTEREST_TYPE_REGISTRY, supplier.getId());
