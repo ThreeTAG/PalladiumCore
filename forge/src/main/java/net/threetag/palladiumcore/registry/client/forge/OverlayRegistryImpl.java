@@ -1,5 +1,6 @@
 package net.threetag.palladiumcore.registry.client.forge;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -23,7 +24,8 @@ public class OverlayRegistryImpl {
 
     @SubscribeEvent
     public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent e) {
-        OVERLAYS.forEach((id, overlay) -> e.registerAboveAll(id, overlay::render));
+        OVERLAYS.forEach((id, overlay) -> e.registerAboveAll(id,
+                (forgeGui, poseStack, partialTick, w, h) -> overlay.render(Minecraft.getInstance(), forgeGui, poseStack, partialTick, w, h)));
     }
 
 }
