@@ -1,8 +1,10 @@
 package net.threetag.palladiumcore.event;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,6 +32,7 @@ public interface PlayerEvents {
 
     /**
      * Client version of the {@link PlayerEvents#JOIN} event
+     *
      * @see Join#playerJoin(Player)
      */
     Event<Join> CLIENT_JOIN = new Event<>(Join.class, listeners -> (p) -> {
@@ -40,6 +43,7 @@ public interface PlayerEvents {
 
     /**
      * Client version of the {@link PlayerEvents#QUIT} event
+     *
      * @see Quit#playerQuit(Player)
      */
     Event<Quit> CLIENT_QUIT = new Event<>(Quit.class, listeners -> (p) -> {
@@ -49,11 +53,20 @@ public interface PlayerEvents {
     });
 
     /**
-     * Fired when an Entity is started to be "tracked" by this player, usually when an entity enters a player's view distance.
+     * @see Respawn#playerRespawn(Player, boolean)
      */
     Event<Respawn> RESPAWN = new Event<>(Respawn.class, listeners -> (p, e) -> {
         for (Respawn listener : listeners) {
             listener.playerRespawn(p, e);
+        }
+    });
+
+    /**
+     * @see ChangedDimension#playerChangedDimension(Player, ResourceKey) 
+     */
+    Event<ChangedDimension> CHANGED_DIMENSION = new Event<>(ChangedDimension.class, listeners -> (p, t) -> {
+        for (ChangedDimension listener : listeners) {
+            listener.playerChangedDimension(p, t);
         }
     });
 
@@ -108,9 +121,9 @@ public interface PlayerEvents {
     interface Respawn {
 
         /**
-         * Fired when the player has respawn
+         * Fired when the player has respawned
          *
-         * @param player The player that has respawned
+         * @param player       The player that has respawned
          * @param endConquered True if the player has respawned due to leaving the end after defeating the ender dragon
          */
         void playerRespawn(Player player, boolean endConquered);
@@ -118,10 +131,23 @@ public interface PlayerEvents {
     }
 
     @FunctionalInterface
+    interface ChangedDimension {
+
+        /**
+         * Fired when the player changed dimensions
+         *
+         * @param player The player that has respawned
+         * @param destination Resource key of the destination dimension
+         */
+        void playerChangedDimension(Player player, ResourceKey<Level> destination);
+
+    }
+
+    @FunctionalInterface
     interface Tracking {
 
         /**
-         * @param tracker Player that is tracking the given entity
+         * @param tracker       Player that is tracking the given entity
          * @param trackedEntity Entity being tracked
          */
         void playerTracking(Player tracker, Entity trackedEntity);
@@ -132,13 +158,13 @@ public interface PlayerEvents {
     interface AnvilUpdate {
 
         /**
-         * @param player The player using the anvil
-         * @param left   Item in the left slot
-         * @param right  Item in the right slot
-         * @param name   Name in the input field sent by the client, may be null if the user wishes to clear the name from the item
-         * @param cost   Experience cost for this operation
+         * @param player       The player using the anvil
+         * @param left         Item in the left slot
+         * @param right        Item in the right slot
+         * @param name         Name in the input field sent by the client, may be null if the user wishes to clear the name from the item
+         * @param cost         Experience cost for this operation
          * @param materialCost Material cost for this operation
-         * @param output Output of this operation
+         * @param output       Output of this operation
          */
         EventResult anvilUpdate(Player player, ItemStack left, ItemStack right, @Nullable String name, AtomicInteger cost, AtomicInteger materialCost, AtomicReference<ItemStack> output);
 
