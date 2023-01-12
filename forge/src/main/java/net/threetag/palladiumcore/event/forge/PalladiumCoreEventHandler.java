@@ -36,6 +36,11 @@ public class PalladiumCoreEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void playerRespawn(PlayerEvent.PlayerRespawnEvent e) {
+        PlayerEvents.RESPAWN.invoker().playerRespawn(e.getEntity(), e.isEndConquered());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public static void joinLevel(EntityJoinLevelEvent e) {
         EntityEvents.JOIN_LEVEL.invoker().entityJoinLevel(e.getEntity(), e.getLevel());
     }

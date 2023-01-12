@@ -51,6 +51,15 @@ public interface PlayerEvents {
     /**
      * Fired when an Entity is started to be "tracked" by this player, usually when an entity enters a player's view distance.
      */
+    Event<Respawn> RESPAWN = new Event<>(Respawn.class, listeners -> (p, e) -> {
+        for (Respawn listener : listeners) {
+            listener.playerRespawn(p, e);
+        }
+    });
+
+    /**
+     * Fired when an Entity is started to be "tracked" by this player, usually when an entity enters a player's view distance.
+     */
     Event<Tracking> START_TRACKING = new Event<>(Tracking.class, listeners -> (p, t) -> {
         for (Tracking listener : listeners) {
             listener.playerTracking(p, t);
@@ -92,6 +101,19 @@ public interface PlayerEvents {
          * @param player The player that is quitting the game
          */
         void playerQuit(Player player);
+
+    }
+
+    @FunctionalInterface
+    interface Respawn {
+
+        /**
+         * Fired when the player has respawn
+         *
+         * @param player The player that has respawned
+         * @param endConquered True if the player has respawned due to leaving the end after defeating the ender dragon
+         */
+        void playerRespawn(Player player, boolean endConquered);
 
     }
 
