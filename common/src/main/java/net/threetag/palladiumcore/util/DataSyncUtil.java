@@ -24,7 +24,10 @@ public class DataSyncUtil {
         PlayerEvents.JOIN.register(player -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 for (Function<Entity, MessageS2C> function : FUNCTIONS) {
-                    function.apply(serverPlayer).send(serverPlayer);
+                    var msg = function.apply(serverPlayer);
+                    if (msg != null) {
+                        msg.send(serverPlayer);
+                    }
                 }
             }
         });
@@ -32,7 +35,10 @@ public class DataSyncUtil {
         PlayerEvents.START_TRACKING.register((tracker, target) -> {
             if (tracker instanceof ServerPlayer serverPlayer) {
                 for (Function<Entity, MessageS2C> function : FUNCTIONS) {
-                    function.apply(target).send(serverPlayer);
+                    var msg = function.apply(target);
+                    if (msg != null) {
+                        msg.send(serverPlayer);
+                    }
                 }
             }
         });
@@ -40,7 +46,10 @@ public class DataSyncUtil {
         PlayerEvents.RESPAWN.register((player, endConquered) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 for (Function<Entity, MessageS2C> function : FUNCTIONS) {
-                    function.apply(player).sendToTrackingAndSelf(serverPlayer);
+                    var msg = function.apply(player);
+                    if (msg != null) {
+                        msg.sendToTrackingAndSelf(serverPlayer);
+                    }
                 }
             }
         });
@@ -48,7 +57,10 @@ public class DataSyncUtil {
         PlayerEvents.CHANGED_DIMENSION.register((player, destination) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 for (Function<Entity, MessageS2C> function : FUNCTIONS) {
-                    function.apply(player).sendToTrackingAndSelf(serverPlayer);
+                    var msg = function.apply(player);
+                    if (msg != null) {
+                        msg.sendToTrackingAndSelf(serverPlayer);
+                    }
                 }
             }
         });
