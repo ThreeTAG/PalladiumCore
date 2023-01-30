@@ -40,6 +40,15 @@ public class DataSyncUtil {
                         msg.send(serverPlayer);
                     }
                 }
+
+                if (target instanceof ServerPlayer targetPlayer) {
+                    for (Function<Entity, MessageS2C> function : FUNCTIONS) {
+                        var msg = function.apply(serverPlayer);
+                        if (msg != null) {
+                            msg.send(targetPlayer);
+                        }
+                    }
+                }
             }
         });
 
