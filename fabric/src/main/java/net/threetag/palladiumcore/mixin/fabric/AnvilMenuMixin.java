@@ -29,7 +29,7 @@ public class AnvilMenuMixin {
     private int repairItemCountCost;
 
     @Inject(at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/item/EnchantedBookItem;getEnchantments(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/nbt/ListTag;"),
+            target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z", ordinal = 2),
             method = "createResult",
             cancellable = true)
     private void createResult(CallbackInfo ci) {
@@ -53,6 +53,7 @@ public class AnvilMenuMixin {
         menu.resultSlots.setItem(0, output.get());
         this.cost.set(cost.get());
         this.repairItemCountCost = materialCost.get();
+        ci.cancel();
     }
 
 }
