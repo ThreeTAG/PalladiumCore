@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public interface LivingEntityEvents {
 
@@ -82,7 +83,7 @@ public interface LivingEntityEvents {
          * @param amount       The amount of damage dealt to the hurt entity
          * @return An {@link EventResult} determining whether to cancel the hurting process
          */
-        EventResult livingEntityHurt(LivingEntity entity, DamageSource damageSource, float amount);
+        EventResult livingEntityHurt(LivingEntity entity, DamageSource damageSource, AtomicReference<Float> amount);
 
     }
 

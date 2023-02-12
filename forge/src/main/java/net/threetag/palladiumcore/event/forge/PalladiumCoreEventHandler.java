@@ -59,9 +59,11 @@ public class PalladiumCoreEventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void livingHurt(LivingHurtEvent e) {
-        if (LivingEntityEvents.HURT.invoker().livingEntityHurt(e.getEntity(), e.getSource(), e.getAmount()).cancelsEvent()) {
+        AtomicReference<Float> amount = new AtomicReference<>(e.getAmount());
+        if (LivingEntityEvents.HURT.invoker().livingEntityHurt(e.getEntity(), e.getSource(), amount).cancelsEvent()) {
             e.setCanceled(true);
         }
+        e.setAmount(amount.get());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

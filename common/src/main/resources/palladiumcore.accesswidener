@@ -37,6 +37,9 @@ accessible field net/minecraft/world/inventory/ItemCombinerMenu player Lnet/mine
 accessible field net/minecraft/world/inventory/ItemCombinerMenu inputSlots Lnet/minecraft/world/Container;
 accessible field net/minecraft/world/inventory/ItemCombinerMenu resultSlots Lnet/minecraft/world/inventory/ResultContainer;
 
+# LivingEntity
+accessible method net/minecraft/world/entity/LivingEntity getDamageAfterArmorAbsorb (Lnet/minecraft/world/damagesource/DamageSource;F)F
+
 # EnderMan
 accessible class net/minecraft/world/entity/monster/EnderMan$EndermanLeaveBlockGoal
 
