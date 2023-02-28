@@ -48,3 +48,10 @@ transitive-accessible method net/minecraft/core/particles/SimpleParticleType <in
 transitive-accessible method net/minecraft/client/particle/ParticleEngine register (Lnet/minecraft/core/particles/ParticleType;Lnet/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration;)V
 transitive-accessible method net/minecraft/client/particle/ParticleEngine register (Lnet/minecraft/core/particles/ParticleType;Lnet/minecraft/client/particle/ParticleProvider;)V
 transitive-accessible class net/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration
+
+# FogRenderer
+accessible class net/minecraft/client/renderer/FogRenderer$FogData
+
+# Camera
+accessible field net/minecraft/client/Camera xRot F
+accessible field net/minecraft/client/Camera yRot F

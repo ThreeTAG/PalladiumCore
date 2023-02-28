@@ -1,21 +1,16 @@
 package net.threetag.palladiumcore.event.forge;
 
+import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.palladiumcore.PalladiumCore;
-import net.threetag.palladiumcore.event.ClientTickEvents;
-import net.threetag.palladiumcore.event.InputEvents;
-import net.threetag.palladiumcore.event.PlayerEvents;
-import net.threetag.palladiumcore.event.ScreenEvents;
+import net.threetag.palladiumcore.event.*;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -86,6 +81,47 @@ public class PalladiumCoreClientEventHandler {
         } else {
             ClientTickEvents.CLIENT_POST.invoker().clientTick(Minecraft.getInstance());
         }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void computeCameraAngles(ViewportEvent.ComputeCameraAngles e) {
+        AtomicReference<Float> yaw = new AtomicReference<>(e.getYaw());
+        AtomicReference<Float> pitch = new AtomicReference<>(e.getPitch());
+        AtomicReference<Float> roll = new AtomicReference<>(e.getRoll());
+
+        ViewportEvents.COMPUTE_CAMERA_ANGLES.invoker().computeCameraAngles(e.getRenderer(), e.getCamera(), e.getPartialTick(), yaw, pitch, roll);
+
+        e.setYaw(yaw.get());
+        e.setPitch(pitch.get());
+        e.setRoll(roll.get());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void renderFog(ViewportEvent.RenderFog e) {
+        AtomicReference<Float> fpd = new AtomicReference<>(e.getFarPlaneDistance());
+        AtomicReference<Float> npd = new AtomicReference<>(e.getNearPlaneDistance());
+        AtomicReference<FogShape> shape = new AtomicReference<>(e.getFogShape());
+
+        var event = ViewportEvents.RENDER_FOG.invoker().renderFog(e.getRenderer(), e.getCamera(), e.getPartialTick(), e.getMode(), e.getType(), fpd, npd, shape);
+
+        if (event.cancelsEvent()) {
+            e.setNearPlaneDistance(npd.get());
+            e.setFarPlaneDistance(fpd.get());
+            e.setFogShape(shape.get());
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void computeFogColor(ViewportEvent.ComputeFogColor e) {
+        AtomicReference<Float> red = new AtomicReference<>(e.getRed());
+        AtomicReference<Float> green = new AtomicReference<>(e.getGreen());
+        AtomicReference<Float> blue = new AtomicReference<>(e.getBlue());
+
+        ViewportEvents.COMPUTE_FOG_COLOR.invoker().computeFogColor(e.getRenderer(), e.getCamera(), e.getPartialTick(), red, green, blue);
+
+        e.setRed(red.get());
+        e.setGreen(green.get());
+        e.setBlue(blue.get());
     }
 
 }
