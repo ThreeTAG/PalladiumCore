@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class KeyMappingRegistryImpl {
 
     private static final List<KeyMapping> KEY_MAPPINGS = new ArrayList<>();
