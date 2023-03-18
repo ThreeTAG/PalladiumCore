@@ -1,6 +1,9 @@
 package net.threetag.palladiumcore.event;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
+import org.jetbrains.annotations.Nullable;
 
 public interface LifecycleEvents {
 
@@ -69,10 +72,32 @@ public interface LifecycleEvents {
         }
     });
 
+    /**
+     * @see DatapackSync#onDatapackSync(PlayerList, ServerPlayer) 
+     */
+    Event<DatapackSync> DATAPACK_SYNC = new Event<>(DatapackSync.class, listeners -> (l, p) -> {
+        for (DatapackSync listener : listeners) {
+            listener.onDatapackSync(l, p);
+        }
+    });
+
     @FunctionalInterface
     interface Server {
 
         void server(MinecraftServer server);
+
+    }
+
+    @FunctionalInterface
+    interface DatapackSync {
+
+        /**
+         * Fires when a player joins the server or when the reload command is ran, before tags and crafting recipes are sent to the client. Send datapack data to clients when this event fires.
+         *
+         * @param playerList List of players
+         * @param player Player that the data is synced to. Null if reload was run
+         */
+        void onDatapackSync(PlayerList playerList, @Nullable ServerPlayer player);
 
     }
 

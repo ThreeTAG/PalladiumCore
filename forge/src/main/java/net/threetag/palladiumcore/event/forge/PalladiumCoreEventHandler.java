@@ -2,6 +2,7 @@ package net.threetag.palladiumcore.event.forge;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -111,6 +112,11 @@ public class PalladiumCoreEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void serverStopped(ServerStoppedEvent e) {
         LifecycleEvents.SERVER_STOPPED.invoker().server(e.getServer());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onDatapackSync(OnDatapackSyncEvent e) {
+        LifecycleEvents.DATAPACK_SYNC.invoker().onDatapackSync(e.getPlayerList(), e.getPlayer());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
