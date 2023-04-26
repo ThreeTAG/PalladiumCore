@@ -44,6 +44,7 @@ accessible class net/minecraft/world/entity/monster/EnderMan$EndermanLeaveBlockG
 
 # CreativeModeTab
 transitive-accessible class net/minecraft/world/item/CreativeModeTab$TabVisibility
+transitive-accessible class net/minecraft/world/item/CreativeModeTab$Output
 
 # SimpleParticleType
 transitive-accessible method net/minecraft/core/particles/SimpleParticleType <init> (Z)V
