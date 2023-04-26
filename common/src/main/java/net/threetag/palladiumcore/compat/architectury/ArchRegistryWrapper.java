@@ -1,7 +1,7 @@
 package net.threetag.palladiumcore.compat.architectury;
 
 import dev.architectury.registry.registries.Registrar;
-import dev.architectury.registry.registries.Registries;
+import dev.architectury.registry.registries.RegistrarManager;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +19,7 @@ public class ArchRegistryWrapper<T> extends PalladiumRegistry<T> {
     @SuppressWarnings("unchecked")
     public ArchRegistryWrapper(ResourceLocation id, Class<T> clazz) {
         T[] a = (T[]) Array.newInstance(clazz, 0);
-        this.registrar = Registries.get(id.getNamespace()).builder(id, a).build();
+        this.registrar = RegistrarManager.get(id.getNamespace()).builder(id, a).build();
     }
 
     public static <T> PalladiumRegistry<T> get(ResourceLocation id, Class<T> clazz) {

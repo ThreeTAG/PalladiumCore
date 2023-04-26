@@ -1,6 +1,7 @@
 package net.threetag.palladiumcore.compat.architectury;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
@@ -36,7 +37,7 @@ public class ArchDeferredRegisterWrapper<T> extends DeferredRegister<T> {
     public <R extends T> RegistrySupplier<R> register(String id, Supplier<R> supplier) {
         var obj = this.register.register(id, supplier);
         var registrySupplier = (RegistrySupplier<R>) this.suppliers.computeIfAbsent((dev.architectury.registry.registries.RegistrySupplier<T>) obj, rs -> new RegistrySupplier<>(rs.getId(), rs));
-        if (Platform.isFabric() && this.resourceKey.equals(Registry.POINT_OF_INTEREST_TYPE_REGISTRY)) {
+        if (Platform.isFabric() && this.resourceKey.equals(Registries.POINT_OF_INTEREST_TYPE)) {
             POI_TYPES_TO_FIX.add((RegistrySupplier) registrySupplier);
         }
         return registrySupplier;

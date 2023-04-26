@@ -1,6 +1,6 @@
 package net.threetag.palladiumcore.item.fabric;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.RecordItem;
@@ -27,7 +27,7 @@ public class PalladiumRecordItemImpl extends RecordItem {
     }
 
     public static void setupEvents() {
-        for (Item item : Registry.ITEM) {
+        for (Item item : BuiltInRegistries.ITEM) {
             if(item instanceof PalladiumRecordItemImpl recordItem) {
                 RecordItem.BY_NAME.put(recordItem.soundEvent.get(), recordItem);
             }

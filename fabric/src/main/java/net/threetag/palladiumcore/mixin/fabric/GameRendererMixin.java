@@ -1,7 +1,7 @@
 package net.threetag.palladiumcore.mixin.fabric;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.GameRenderer;
 import net.threetag.palladiumcore.event.ViewportEvents;
@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+@SuppressWarnings("DataFlowIssue")
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
 
@@ -31,7 +32,7 @@ public class GameRendererMixin {
 
         this.mainCamera.yRot = yaw.get();
         this.mainCamera.xRot = pitch.get();
-        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(roll.get()));
+        matrixStack.mulPose(Axis.ZP.rotationDegrees(roll.get()));
     }
 
 }

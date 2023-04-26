@@ -20,7 +20,8 @@ public class CreativeModeTabRegistryImpl {
     public static Supplier<CreativeModeTab> create(ResourceLocation id, Consumer<CreativeModeTab.Builder> builderConsumer) {
         CreativeModeTab.Builder builder = FabricItemGroup.builder(id);
         builderConsumer.accept(builder);
-        return builder::build;
+        var tab = builder.build();
+        return () -> tab;
     }
 
     public static void addToTab(Supplier<CreativeModeTab> tab, Consumer<CreativeModeTabRegistry.ItemGroupEntries> entriesConsumer) {
@@ -29,15 +30,15 @@ public class CreativeModeTabRegistryImpl {
 
     public static CreativeModeTab getTabByName(ResourceLocation id) {
         // some IDs differ between Forge & Fabric
-        if(id.toString().equals("minecraft:natural_blocks")) {
+        if (id.toString().equals("minecraft:natural_blocks")) {
             return CreativeModeTabs.NATURAL_BLOCKS;
-        } else if(id.toString().equals("minecraft:functional_blocks")) {
+        } else if (id.toString().equals("minecraft:functional_blocks")) {
             return CreativeModeTabs.FUNCTIONAL_BLOCKS;
-        } else if(id.toString().equals("minecraft:redstone_blocks")) {
+        } else if (id.toString().equals("minecraft:redstone_blocks")) {
             return CreativeModeTabs.REDSTONE_BLOCKS;
-        } else if(id.toString().equals("minecraft:tools_and_utilities")) {
+        } else if (id.toString().equals("minecraft:tools_and_utilities")) {
             return CreativeModeTabs.TOOLS_AND_UTILITIES;
-        } else if(id.toString().equals("minecraft:food_and_drinks")) {
+        } else if (id.toString().equals("minecraft:food_and_drinks")) {
             return CreativeModeTabs.FOOD_AND_DRINKS;
         }
 
