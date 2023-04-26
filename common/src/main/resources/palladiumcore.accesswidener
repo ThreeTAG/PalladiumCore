@@ -29,8 +29,7 @@ transitive-accessible method net/minecraft/world/entity/SpawnPlacements register
 
 # PoiTypes
 transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes getBlockStates (Lnet/minecraft/world/level/block/Block;)Ljava/util/Set;
-transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes registerBlockStates (Lnet/minecraft/core/Holder;)V
-transitive-accessible field net/minecraft/world/entity/ai/village/poi/PoiTypes ALL_STATES Ljava/util/Set;
+transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes registerBlockStates (Lnet/minecraft/core/Holder;Ljava/util/Set;)V
 
 # ItemCombinerMenu
 accessible field net/minecraft/world/inventory/ItemCombinerMenu player Lnet/minecraft/world/entity/player/Player;
@@ -42,6 +41,9 @@ accessible method net/minecraft/world/entity/LivingEntity getDamageAfterArmorAbs
 
 # EnderMan
 accessible class net/minecraft/world/entity/monster/EnderMan$EndermanLeaveBlockGoal
+
+# CreativeModeTab
+transitive-accessible class net/minecraft/world/item/CreativeModeTab$TabVisibility
 
 # SimpleParticleType
 transitive-accessible method net/minecraft/core/particles/SimpleParticleType <init> (Z)V
