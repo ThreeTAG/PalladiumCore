@@ -63,7 +63,7 @@ public abstract class MinecraftMixin {
             ordinal = 0,
             shift = At.Shift.BY, by = -1),
             method = "setScreen", cancellable = true)
-    private void setScreen(@javax.annotation.Nullable Screen pGuiScreen, CallbackInfo ci) {
+    private void setScreen(@Nullable Screen pGuiScreen, CallbackInfo ci) {
         AtomicReference<Screen> newScreen = new AtomicReference<>(pGuiScreen);
 
         if (ScreenEvents.OPENING.invoker().screenOpening(this.screen, newScreen).cancelsEvent()) {

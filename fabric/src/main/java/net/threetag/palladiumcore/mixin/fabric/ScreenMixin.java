@@ -12,9 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Screen.class)
 public class ScreenMixin {
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;rebuildWidgets()V", ordinal = 0),
-            method = "init(Lnet/minecraft/client/Minecraft;II)V", cancellable = true)
-    private void initPre(Minecraft pMinecraft, int pWidth, int pHeight, CallbackInfo ci) {
+    @Inject(method = "rebuildWidgets", at = @At(value = "HEAD"), cancellable = true)
+    private void rebuildWidgets(CallbackInfo ci) {
         if (ScreenEvents.INIT_PRE.invoker().screenInitPre((Screen) (Object) this).cancelsEvent()) {
             ci.cancel();
         }

@@ -38,13 +38,13 @@ public class ParticleProviderRegistryImpl {
         for (Map.Entry<Supplier<ParticleType<?>>, ParticleProvider<?>> entry : PROVIDERS.entrySet()) {
             ParticleType type = entry.getKey().get();
             ParticleProvider provider = entry.getValue();
-            e.register(type, provider);
+            e.registerSpecial(type, provider);
         }
 
         for (Map.Entry<Supplier<ParticleType<?>>, ParticleEngine.SpriteParticleRegistration<?>> entry : SPRITES.entrySet()) {
             ParticleType type = entry.getKey().get();
             ParticleEngine.SpriteParticleRegistration provider = entry.getValue();
-            e.register(type, provider);
+            e.registerSpriteSet(type, provider);
         }
     }
 
