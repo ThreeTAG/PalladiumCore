@@ -44,7 +44,7 @@ public class PalladiumCoreForge {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void event(FMLClientSetupEvent event) {
-        LifecycleEvents.CLIENT_SETUP.invoker().run();
+        event.enqueueWork(() -> LifecycleEvents.CLIENT_SETUP.invoker().run());
     }
 
     public static void registerModEventBus(String modId, IEventBus bus) {
