@@ -27,16 +27,16 @@ public class EndermanLeaveBlockGoalMixin {
             cancellable = true)
     public void tick(CallbackInfo ci) {
         RandomSource randomsource = this.enderman.getRandom();
-        Level level = this.enderman.level;
+        Level level = this.enderman.level();
         int i = Mth.floor(this.enderman.getX() - 1.0D + randomsource.nextDouble() * 2.0D);
         int j = Mth.floor(this.enderman.getY() + randomsource.nextDouble() * 2.0D);
         int k = Mth.floor(this.enderman.getZ() - 1.0D + randomsource.nextDouble() * 2.0D);
         BlockPos blockpos = new BlockPos(i, j, k);
         BlockPos placedPos = blockpos.below();
         BlockState placedBlock = level.getBlockState(placedPos);
-        BlockState placedAgainst = this.enderman.level.getBlockState(placedPos.relative(Direction.DOWN));
+        BlockState placedAgainst = this.enderman.level().getBlockState(placedPos.relative(Direction.DOWN));
 
-        if (BlockEvents.PLACE.invoker().placeBlock(this.enderman.level, placedPos, placedBlock, placedAgainst, this.enderman).cancelsEvent()) {
+        if (BlockEvents.PLACE.invoker().placeBlock(this.enderman.level(), placedPos, placedBlock, placedAgainst, this.enderman).cancelsEvent()) {
             ci.cancel();
         }
     }

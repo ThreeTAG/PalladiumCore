@@ -13,12 +13,12 @@ import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 public class OverlayRegistryImpl {
 
     public static void registerOverlay(String id, OverlayRegistry.IIngameOverlay overlay) {
-        HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
+        HudRenderCallback.EVENT.register((guiGraphics, tickDelta) -> {
             try {
                 Minecraft mc = Minecraft.getInstance();
                 Gui gui = mc.gui;
                 Window window = mc.getWindow();
-                overlay.render(mc, gui, matrixStack, tickDelta, window.getGuiScaledWidth(), window.getGuiScaledHeight());
+                overlay.render(mc, gui, guiGraphics, tickDelta, window.getGuiScaledWidth(), window.getGuiScaledHeight());
             } catch (Exception e) {
                 PalladiumCore.LOGGER.error("Error rendering overlay '{}'", id, e);
             }

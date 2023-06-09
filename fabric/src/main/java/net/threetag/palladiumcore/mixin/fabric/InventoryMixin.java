@@ -23,7 +23,7 @@ public class InventoryMixin {
     private void tick(CallbackInfo ci) {
         this.armor.forEach(stack -> {
             if(stack.getItem() instanceof IPalladiumItem palladiumItem) {
-                palladiumItem.armorTick(stack, this.player.level, this.player);
+                palladiumItem.armorTick(stack, this.player.level(), this.player);
             }
         });
     }

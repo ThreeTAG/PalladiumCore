@@ -15,7 +15,7 @@ import java.util.List;
 @Mixin(LightningBolt.class)
 public class LightningBoltMixin {
 
-    @Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/level/Level;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;", ordinal = 1, shift = At.Shift.AFTER), method = "tick", locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/level/Level;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;", ordinal = 1, shift = At.Shift.BY, by = 1), locals = LocalCapture.CAPTURE_FAILHARD)
     private void tick(CallbackInfo ci, List<Entity> list) {
         EntityEvents.LIGHTNING_STRIKE.invoker().lightningStrike(list, (LightningBolt) (Object) this);
     }

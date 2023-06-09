@@ -1,6 +1,7 @@
 package net.threetag.palladiumcore.registry;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -12,15 +13,19 @@ import java.util.function.Supplier;
 
 public class CreativeModeTabRegistry {
 
+    @ExpectPlatform
+    public static CreativeModeTab create(Component title, Supplier<ItemStack> icon) {
+        throw new AssertionError();
+    }
+
     /**
      * Creates a {@link CreativeModeTab}
      *
-     * @param id              ID for the tab, the translation key will consist out of "namespace"."path"
      * @param builderConsumer {@link Consumer} which allows for modifications on the tab builder
      * @return A new {@link Supplier} which will return a new {@link CreativeModeTab}
      */
     @ExpectPlatform
-    public static Supplier<CreativeModeTab> create(ResourceLocation id, Consumer<CreativeModeTab.Builder> builderConsumer) {
+    public static Supplier<CreativeModeTab> create(Consumer<CreativeModeTab.Builder> builderConsumer) {
         throw new AssertionError();
     }
 

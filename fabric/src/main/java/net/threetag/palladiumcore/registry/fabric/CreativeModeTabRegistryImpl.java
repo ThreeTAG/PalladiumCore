@@ -3,9 +3,9 @@ package net.threetag.palladiumcore.registry.fabric;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
@@ -17,37 +17,19 @@ import java.util.function.Supplier;
 
 public class CreativeModeTabRegistryImpl {
 
-    public static Supplier<CreativeModeTab> create(ResourceLocation id, Consumer<CreativeModeTab.Builder> builderConsumer) {
-        CreativeModeTab.Builder builder = FabricItemGroup.builder(id);
+    public static CreativeModeTab create(Component title, Supplier<ItemStack> icon) {
+        return FabricItemGroup.builder().title(title).icon(icon).build();
+    }
+
+    public static CreativeModeTab create(Consumer<CreativeModeTab.Builder> builderConsumer) {
+        CreativeModeTab.Builder builder = FabricItemGroup.builder();
         builderConsumer.accept(builder);
-        var tab = builder.build();
-        return () -> tab;
+        return builder.build();
     }
 
     public static void addToTab(Supplier<CreativeModeTab> tab, Consumer<CreativeModeTabRegistry.ItemGroupEntries> entriesConsumer) {
-        ItemGroupEvents.modifyEntriesEvent(tab.get()).register(entries -> entriesConsumer.accept(new ItemGroupEntriesWrapper(entries)));
-    }
-
-    public static CreativeModeTab getTabByName(ResourceLocation id) {
-        // some IDs differ between Forge & Fabric
-        if (id.toString().equals("minecraft:natural_blocks")) {
-            return CreativeModeTabs.NATURAL_BLOCKS;
-        } else if (id.toString().equals("minecraft:functional_blocks")) {
-            return CreativeModeTabs.FUNCTIONAL_BLOCKS;
-        } else if (id.toString().equals("minecraft:redstone_blocks")) {
-            return CreativeModeTabs.REDSTONE_BLOCKS;
-        } else if (id.toString().equals("minecraft:tools_and_utilities")) {
-            return CreativeModeTabs.TOOLS_AND_UTILITIES;
-        } else if (id.toString().equals("minecraft:food_and_drinks")) {
-            return CreativeModeTabs.FOOD_AND_DRINKS;
-        }
-
-        for (CreativeModeTab tab : CreativeModeTabs.allTabs()) {
-            if (tab.getId().equals(id)) {
-                return tab;
-            }
-        }
-        return null;
+        var key = BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(tab.get());
+        key.ifPresent(creativeModeTabResourceKey -> ItemGroupEvents.modifyEntriesEvent(creativeModeTabResourceKey).register(entries -> entriesConsumer.accept(new ItemGroupEntriesWrapper(entries))));
     }
 
     @SuppressWarnings("UnstableApiUsage")

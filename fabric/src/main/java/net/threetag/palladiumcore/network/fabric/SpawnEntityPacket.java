@@ -21,11 +21,11 @@ public class SpawnEntityPacket {
     private static final ResourceLocation PACKET_ID = PalladiumCore.id("spawn_entity_packet");
 
     public static Packet<?> create(Entity entity) {
-        if (entity.level.isClientSide()) {
+        if (entity.level().isClientSide()) {
             throw new IllegalStateException("SpawnPacketUtil.create called on the logical client!");
         }
         var buffer = PacketByteBufs.create();
-        buffer.writeVarInt(BuiltInRegistries.ENTITY_TYPE.getId(entity.getType()));
+        buffer.writeResourceLocation(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()));
         buffer.writeUUID(entity.getUUID());
         buffer.writeVarInt(entity.getId());
         var position = entity.position();
@@ -55,7 +55,7 @@ public class SpawnEntityPacket {
         }
 
         public static void receive(FriendlyByteBuf buf, Consumer<Runnable> consumer) {
-            var entityTypeId = buf.readVarInt();
+            var entityTypeId = buf.readResourceLocation();
             var uuid = buf.readUUID();
             var id = buf.readVarInt();
             var x = buf.readDouble();
@@ -69,13 +69,13 @@ public class SpawnEntityPacket {
             var deltaZ = buf.readDouble();
             buf.retain();
             consumer.accept(() -> {
-                var entityType = BuiltInRegistries.ENTITY_TYPE.byId(entityTypeId);
-                if (entityType == null) {
+                if (!BuiltInRegistries.ENTITY_TYPE.containsKey(entityTypeId)) {
                     throw new IllegalStateException("Entity type (" + entityTypeId + ") is unknown, spawning at (" + x + ", " + y + ", " + z + ")");
                 }
                 if (Minecraft.getInstance().level == null) {
                     throw new IllegalStateException("Client world is null!");
                 }
+                var entityType = BuiltInRegistries.ENTITY_TYPE.get(entityTypeId);
                 var entity = entityType.create(Minecraft.getInstance().level);
                 if (entity == null) {
                     throw new IllegalStateException("Created entity is null!");

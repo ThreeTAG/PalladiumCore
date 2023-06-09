@@ -2,74 +2,42 @@ package net.threetag.palladiumcore.registry.forge;
 
 import com.google.common.collect.Lists;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.threetag.palladiumcore.PalladiumCore;
 import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CreativeModeTabRegistryImpl {
 
-    private static final Map<TabSupplier, Consumer<CreativeModeTab.Builder>> TABS = new HashMap<>();
     private static final Map<Supplier<CreativeModeTab>, Consumer<CreativeModeTabRegistry.ItemGroupEntries>> TAB_MODIFICATIONS = new HashMap<>();
 
-    public static Supplier<CreativeModeTab> create(ResourceLocation id, Consumer<CreativeModeTab.Builder> builderConsumer) {
-        var supplier = new TabSupplier(id);
-        TABS.put(supplier, builderConsumer);
-        return supplier;
+    public static CreativeModeTab create(Component title, Supplier<ItemStack> icon) {
+        return CreativeModeTab.builder().title(title).icon(icon).build();
+    }
+
+    public static CreativeModeTab create(Consumer<CreativeModeTab.Builder> builderConsumer) {
+        var builder = CreativeModeTab.builder();
+        builderConsumer.accept(builder);
+        return builder.build();
     }
 
     public static void addToTab(Supplier<CreativeModeTab> tab, Consumer<CreativeModeTabRegistry.ItemGroupEntries> entriesConsumer) {
         TAB_MODIFICATIONS.put(tab, entriesConsumer);
     }
 
-    public static CreativeModeTab getTabByName(ResourceLocation id) {
-        // some IDs differ between Forge & Fabric
-        if (id.toString().equals("minecraft:natural")) {
-            return CreativeModeTabs.NATURAL_BLOCKS;
-        } else if (id.toString().equals("minecraft:functional")) {
-            return CreativeModeTabs.FUNCTIONAL_BLOCKS;
-        } else if (id.toString().equals("minecraft:redstone")) {
-            return CreativeModeTabs.REDSTONE_BLOCKS;
-        } else if (id.toString().equals("minecraft:tools")) {
-            return CreativeModeTabs.TOOLS_AND_UTILITIES;
-        } else if (id.toString().equals("minecraft:food_and_drink")) {
-            return CreativeModeTabs.FOOD_AND_DRINKS;
-        } else if (id.toString().equals("minecraft:hotbar")) {
-            return CreativeModeTabs.HOTBAR;
-        } else if (id.toString().equals("minecraft:search")) {
-            return CreativeModeTabs.SEARCH;
-        } else if (id.toString().equals("minecraft:op")) {
-            return CreativeModeTabs.OP_BLOCKS;
-        } else if (id.toString().equals("minecraft:inventory")) {
-            return CreativeModeTabs.INVENTORY;
-        }
-
-        return net.minecraftforge.common.CreativeModeTabRegistry.getTab(id);
-    }
-
     @SubscribeEvent
-    public static void buildContents(CreativeModeTabEvent.Register e) {
-        for (Map.Entry<TabSupplier, Consumer<CreativeModeTab.Builder>> entry : TABS.entrySet()) {
-            entry.getKey().tab = e.registerCreativeModeTab(entry.getKey().id, builder -> {
-                builder.title(Component.translatable("itemGroup.%s.%s".formatted(entry.getKey().id.getNamespace(), entry.getKey().id.getPath())));
-                entry.getValue().accept(builder);
-            });
-        }
-    }
-
-    @SubscribeEvent
-    public static void buildContents(CreativeModeTabEvent.BuildContents e) {
+    public static void buildContents(BuildCreativeModeTabContentsEvent e) {
         for (Map.Entry<Supplier<CreativeModeTab>, Consumer<CreativeModeTabRegistry.ItemGroupEntries>> entry : TAB_MODIFICATIONS.entrySet()) {
             if (entry.getKey().get() == e.getTab()) {
                 entry.getValue().accept(new ItemGroupEntriesWrapper(e));
@@ -77,24 +45,8 @@ public class CreativeModeTabRegistryImpl {
         }
     }
 
-    public static class TabSupplier implements Supplier<CreativeModeTab> {
-
-        private final ResourceLocation id;
-        private CreativeModeTab tab;
-
-        public TabSupplier(ResourceLocation id) {
-            this.id = id;
-        }
-
-        @Override
-        public CreativeModeTab get() {
-            Objects.requireNonNull(this.tab, () -> "Creative mode tab not present: " + this.id);
-            return this.tab;
-        }
-    }
-
     private record ItemGroupEntriesWrapper(
-            CreativeModeTabEvent.BuildContents e) implements CreativeModeTabRegistry.ItemGroupEntries {
+            BuildCreativeModeTabContentsEvent e) implements CreativeModeTabRegistry.ItemGroupEntries {
 
         public ItemStack findLast(ItemLike itemLike) {
             ItemStack stack = null;
