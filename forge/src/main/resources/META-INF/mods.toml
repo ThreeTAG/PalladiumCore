@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[43,)"
+loaderVersion = "[46,)"
 issueTrackerURL = "https://github.com/ThreeTAG/PalladiumCore/issues"
 license = "MIT License"
 
@@ -20,13 +20,13 @@ catalogueImageIcon = "palladiumcore_icon.png"
 [[dependencies.palladiumcore]]
 modId = "forge"
 mandatory = true
-versionRange = "[43,)"
+versionRange = "[46,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.palladiumcore]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,)"
+versionRange = "[1.20,)"
 ordering = "NONE"
 side = "BOTH"
