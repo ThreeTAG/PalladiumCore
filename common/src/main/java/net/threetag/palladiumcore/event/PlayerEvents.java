@@ -5,8 +5,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,6 +53,15 @@ public interface PlayerEvents {
     });
 
     /**
+     * @see Clone#playerClone(Player, Player, boolean)
+     */
+    Event<Clone> CLONE = new Event<>(Clone.class, listeners -> (o, n, d) -> {
+        for (Clone listener : listeners) {
+            listener.playerClone(o, n, d);
+        }
+    });
+
+    /**
      * @see Respawn#playerRespawn(Player, boolean)
      */
     Event<Respawn> RESPAWN = new Event<>(Respawn.class, listeners -> (p, e) -> {
@@ -62,7 +71,7 @@ public interface PlayerEvents {
     });
 
     /**
-     * @see ChangedDimension#playerChangedDimension(Player, ResourceKey) 
+     * @see ChangedDimension#playerChangedDimension(Player, ResourceKey)
      */
     Event<ChangedDimension> CHANGED_DIMENSION = new Event<>(ChangedDimension.class, listeners -> (p, t) -> {
         for (ChangedDimension listener : listeners) {
@@ -118,6 +127,20 @@ public interface PlayerEvents {
     }
 
     @FunctionalInterface
+    interface Clone {
+
+        /**
+         * Fired when the player has respawned
+         *
+         * @param oldPlayer Original, dead player
+         * @param newPlayer Newly created player
+         * @param wasDeath  True if the player was cloned due to death
+         */
+        void playerClone(Player oldPlayer, Player newPlayer, boolean wasDeath);
+
+    }
+
+    @FunctionalInterface
     interface Respawn {
 
         /**
@@ -136,7 +159,7 @@ public interface PlayerEvents {
         /**
          * Fired when the player changed dimensions
          *
-         * @param player The player that has respawned
+         * @param player      The player that has respawned
          * @param destination Resource key of the destination dimension
          */
         void playerChangedDimension(Player player, ResourceKey<Level> destination);

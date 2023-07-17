@@ -37,6 +37,11 @@ public class PalladiumCoreEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void playerClone(PlayerEvent.Clone e) {
+        PlayerEvents.CLONE.invoker().playerClone(e.getOriginal(), e.getEntity(), e.isWasDeath());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public static void playerRespawn(PlayerEvent.PlayerRespawnEvent e) {
         PlayerEvents.RESPAWN.invoker().playerRespawn(e.getEntity(), e.isEndConquered());
     }
