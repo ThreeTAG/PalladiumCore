@@ -1,12 +1,11 @@
 package net.threetag.palladiumcore.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class Message {
 
-    @Nonnull
+    @NotNull
     public abstract MessageType getType();
 
     public abstract void toBytes(FriendlyByteBuf buf);

@@ -2,8 +2,8 @@ package net.threetag.palladiumcore.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicReference;
 
 public interface ScreenEvents {

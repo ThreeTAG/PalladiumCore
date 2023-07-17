@@ -2,8 +2,8 @@ package net.threetag.palladiumcore.util;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.server.MinecraftServer;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.Collection;
 
