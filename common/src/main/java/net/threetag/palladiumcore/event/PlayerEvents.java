@@ -1,5 +1,6 @@
 package net.threetag.palladiumcore.event;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -76,6 +77,15 @@ public interface PlayerEvents {
     Event<ChangedDimension> CHANGED_DIMENSION = new Event<>(ChangedDimension.class, listeners -> (p, t) -> {
         for (ChangedDimension listener : listeners) {
             listener.playerChangedDimension(p, t);
+        }
+    });
+
+    /**
+     * @see Respawn#playerRespawn(Player, boolean)
+     */
+    Event<NameFormat> NAME_FORMAT = new Event<>(NameFormat.class, listeners -> (p, u, d) -> {
+        for (NameFormat listener : listeners) {
+            listener.playerNameFormat(p, u, d);
         }
     });
 
@@ -163,6 +173,20 @@ public interface PlayerEvents {
          * @param destination Resource key of the destination dimension
          */
         void playerChangedDimension(Player player, ResourceKey<Level> destination);
+
+    }
+
+    @FunctionalInterface
+    interface NameFormat {
+
+        /**
+         * Used for changing a player's display name. Use {@link net.threetag.palladiumcore.util.PlayerUtil#refreshDisplayName(Player)} to refresh the player's name upon change
+         *
+         * @param player      The player whose name is changed
+         * @param username    Username of the player
+         * @param displayName Current display name of the player
+         */
+        void playerNameFormat(Player player, Component username, AtomicReference<Component> displayName);
 
     }
 
