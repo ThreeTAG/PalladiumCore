@@ -104,10 +104,12 @@ public class PalladiumCoreClientEventHandler {
 
         var event = ViewportEvents.RENDER_FOG.invoker().renderFog(e.getRenderer(), e.getCamera(), e.getPartialTick(), e.getMode(), e.getType(), fpd, npd, shape);
 
+        e.setNearPlaneDistance(npd.get());
+        e.setFarPlaneDistance(fpd.get());
+        e.setFogShape(shape.get());
+
         if (event.cancelsEvent()) {
-            e.setNearPlaneDistance(npd.get());
-            e.setFarPlaneDistance(fpd.get());
-            e.setFogShape(shape.get());
+            e.setCanceled(true);
         }
     }
 
