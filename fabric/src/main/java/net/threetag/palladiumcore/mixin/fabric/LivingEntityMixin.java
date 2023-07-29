@@ -152,7 +152,7 @@ public abstract class LivingEntityMixin {
     @Inject(method = "getEquipmentSlotForItem", at = @At("HEAD"), cancellable = true)
     private static void getEquipmentSlotForItem(ItemStack item, CallbackInfoReturnable<EquipmentSlot> ci) {
         if (item.getItem() instanceof IPalladiumItem palladiumItem) {
-            var slot = palladiumItem.getEquipmentSlot(item);
+            var slot = palladiumItem.getSlotForItem(item);
 
             if (slot != null) {
                 ci.setReturnValue(slot);
