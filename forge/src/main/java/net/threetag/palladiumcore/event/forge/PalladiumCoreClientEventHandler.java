@@ -35,6 +35,13 @@ public class PalladiumCoreClientEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void screenInitPost(InputEvent.MouseScrollingEvent e) {
+        if (InputEvents.MOUSE_SCROLLING.invoker().mouseScrolling(Minecraft.getInstance(), e.getScrollDelta(), e.isLeftDown(), e.isMiddleDown(), e.isRightDown(), e.getMouseX(), e.getMouseY()).cancelsEvent()) {
+            e.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public static void screenInitPost(MovementInputUpdateEvent e) {
         InputEvents.MOVEMENT_INPUT_UPDATE.invoker().movementInputUpdate(e.getEntity(), e.getInput());
     }
@@ -104,10 +111,12 @@ public class PalladiumCoreClientEventHandler {
 
         var event = ViewportEvents.RENDER_FOG.invoker().renderFog(e.getRenderer(), e.getCamera(), e.getPartialTick(), e.getMode(), e.getType(), fpd, npd, shape);
 
+        e.setNearPlaneDistance(npd.get());
+        e.setFarPlaneDistance(fpd.get());
+        e.setFogShape(shape.get());
+
         if (event.cancelsEvent()) {
-            e.setNearPlaneDistance(npd.get());
-            e.setFarPlaneDistance(fpd.get());
-            e.setFogShape(shape.get());
+            e.setCanceled(true);
         }
     }
 

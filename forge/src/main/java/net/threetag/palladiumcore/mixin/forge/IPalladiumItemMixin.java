@@ -22,6 +22,6 @@ public interface IPalladiumItemMixin extends IForgeItem {
     @Nullable
     default EquipmentSlot getEquipmentSlot(ItemStack stack) {
         IPalladiumItem item = (IPalladiumItem) this;
-        return item.getEquipmentSlot(stack);
+        return item.getSlotForItem(stack);
     }
 }

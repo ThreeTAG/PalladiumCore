@@ -38,4 +38,9 @@ public class ServerPlayerMixin {
         PlayerEvents.CHANGED_DIMENSION.invoker().playerChangedDimension((ServerPlayer) (Object) this, destination.dimension());
     }
 
+    @Inject(at = @At("TAIL"), method = "restoreFrom")
+    private void restoreFrom(ServerPlayer that, boolean keepEverything, CallbackInfo ci) {
+        PlayerEvents.CLONE.invoker().playerClone(that, (ServerPlayer) (Object) this, !keepEverything);
+    }
+
 }

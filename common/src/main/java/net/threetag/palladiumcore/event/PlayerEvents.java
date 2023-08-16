@@ -1,5 +1,6 @@
 package net.threetag.palladiumcore.event;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -53,6 +54,15 @@ public interface PlayerEvents {
     });
 
     /**
+     * @see Clone#playerClone(Player, Player, boolean)
+     */
+    Event<Clone> CLONE = new Event<>(Clone.class, listeners -> (o, n, d) -> {
+        for (Clone listener : listeners) {
+            listener.playerClone(o, n, d);
+        }
+    });
+
+    /**
      * @see Respawn#playerRespawn(Player, boolean)
      */
     Event<Respawn> RESPAWN = new Event<>(Respawn.class, listeners -> (p, e) -> {
@@ -62,11 +72,20 @@ public interface PlayerEvents {
     });
 
     /**
-     * @see ChangedDimension#playerChangedDimension(Player, ResourceKey) 
+     * @see ChangedDimension#playerChangedDimension(Player, ResourceKey)
      */
     Event<ChangedDimension> CHANGED_DIMENSION = new Event<>(ChangedDimension.class, listeners -> (p, t) -> {
         for (ChangedDimension listener : listeners) {
             listener.playerChangedDimension(p, t);
+        }
+    });
+
+    /**
+     * @see Respawn#playerRespawn(Player, boolean)
+     */
+    Event<NameFormat> NAME_FORMAT = new Event<>(NameFormat.class, listeners -> (p, u, d) -> {
+        for (NameFormat listener : listeners) {
+            listener.playerNameFormat(p, u, d);
         }
     });
 
@@ -118,6 +137,20 @@ public interface PlayerEvents {
     }
 
     @FunctionalInterface
+    interface Clone {
+
+        /**
+         * Fired when the player has respawned
+         *
+         * @param oldPlayer Original, dead player
+         * @param newPlayer Newly created player
+         * @param wasDeath  True if the player was cloned due to death
+         */
+        void playerClone(Player oldPlayer, Player newPlayer, boolean wasDeath);
+
+    }
+
+    @FunctionalInterface
     interface Respawn {
 
         /**
@@ -136,10 +169,24 @@ public interface PlayerEvents {
         /**
          * Fired when the player changed dimensions
          *
-         * @param player The player that has respawned
+         * @param player      The player that has respawned
          * @param destination Resource key of the destination dimension
          */
         void playerChangedDimension(Player player, ResourceKey<Level> destination);
+
+    }
+
+    @FunctionalInterface
+    interface NameFormat {
+
+        /**
+         * Used for changing a player's display name. Use {@link net.threetag.palladiumcore.util.PlayerUtil#refreshDisplayName(Player)} to refresh the player's name upon change
+         *
+         * @param player      The player whose name is changed
+         * @param username    Username of the player
+         * @param displayName Current display name of the player
+         */
+        void playerNameFormat(Player player, Component username, AtomicReference<Component> displayName);
 
     }
 

@@ -1,5 +1,6 @@
 package net.threetag.palladiumcore.event.forge;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
@@ -37,6 +38,11 @@ public class PalladiumCoreEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void playerClone(PlayerEvent.Clone e) {
+        PlayerEvents.CLONE.invoker().playerClone(e.getOriginal(), e.getEntity(), e.isWasDeath());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public static void playerRespawn(PlayerEvent.PlayerRespawnEvent e) {
         PlayerEvents.RESPAWN.invoker().playerRespawn(e.getEntity(), e.isEndConquered());
     }
@@ -44,6 +50,13 @@ public class PalladiumCoreEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void playerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent e) {
         PlayerEvents.CHANGED_DIMENSION.invoker().playerChangedDimension(e.getEntity(), e.getTo());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void playerChangedDimension(PlayerEvent.NameFormat e) {
+        AtomicReference<Component> name = new AtomicReference<>(e.getDisplayname());
+        PlayerEvents.NAME_FORMAT.invoker().playerNameFormat(e.getEntity(), e.getUsername(), name);
+        e.setDisplayname(name.get());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

@@ -19,7 +19,7 @@ public interface IPalladiumItem {
      * @param stack     Worn ItemStack
      * @return The armor slot the item can be worn in
      */
-    default EquipmentSlot getEquipmentSlot(ItemStack stack) {
+    default EquipmentSlot getSlotForItem(ItemStack stack) {
         return null;
     }
 
