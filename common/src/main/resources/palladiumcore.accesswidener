@@ -17,7 +17,7 @@ transitive-accessible method net/minecraft/client/renderer/RenderType create (Lj
 
 # Screen
 transitive-accessible method net/minecraft/client/gui/screens/Screen addRenderableWidget (Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;
-transitive-accessible method net/minecraft/client/gui/screens/Screen addRenderableOnly (Lnet/minecraft/client/gui/components/Widget;)Lnet/minecraft/client/gui/components/Widget;
+transitive-accessible method net/minecraft/client/gui/screens/Screen addRenderableOnly (Lnet/minecraft/client/gui/components/Renderable;)Lnet/minecraft/client/gui/components/Renderable;
 transitive-accessible method net/minecraft/client/gui/screens/Screen addWidget (Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen leftPos I
 transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen topPos I
@@ -45,20 +45,6 @@ accessible class net/minecraft/world/entity/monster/EnderMan$EndermanLeaveBlockG
 # CreativeModeTab
 transitive-accessible class net/minecraft/world/item/CreativeModeTab$TabVisibility
 transitive-accessible class net/minecraft/world/item/CreativeModeTab$Output
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs BUILDING_BLOCKS Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs COLORED_BLOCKS Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs NATURAL_BLOCKS Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs FUNCTIONAL_BLOCKS Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs REDSTONE_BLOCKS Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs HOTBAR Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs SEARCH Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs TOOLS_AND_UTILITIES Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs COMBAT Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs FOOD_AND_DRINKS Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs INGREDIENTS Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs SPAWN_EGGS Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs OP_BLOCKS Lnet/minecraft/world/item/CreativeModeTab;
-transitive-accessible field net/minecraft/world/item/CreativeModeTabs INVENTORY Lnet/minecraft/world/item/CreativeModeTab;
 
 # SimpleParticleType
 transitive-accessible method net/minecraft/core/particles/SimpleParticleType <init> (Z)V
