@@ -1,12 +1,12 @@
 package net.threetag.palladiumcore.registry;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -51,13 +51,13 @@ public class CreativeModeTabRegistry {
     }
 
     /**
-     * @param id ID of the tab that is searched for
-     * @return The wanted {@link CreativeModeTab}, or null if not found
+     * Allows to add items to existing creative mode tabs
+     *
+     * @param tab             The resource key of the tab you want to add to
+     * @param entriesConsumer {@link Consumer} which allows for modifications to the tab
      */
-    @ExpectPlatform
-    @Nullable
-    public static CreativeModeTab getTabByName(ResourceLocation id) {
-        throw new AssertionError();
+    public static void addToTab(ResourceKey<CreativeModeTab> tab, Consumer<ItemGroupEntries> entriesConsumer) {
+        addToTab(() -> BuiltInRegistries.CREATIVE_MODE_TAB.get(tab), entriesConsumer);
     }
 
     public interface ItemGroupEntries {
