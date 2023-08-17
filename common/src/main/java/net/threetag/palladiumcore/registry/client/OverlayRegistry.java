@@ -11,11 +11,11 @@ import net.minecraft.client.gui.GuiGraphics;
 public class OverlayRegistry {
 
     @ExpectPlatform
-    public static void registerOverlay(String id, IIngameOverlay overlay) {
+    public static void registerOverlay(String id, IngameOverlay overlay) {
         throw new AssertionError();
     }
 
-    public interface IIngameOverlay {
+    public interface IngameOverlay {
 
         void render(Minecraft minecraft, Gui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height);
 

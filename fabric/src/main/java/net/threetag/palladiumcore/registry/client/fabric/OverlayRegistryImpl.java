@@ -12,7 +12,7 @@ import net.threetag.palladiumcore.registry.client.OverlayRegistry;
 @Environment(EnvType.CLIENT)
 public class OverlayRegistryImpl {
 
-    public static void registerOverlay(String id, OverlayRegistry.IIngameOverlay overlay) {
+    public static void registerOverlay(String id, OverlayRegistry.IngameOverlay overlay) {
         HudRenderCallback.EVENT.register((guiGraphics, tickDelta) -> {
             try {
                 Minecraft mc = Minecraft.getInstance();

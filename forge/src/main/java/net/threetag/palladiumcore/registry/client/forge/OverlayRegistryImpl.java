@@ -16,9 +16,9 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = PalladiumCore.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class OverlayRegistryImpl {
 
-    private static final Map<String, OverlayRegistry.IIngameOverlay> OVERLAYS = new HashMap<>();
+    private static final Map<String, OverlayRegistry.IngameOverlay> OVERLAYS = new HashMap<>();
 
-    public static void registerOverlay(String id, OverlayRegistry.IIngameOverlay overlay) {
+    public static void registerOverlay(String id, OverlayRegistry.IngameOverlay overlay) {
         OVERLAYS.put(id, overlay);
     }
 

@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
-import net.threetag.palladiumcore.item.IPalladiumItem;
+import net.threetag.palladiumcore.item.PalladiumItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -151,7 +151,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "getEquipmentSlotForItem", at = @At("HEAD"), cancellable = true)
     private static void getEquipmentSlotForItem(ItemStack item, CallbackInfoReturnable<EquipmentSlot> ci) {
-        if (item.getItem() instanceof IPalladiumItem palladiumItem) {
+        if (item.getItem() instanceof PalladiumItem palladiumItem) {
             var slot = palladiumItem.getSlotForItem(item);
 
             if (slot != null) {

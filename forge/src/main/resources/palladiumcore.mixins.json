@@ -7,7 +7,7 @@
   ],
   "mixins": [
     "ExtendedEntitySpawnDataMixin",
-    "IPalladiumItemMixin"
+    "PalladiumItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
