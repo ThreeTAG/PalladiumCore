@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladiumcore.PalladiumCore;
@@ -20,7 +21,7 @@ public class SpawnEntityPacket {
 
     private static final ResourceLocation PACKET_ID = PalladiumCore.id("spawn_entity_packet");
 
-    public static Packet<?> create(Entity entity) {
+    public static Packet<ClientGamePacketListener> create(Entity entity) {
         if (entity.level().isClientSide()) {
             throw new IllegalStateException("SpawnPacketUtil.create called on the logical client!");
         }
