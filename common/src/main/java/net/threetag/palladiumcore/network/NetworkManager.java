@@ -3,6 +3,7 @@ package net.threetag.palladiumcore.network;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -99,7 +100,7 @@ public abstract class NetworkManager {
     }
 
     @ExpectPlatform
-    public static Packet<?> createAddEntityPacket(Entity entity) {
+    public static Packet<ClientGamePacketListener> createAddEntityPacket(Entity entity) {
         throw new AssertionError();
     }
 
