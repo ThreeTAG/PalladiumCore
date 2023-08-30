@@ -25,7 +25,7 @@ public class CreativeModeTabRegistry {
      * @return A new {@link Supplier} which will return a new {@link CreativeModeTab}
      */
     @ExpectPlatform
-    public static Supplier<CreativeModeTab> create(Consumer<CreativeModeTab.Builder> builderConsumer) {
+    public static CreativeModeTab create(Consumer<CreativeModeTab.Builder> builderConsumer) {
         throw new AssertionError();
     }
 
