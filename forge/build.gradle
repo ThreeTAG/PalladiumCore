@@ -28,7 +28,7 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    forge "net.neoforged:forge:${rootProject.forge_version}"
 
     modCompileOnly "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
