@@ -10,7 +10,8 @@ import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.threetag.palladiumcore.PalladiumCore;
 import net.threetag.palladiumcore.event.CommandEvents;
 import net.threetag.palladiumcore.event.LifecycleEvents;
-import net.threetag.palladiumcore.item.fabric.PalladiumRecordItemImpl;
+import net.threetag.palladiumcore.item.PalladiumRecordItem;
+import net.threetag.palladiumcore.item.PalladiumSpawnEggItem;
 import net.threetag.palladiumcore.registry.DeferredRegister;
 import net.threetag.palladiumcore.registry.RegistrySupplier;
 import net.threetag.palladiumcore.registry.fabric.EntityAttributeRegistryImpl;
@@ -26,6 +27,8 @@ public class PalladiumCoreFabric implements ModInitializer {
     }
 
     private void events() {
+        PalladiumSpawnEggItem.setupEvents();
+
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> CommandEvents.REGISTER.invoker().register(dispatcher, environment));
 
         ServerLifecycleEvents.SERVER_STARTING.register(server -> LifecycleEvents.SERVER_ABOUT_TO_START.invoker().server(server));
@@ -33,11 +36,9 @@ public class PalladiumCoreFabric implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> LifecycleEvents.SERVER_STOPPING.invoker().server(server));
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> LifecycleEvents.SERVER_STOPPED.invoker().server(server));
 
-
-
         LifecycleEvents.SETUP.register(() -> {
             EntityAttributeRegistryImpl.modifyAttributes();
-            PalladiumRecordItemImpl.setupEvents();
+            PalladiumRecordItem.registerRecords();
 
             for (RegistrySupplier<PoiType> supplier : DeferredRegister.POI_TYPES_TO_FIX) {
                 var key = ResourceKey.create(Registry.POINT_OF_INTEREST_TYPE_REGISTRY, supplier.getId());

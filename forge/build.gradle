@@ -50,6 +50,11 @@ shadowJar {
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
+
+    exclude "net/threetag/palladiumcore/item/PalladiumBucketItem.class"
+    exclude "net/threetag/palladiumcore/item/PalladiumRecordItem.class"
+    exclude "net/threetag/palladiumcore/item/PalladiumSpawnEggItem.class"
+    relocate "net.threetag.palladiumcore.item.forge.replacement", "net.threetag.palladiumcore.item"
 }
 
 remapJar {
