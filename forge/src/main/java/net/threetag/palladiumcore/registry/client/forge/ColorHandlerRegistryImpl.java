@@ -34,10 +34,6 @@ public class ColorHandlerRegistryImpl {
 
     @SubscribeEvent
     public static void itemColors(RegisterColorHandlersEvent.Item e) {
-        for (PalladiumSpawnEggItem egg : PalladiumSpawnEggItem.MOD_EGGS) {
-            e.register((stack, layer) -> egg.getColor(layer), egg);
-        }
-
         for (Pair<ItemColor, Supplier<? extends ItemLike>[]> pair : ITEM_COLORS) {
             ItemLike[] items1 = new ItemLike[pair.getRight().length];
             for (int i = 0; i < pair.getRight().length; i++) {
