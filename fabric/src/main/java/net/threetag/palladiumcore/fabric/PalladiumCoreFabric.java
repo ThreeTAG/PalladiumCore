@@ -3,11 +3,13 @@ package net.threetag.palladiumcore.fabric;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.threetag.palladiumcore.PalladiumCore;
+import net.threetag.palladiumcore.event.ChatEvents;
 import net.threetag.palladiumcore.event.CommandEvents;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.item.PalladiumRecordItem;
@@ -35,6 +37,8 @@ public class PalladiumCoreFabric implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> LifecycleEvents.SERVER_STARTED.invoker().server(server));
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> LifecycleEvents.SERVER_STOPPING.invoker().server(server));
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> LifecycleEvents.SERVER_STOPPED.invoker().server(server));
+
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> !ChatEvents.SERVER_SUBMITTED.invoker().chatMessageSubmitted(sender, message.signedContent().plain(), message.signedContent().decorated()).cancelsEvent());
 
         LifecycleEvents.SETUP.register(() -> {
             EntityAttributeRegistryImpl.modifyAttributes();

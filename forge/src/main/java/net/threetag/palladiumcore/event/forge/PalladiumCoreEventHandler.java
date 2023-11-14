@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -191,6 +192,13 @@ public class PalladiumCoreEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onBlockPlace(BlockEvent.EntityPlaceEvent e) {
         if (BlockEvents.PLACE.invoker().placeBlock(e.getLevel(), e.getPos(), e.getPlacedBlock(), e.getPlacedAgainst(), e.getEntity()).cancelsEvent()) {
+            e.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onSubmitted(ServerChatEvent.Submitted e) {
+        if (ChatEvents.SERVER_SUBMITTED.invoker().chatMessageSubmitted(e.getPlayer(), e.getRawText(), e.getMessage()).cancelsEvent()) {
             e.setCanceled(true);
         }
     }
