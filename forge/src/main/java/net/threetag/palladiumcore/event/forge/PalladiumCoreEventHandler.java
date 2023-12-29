@@ -197,7 +197,7 @@ public class PalladiumCoreEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onSubmitted(ServerChatEvent.Submitted e) {
+    public static void onSubmitted(ServerChatEvent e) {
         if (ChatEvents.SERVER_SUBMITTED.invoker().chatMessageSubmitted(e.getPlayer(), e.getRawText(), e.getMessage()).cancelsEvent()) {
             e.setCanceled(true);
         }

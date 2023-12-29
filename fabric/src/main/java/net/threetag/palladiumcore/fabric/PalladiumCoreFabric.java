@@ -39,7 +39,7 @@ public class PalladiumCoreFabric implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> LifecycleEvents.SERVER_STOPPING.invoker().server(server));
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> LifecycleEvents.SERVER_STOPPED.invoker().server(server));
 
-        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> !ChatEvents.SERVER_SUBMITTED.invoker().chatMessageSubmitted(sender, message.signedContent().plain(), message.signedContent().decorated()).cancelsEvent());
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> !ChatEvents.SERVER_SUBMITTED.invoker().chatMessageSubmitted(sender, message.signedContent(), message.decoratedContent()).cancelsEvent());
 
         LifecycleEvents.SETUP.register(() -> {
             EntityAttributeRegistryImpl.modifyAttributes();

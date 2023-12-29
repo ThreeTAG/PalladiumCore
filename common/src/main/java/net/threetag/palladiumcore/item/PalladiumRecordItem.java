@@ -1,11 +1,10 @@
 package net.threetag.palladiumcore.item;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.RecordItem;
 import net.threetag.palladiumcore.util.Platform;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -29,7 +28,7 @@ public class PalladiumRecordItem extends RecordItem {
     }
 
     public static void registerRecords() {
-        for (Item item : Registry.ITEM) {
+        for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof PalladiumRecordItem recordItem) {
                 RecordItem.BY_NAME.put(recordItem.sound.get(), recordItem);
             }
