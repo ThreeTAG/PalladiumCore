@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.registry.client.ColorHandlerRegistry;
+import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
