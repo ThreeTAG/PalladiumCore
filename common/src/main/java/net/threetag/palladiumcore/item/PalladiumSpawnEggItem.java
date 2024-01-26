@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.registry.client.ColorHandlerRegistry;
 import net.threetag.palladiumcore.util.Platform;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -36,8 +38,9 @@ public class PalladiumSpawnEggItem extends SpawnEggItem {
         MOD_EGGS.add(this);
     }
 
+    @SuppressWarnings("ConstantValue")
     @Override
-    public EntityType<?> getType(@Nullable CompoundTag tag) {
+    public @NotNull EntityType<?> getType(@Nullable CompoundTag tag) {
         EntityType<?> type = super.getType(tag);
         return type != null ? type : typeSupplier.get();
     }
@@ -45,6 +48,11 @@ public class PalladiumSpawnEggItem extends SpawnEggItem {
     @Nullable
     protected DispenseItemBehavior createDispenseBehavior() {
         return DEFAULT_DISPENSE_BEHAVIOR;
+    }
+
+    @Override
+    public @NotNull FeatureFlagSet requiredFeatures() {
+        return this.typeSupplier.get().requiredFeatures();
     }
 
     @Nullable
