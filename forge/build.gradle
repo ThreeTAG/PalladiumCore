@@ -10,12 +10,30 @@ architectury {
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
+    runConfigs.configureEach {
+        if (name == "client") {
+            runDir = "../run"
+
+            if (System.getenv('MC_USERNAME') && System.getenv('MC_UUID') && System.getenv('MC_ACCESS_TOKEN')) {
+                programArgs '--username', System.getenv('MC_USERNAME'), '--uuid', System.getenv('MC_UUID'), '--accessToken', System.getenv('MC_ACCESS_TOKEN')
+            }
+        } else if (name == "server") {
+            runDir = "../run/server-forge"
+        } else if (name == "data") {
+            programArgs '--existing', project(":common").file("src/main/resources/").absolutePath
+        }
+    }
+
     forge {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
         mixinConfig "palladiumcore-common.mixins.json"
         mixinConfig "palladiumcore.mixins.json"
+    }
+
+    mixin {
+        defaultRefmapName = "palladiumcore-forge-refmap.json"
     }
 }
 
@@ -64,6 +82,18 @@ remapJar {
 }
 
 jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : project.mod_id,
+                "Specification-Vendor"    : project.mod_author,
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : version,
+                "Implementation-Vendor"   : project.mod_author,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
     archiveClassifier = "dev"
 }
 
@@ -89,10 +119,10 @@ publishing {
 
     repositories {
         maven {
-            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+            url 'https://maven.threetag.net'
             credentials {
-                username System.getenv('REPSY_USERNAME')
-                password System.getenv('REPSY_PASSWORD')
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
             }
         }
     }

@@ -9,6 +9,21 @@ architectury {
 
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    runConfigs.configureEach {
+        if (name == "client") {
+            runDir = "../run"
+
+            if (System.getenv('MC_USERNAME') && System.getenv('MC_UUID') && System.getenv('MC_ACCESS_TOKEN')) {
+                programArgs '--username', System.getenv('MC_USERNAME'), '--uuid', System.getenv('MC_UUID'), '--accessToken', System.getenv('MC_ACCESS_TOKEN')
+            }
+        } else if (name == "server")
+            runDir = "../run/server-fabric"
+    }
+
+    mixin {
+        defaultRefmapName = "palladiumcore-fabric-refmap.json"
+    }
 }
 
 configurations {
@@ -75,10 +90,10 @@ publishing {
 
     repositories {
         maven {
-            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+            url 'https://maven.threetag.net'
             credentials {
-                username System.getenv('REPSY_USERNAME')
-                password System.getenv('REPSY_PASSWORD')
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
             }
         }
     }

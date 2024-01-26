@@ -4,6 +4,10 @@ architectury {
 
 loom {
     accessWidenerPath = file("src/main/resources/palladiumcore.accesswidener")
+
+    mixin {
+        defaultRefmapName = "palladiumcore-common-refmap.json"
+    }
 }
 
 dependencies {
@@ -14,17 +18,17 @@ dependencies {
 publishing {
     publications {
         mavenCommon(MavenPublication) {
-            artifactId = rootProject.archives_base_name
+            artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
         }
     }
 
     repositories {
         maven {
-            url 'https://repo.repsy.io/mvn/lucraft/threetag'
+            url 'https://maven.threetag.net'
             credentials {
-                username System.getenv('REPSY_USERNAME')
-                password System.getenv('REPSY_PASSWORD')
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
             }
         }
     }
