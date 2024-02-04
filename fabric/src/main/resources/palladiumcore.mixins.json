@@ -7,14 +7,14 @@
     "ClientPacketListenerMixin",
     "EntityRenderDispatcherMixin",
     "FogRendererMixin",
+    "GameRendererMixin",
     "IntegratedServerMixin",
     "KeyboardHandlerMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
     "MouseHandlerMixin",
     "RemotePlayerMixin",
-    "ScreenMixin",
-    "GameRendererMixin"
+    "ScreenMixin"
   ],
   "mixins": [
     "AnvilMenuMixin",
@@ -25,8 +25,10 @@
     "DefaultAttributesMixin",
     "EndermanLeaveBlockGoalMixin",
     "GameTestServerMixin",
+    "AbstractHorseMixin",
     "InventoryMixin",
     "LivingEntityMixin",
+    "MagmaCubeMixin",
     "PlayerListMixin",
     "PlayerMixin",
     "ServerEntityMixin",

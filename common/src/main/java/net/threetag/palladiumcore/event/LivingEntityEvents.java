@@ -16,7 +16,7 @@ public interface LivingEntityEvents {
     Event<Death> DEATH = new Event<>(Death.class, listeners -> (e, s) -> Event.result(listeners, death -> death.livingEntityDeath(e, s)));
 
     /**
-     * @see Hurt#livingEntityHurt(LivingEntity, DamageSource, float)
+     * @see Hurt#livingEntityHurt(LivingEntity, DamageSource, AtomicReference)
      */
     Event<Hurt> HURT = new Event<>(Hurt.class, listeners -> (e, s, a) -> Event.result(listeners, hurt -> hurt.livingEntityHurt(e, s, a)));
 
@@ -55,6 +55,15 @@ public interface LivingEntityEvents {
     Event<ItemUseFinish> ITEM_USE_FINISH = new Event<>(ItemUseFinish.class, listeners -> (e, s, d) -> {
         for (ItemUseFinish listener : listeners) {
             listener.livingEntityItemUseFinish(e, s, d);
+        }
+    });
+
+    /**
+     * @see Jump#livingEntityJump(LivingEntity)
+     */
+    Event<Jump> JUMP = new Event<>(Jump.class, listeners -> (e) -> {
+        for (Jump listener : listeners) {
+            listener.livingEntityJump(e);
         }
     });
 
@@ -127,5 +136,18 @@ public interface LivingEntityEvents {
         void livingEntityItemUseFinish(LivingEntity entity, @NotNull ItemStack stack, AtomicInteger duration);
 
     }
+
+    @FunctionalInterface
+    interface Jump {
+
+        /**
+         * Called when an entity jumps
+         *
+         * @param entity The jumping entity
+         */
+        void livingEntityJump(LivingEntity entity);
+
+    }
+
 
 }

@@ -160,4 +160,9 @@ public abstract class LivingEntityMixin {
         }
     }
 
+    @Inject(method = "jumpFromGround", at = @At("RETURN"))
+    private void jumpFromGround(CallbackInfo ci) {
+        LivingEntityEvents.JUMP.invoker().livingEntityJump((LivingEntity) (Object) this);
+    }
+
 }

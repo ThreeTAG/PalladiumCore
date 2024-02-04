@@ -94,6 +94,11 @@ public class PalladiumCoreEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void livingJump(LivingEvent.LivingJumpEvent e) {
+        LivingEntityEvents.JUMP.invoker().livingEntityJump(e.getEntity());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public static void startTracking(PlayerEvent.StartTracking e) {
         PlayerEvents.START_TRACKING.invoker().playerTracking(e.getEntity(), e.getTarget());
     }
