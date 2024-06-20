@@ -26,15 +26,6 @@ public interface LivingEntityEvents {
     Event<Attack> ATTACK = new Event<>(Attack.class, listeners -> (e, s, a) -> Event.result(listeners, hurt -> hurt.livingEntityAttack(e, s, a)));
 
     /**
-     * @see Tick#livingEntityTick(LivingEntity)
-     */
-    Event<Tick> TICK = new Event<>(Tick.class, listeners -> (e) -> {
-        for (Tick listener : listeners) {
-            listener.livingEntityTick(e);
-        }
-    });
-
-    /**
      * Called when a player starts using an item, usually when holding rightclick with it
      */
     Event<ItemUse> ITEM_USE_START = new Event<>(ItemUse.class, listeners -> (e, s, d) -> Event.result(listeners, hurt -> hurt.livingEntityItemUse(e, s, d)));
@@ -108,18 +99,6 @@ public interface LivingEntityEvents {
          * @return An {@link EventResult} determining whether to cancel the attacking process
          */
         EventResult livingEntityAttack(LivingEntity entity, DamageSource damageSource, float amount);
-
-    }
-
-    @FunctionalInterface
-    interface Tick {
-
-        /**
-         * Called during every tick of a living entity, duh
-         *
-         * @param entity The entity.
-         */
-        void livingEntityTick(LivingEntity entity);
 
     }
 

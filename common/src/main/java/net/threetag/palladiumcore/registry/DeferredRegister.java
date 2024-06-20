@@ -34,9 +34,9 @@ import java.util.function.Supplier;
  *
  * @param <T> The base registry type
  */
-public abstract class DeferredRegister<T> implements Iterable<RegistrySupplier<T>> {
+public abstract class DeferredRegister<T> implements Iterable<RegistryHolder<T, ? extends T>> {
 
-    public static final List<RegistrySupplier<PoiType>> POI_TYPES_TO_FIX = new ArrayList<>();
+    public static final List<RegistryHolder<PoiType, ? extends PoiType>> POI_TYPES_TO_FIX = new ArrayList<>();
 
     /**
      * This MUST be called during mod-initialization to make sure the {@link DeferredRegister} is registed to the event bus on the Forge side
@@ -44,22 +44,22 @@ public abstract class DeferredRegister<T> implements Iterable<RegistrySupplier<T
     public abstract void register();
 
     /**
-     * Adds a new supplier to the list of entries to be registered, and returns a {@link RegistrySupplier} that will be populated with the created entry automatically.
+     * Adds a new supplier to the list of entries to be registered, and returns a {@link RegistryHolder} that will be populated with the created entry automatically.
      *
      * @param id       ID for the given registered object
      * @param supplier Supplier that returns the object to be registered
-     * @return A {@link RegistrySupplier} that will contain the registered object
+     * @return A {@link RegistryHolder} that will contain the registered object
      */
-    public abstract <R extends T> RegistrySupplier<R> register(String id, Supplier<R> supplier);
+    public abstract <R extends T> RegistryHolder<T, R> register(String id, Supplier<R> supplier);
 
     /**
      * @return Unmodifiable list of all registered objects
      */
-    public abstract Collection<RegistrySupplier<T>> getEntries();
+    public abstract Collection<RegistryHolder<T, ? extends T>> getEntries();
 
     @NotNull
     @Override
-    public Iterator<RegistrySupplier<T>> iterator() {
+    public Iterator<RegistryHolder<T, ? extends T>> iterator() {
         return this.getEntries().iterator();
     }
 

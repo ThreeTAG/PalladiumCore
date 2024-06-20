@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -36,12 +35,16 @@ public class PalladiumSpawnEggItem extends SpawnEggItem {
         this.typeSupplier = type;
 
         MOD_EGGS.add(this);
+
+        if (Platform.isNeoForge()) {
+            throw new IllegalStateException("This class should've been replaced on NeoForge!");
+        }
     }
 
     @SuppressWarnings("ConstantValue")
     @Override
-    public @NotNull EntityType<?> getType(@Nullable CompoundTag tag) {
-        EntityType<?> type = super.getType(tag);
+    public @NotNull EntityType<?> getType(ItemStack stack) {
+        EntityType<?> type = super.getType(stack);
         return type != null ? type : typeSupplier.get();
     }
 
@@ -63,18 +66,18 @@ public class PalladiumSpawnEggItem extends SpawnEggItem {
 
     private static final DispenseItemBehavior DEFAULT_DISPENSE_BEHAVIOR = (source, stack) ->
     {
-        Direction face = source.getBlockState().getValue(DispenserBlock.FACING);
-        EntityType<?> type = ((SpawnEggItem) stack.getItem()).getType(stack.getTag());
+        Direction face = source.state().getValue(DispenserBlock.FACING);
+        EntityType<?> type = ((SpawnEggItem) stack.getItem()).getType(stack);
 
         try {
-            type.spawn(source.getLevel(), stack, null, source.getPos().relative(face), MobSpawnType.DISPENSER, face != Direction.UP, false);
+            type.spawn(source.level(), stack, null, source.pos().relative(face), MobSpawnType.DISPENSER, face != Direction.UP, false);
         } catch (Exception exception) {
-            DispenseItemBehavior.LOGGER.error("Error while dispensing spawn egg from dispenser at {}", source.getPos(), exception);
+            DispenseItemBehavior.LOGGER.error("Error while dispensing spawn egg from dispenser at {}", source.pos(), exception);
             return ItemStack.EMPTY;
         }
 
         stack.shrink(1);
-        source.getLevel().gameEvent(GameEvent.ENTITY_PLACE, source.getPos(), GameEvent.Context.of(source.getBlockState()));
+        source.level().gameEvent(GameEvent.ENTITY_PLACE, source.pos(), GameEvent.Context.of(source.state()));
         return stack;
     };
 

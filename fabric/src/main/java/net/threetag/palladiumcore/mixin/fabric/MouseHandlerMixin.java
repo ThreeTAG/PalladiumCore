@@ -52,8 +52,8 @@ public abstract class MouseHandlerMixin {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSpectator()Z"),
             method = "onScroll", cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-    private void onScroll(long windowPointer, double xOffset, double yOffset, CallbackInfo ci, double amount) {
-        if (InputEvents.MOUSE_SCROLLING.invoker().mouseScrolling(Minecraft.getInstance(), amount, this.isLeftPressed(), this.isMiddlePressed(), this.isRightPressed(), this.xpos(), this.ypos()).cancelsEvent()) {
+    private void onScroll(long windowPointer, double xOffset, double yOffset, CallbackInfo ci, boolean bl, double d, double e, double f, int i, int j, int k) {
+        if (InputEvents.MOUSE_SCROLLING.invoker().mouseScrolling(Minecraft.getInstance(), e, f, this.isLeftPressed(), this.isMiddlePressed(), this.isRightPressed(), this.xpos(), this.ypos()).cancelsEvent()) {
             ci.cancel();
         }
     }

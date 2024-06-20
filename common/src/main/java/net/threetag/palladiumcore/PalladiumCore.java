@@ -2,8 +2,6 @@ package net.threetag.palladiumcore;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.threetag.palladiumcore.event.LivingEntityEvents;
 import net.threetag.palladiumcore.util.DataSyncUtil;
 import org.slf4j.Logger;
 

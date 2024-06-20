@@ -1,5 +1,6 @@
 package net.threetag.palladiumcore.mixin.fabric;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -12,6 +13,6 @@ import java.util.Map;
 public interface AttributeSupplierMixin {
 
     @Accessor
-    Map<Attribute, AttributeInstance> getInstances();
+    Map<Holder<Attribute>, AttributeInstance> getInstances();
 
 }

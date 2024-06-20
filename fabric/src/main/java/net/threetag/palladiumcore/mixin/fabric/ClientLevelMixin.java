@@ -13,8 +13,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientLevelMixin {
 
     @Inject(at = @At("HEAD"), method = "addEntity")
-    private void addEntity(int pEntityId, Entity pEntityToSpawn, CallbackInfo ci) {
-        EntityEvents.JOIN_LEVEL.invoker().entityJoinLevel(pEntityToSpawn, (ClientLevel) (Object) this);
+    private void addEntity(Entity entity, CallbackInfo ci) {
+        EntityEvents.JOIN_LEVEL.invoker().entityJoinLevel(entity, (ClientLevel) (Object) this);
+    }
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V"), method = "tickNonPassenger")
+    private void tickPre(Entity entity, CallbackInfo ci) {
+        EntityEvents.TICK_PRE.invoker().entityTick(entity);
+    }
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V", shift = At.Shift.AFTER), method = "tickNonPassenger")
+    private void tickPost(Entity entity, CallbackInfo ci) {
+        EntityEvents.TICK_POST.invoker().entityTick(entity);
     }
 
 }

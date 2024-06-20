@@ -1,6 +1,7 @@
 package net.threetag.palladiumcore.registry;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -16,12 +17,12 @@ public class EntityAttributeRegistry {
     }
 
     @ExpectPlatform
-    public static void registerModification(Supplier<EntityType<? extends LivingEntity>> typeSupplier, Supplier<Attribute> attributeSupplier, Double value) {
+    public static void registerModification(Supplier<EntityType<? extends LivingEntity>> typeSupplier, Holder<Attribute> attributeHolder, Double value) {
         throw new AssertionError();
     }
 
-    public static void registerModification(Supplier<EntityType<? extends LivingEntity>> typeSupplier, Supplier<Attribute> attributeSupplier) {
-        registerModification(typeSupplier, attributeSupplier, null);
+    public static void registerModification(Supplier<EntityType<? extends LivingEntity>> typeSupplier, Holder<Attribute> attributeHolder) {
+        registerModification(typeSupplier, attributeHolder, null);
     }
 
 }

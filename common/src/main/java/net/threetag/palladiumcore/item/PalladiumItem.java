@@ -8,12 +8,6 @@ import net.minecraft.world.level.Level;
 public interface PalladiumItem {
 
     /**
-     * Called every tick when wearing this item as armor
-     */
-    default void armorTick(ItemStack stack, Level level, Player player) {
-    }
-
-    /**
      * Using this makes the item wearable in the returned slot
      *
      * @param stack     Worn ItemStack

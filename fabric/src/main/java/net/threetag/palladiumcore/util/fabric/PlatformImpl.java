@@ -37,7 +37,7 @@ public class PlatformImpl {
         return FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER;
     }
 
-    public static boolean isForge() {
+    public static boolean isNeoForge() {
         return false;
     }
 

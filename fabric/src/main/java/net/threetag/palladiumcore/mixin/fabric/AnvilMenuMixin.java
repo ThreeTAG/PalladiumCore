@@ -1,5 +1,7 @@
 package net.threetag.palladiumcore.mixin.fabric;
 
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 @SuppressWarnings("ConstantConditions")
@@ -37,7 +40,7 @@ public class AnvilMenuMixin {
         ItemStack left = menu.inputSlots.getItem(0);
         ItemStack right = menu.inputSlots.getItem(1);
 
-        AtomicInteger cost = new AtomicInteger(left.getBaseRepairCost() + (right.isEmpty() ? 0 : right.getBaseRepairCost()));
+        AtomicLong cost = new AtomicLong(left.getOrDefault(DataComponents.REPAIR_COST, 0) + (right.isEmpty() ? 0 : right.getOrDefault(DataComponents.REPAIR_COST, 0)));
         AtomicInteger materialCost = new AtomicInteger(0);
         AtomicReference<ItemStack> output = new AtomicReference<>(ItemStack.EMPTY);
 
@@ -51,7 +54,7 @@ public class AnvilMenuMixin {
         }
 
         menu.resultSlots.setItem(0, output.get());
-        this.cost.set(cost.get());
+        this.cost.set((int) Mth.clamp(cost.get(), 0L, 2147483647L));
         this.repairItemCountCost = materialCost.get();
         ci.cancel();
     }

@@ -17,6 +17,7 @@
     "ScreenMixin"
   ],
   "mixins": [
+    "AbstractHorseMixin",
     "AnvilMenuMixin",
     "AttributeSupplierBuilderMixin",
     "AttributeSupplierMixin",
@@ -24,9 +25,8 @@
     "DedicatedServerMixin",
     "DefaultAttributesMixin",
     "EndermanLeaveBlockGoalMixin",
+    "EntityMixin",
     "GameTestServerMixin",
-    "AbstractHorseMixin",
-    "InventoryMixin",
     "LivingEntityMixin",
     "MagmaCubeMixin",
     "PlayerListMixin",

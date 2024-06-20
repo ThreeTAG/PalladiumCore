@@ -16,8 +16,8 @@ public class PalladiumBucketItem extends BucketItem {
     }
 
     private static <T> T checkPlatform(T obj) {
-        if (Platform.isForge()) {
-            throw new IllegalStateException("This class should've been replaced on Forge!");
+        if (Platform.isNeoForge()) {
+            throw new IllegalStateException("This class should've been replaced on NeoForge!");
         }
 
         return obj;

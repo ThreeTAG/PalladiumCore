@@ -1,10 +1,11 @@
 package net.threetag.palladiumcore.util;
 
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
-import net.threetag.palladiumcore.network.MessageS2C;
+import net.threetag.palladiumcore.network.NetworkManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +31,13 @@ public class DataSyncUtil {
         LifecycleEvents.DATAPACK_SYNC.register((playerList, player) -> {
             for (DataSync dataSync : DATA_SYNC) {
                 if (player == null) {
-                    dataSync.gatherMessages(msg -> {
+                    dataSync.gatherPayloads(payload -> {
                         for (ServerPlayer pl : playerList.getPlayers()) {
-                            msg.send(pl);
+                            NetworkManager.get().sendToPlayer(pl, payload);
                         }
                     });
                 } else {
-                    dataSync.gatherMessages(msg -> msg.send(player));
+                    dataSync.gatherPayloads(payload -> NetworkManager.get().sendToPlayer(player, payload));
                 }
             }
         });
@@ -44,7 +45,7 @@ public class DataSyncUtil {
         PlayerEvents.JOIN.register(player -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 for (EntitySync entitySync : ENTITY_SYNC) {
-                    entitySync.gatherMessages(serverPlayer, msg -> msg.send(serverPlayer));
+                    entitySync.gatherPayloads(serverPlayer, payload -> NetworkManager.get().sendToPlayer(serverPlayer, payload));
                 }
             }
         });
@@ -52,7 +53,7 @@ public class DataSyncUtil {
         PlayerEvents.START_TRACKING.register((tracker, target) -> {
             if (tracker instanceof ServerPlayer serverPlayer) {
                 for (EntitySync entitySync : ENTITY_SYNC) {
-                    entitySync.gatherMessages(target, msg -> msg.send(serverPlayer));
+                    entitySync.gatherPayloads(target, payload -> NetworkManager.get().sendToPlayer(serverPlayer, payload));
                 }
             }
         });
@@ -60,7 +61,7 @@ public class DataSyncUtil {
         PlayerEvents.RESPAWN.register((player, endConquered) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 for (EntitySync entitySync : ENTITY_SYNC) {
-                    entitySync.gatherMessages(player, msg -> msg.sendToTrackingAndSelf(serverPlayer));
+                    entitySync.gatherPayloads(player, payload -> NetworkManager.get().sendToPlayersTrackingEntityAndSelf(serverPlayer, payload));
                 }
             }
         });
@@ -68,7 +69,7 @@ public class DataSyncUtil {
         PlayerEvents.CHANGED_DIMENSION.register((player, destination) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 for (EntitySync entitySync : ENTITY_SYNC) {
-                    entitySync.gatherMessages(player, msg -> msg.sendToTrackingAndSelf(serverPlayer));
+                    entitySync.gatherPayloads(player, payload -> NetworkManager.get().sendToPlayersTrackingEntityAndSelf(serverPlayer, payload));
                 }
             }
         });
@@ -77,14 +78,14 @@ public class DataSyncUtil {
     @FunctionalInterface
     public interface EntitySync {
 
-        void gatherMessages(Entity entity, Consumer<MessageS2C> consumer);
+        void gatherPayloads(Entity entity, Consumer<CustomPacketPayload> consumer);
 
     }
 
     @FunctionalInterface
     public interface DataSync {
 
-        void gatherMessages(Consumer<MessageS2C> consumer);
+        void gatherPayloads(Consumer<CustomPacketPayload> consumer);
 
     }
 
