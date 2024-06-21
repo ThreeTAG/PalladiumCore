@@ -96,7 +96,7 @@ public class PalladiumCoreClientEventHandler {
         AtomicReference<Float> pitch = new AtomicReference<>(e.getPitch());
         AtomicReference<Float> roll = new AtomicReference<>(e.getRoll());
 
-        ViewportEvents.COMPUTE_CAMERA_ANGLES.invoker().computeCameraAngles(e.getRenderer(), e.getCamera(), e.getPartialTick(), yaw, pitch, roll);
+        ViewportEvents.COMPUTE_CAMERA_ANGLES.invoker().computeCameraAngles(e.getCamera(), e.getPartialTick(), yaw, pitch, roll);
 
         e.setYaw(yaw.get());
         e.setPitch(pitch.get());

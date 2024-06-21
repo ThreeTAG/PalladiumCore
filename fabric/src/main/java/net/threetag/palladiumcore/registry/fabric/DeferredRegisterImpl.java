@@ -48,12 +48,12 @@ public class DeferredRegisterImpl {
         @SuppressWarnings("UnnecessaryLocalVariable")
         @Override
         public <R extends T> RegistryHolder<T, R> register(String id, Supplier<R> supplier) {
-            ResourceKey<R> registeredId = (ResourceKey<R>) ResourceKey.create(this.registry.key(), new ResourceLocation(this.modid, id));
+            ResourceKey<R> registeredId = (ResourceKey<R>) ResourceKey.create(this.registry.key(), ResourceLocation.fromNamespaceAndPath(this.modid, id));
             Registry registry1 = this.registry;
             RegistryHolder registryHolder = new RegistryHolderImpl(registeredId, Registry.register(registry1, registeredId, supplier.get()), this.registry);
             this.entries.add(registryHolder);
             if (this.registry == BuiltInRegistries.POINT_OF_INTEREST_TYPE) {
-                POI_TYPES_TO_FIX.add((RegistryHolder) registryHolder);
+                POI_TYPES_TO_FIX.add(registryHolder);
             }
             return registryHolder;
         }
