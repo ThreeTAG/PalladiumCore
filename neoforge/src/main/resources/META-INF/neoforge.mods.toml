@@ -20,7 +20,7 @@ catalogueImageIcon = "palladiumcore_icon.png"
 [[dependencies.palladiumcore]]
 modId = "neoforge"
 type = "required"
-versionRange = "[20.1.31-beta,)"
+versionRange = "[21,)"
 ordering = "NONE"
 side = "BOTH"
 

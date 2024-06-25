@@ -4,6 +4,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
 import net.threetag.palladiumcore.item.PalladiumItem;
@@ -24,7 +25,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract class LivingEntityMixin {
 
     @Unique
-    private float cachedDamage = 0F;
+    private float palladiumcore_cachedDamageValue = 0F;
+
+    @Unique
+    private DamageSource palladiumcore_cachedDamageSource = null;
 
     @Shadow
     public abstract ItemStack getItemInHand(InteractionHand hand);
@@ -36,6 +40,9 @@ public abstract class LivingEntityMixin {
     protected int useItemRemaining;
 
     @Shadow
+    protected abstract void detectEquipmentUpdates();
+
+    @Shadow
     public abstract InteractionHand getUsedItemHand();
 
     @Shadow
@@ -43,6 +50,9 @@ public abstract class LivingEntityMixin {
 
     @Shadow
     public abstract void stopUsingItem();
+
+    @Shadow
+    protected abstract float getDamageAfterArmorAbsorb(DamageSource damageSource, float damageAmount);
 
     @Inject(at = @At("HEAD"),
             method = "die",
@@ -53,31 +63,33 @@ public abstract class LivingEntityMixin {
         }
     }
 
-    @Inject(at = @At("TAIL"),
-            method = "actuallyHurt")
-    private void actuallyHurt(DamageSource damageSource, float damageAmount, CallbackInfo ci) {
+    @Inject(at = @At("HEAD"),
+            method = "actuallyHurt",
+            cancellable = true)
+    private void actuallyHurt(DamageSource pDamageSource, float pDamageAmount, CallbackInfo ci) {
         var entity = (LivingEntity) (Object) this;
-        if (!entity.isInvulnerableTo(damageSource)) {
-            LivingEntityEvents.DAMAGE_POST.invoker().livingDamagePost(entity, damageSource, damageAmount);
+        AtomicReference<Float> amount = new AtomicReference<>(pDamageAmount);
+        if (!entity.isInvulnerableTo(pDamageSource) && (LivingEntityEvents.HURT.invoker().livingEntityHurt(entity, pDamageSource, amount).cancelsEvent() || amount.get() <= 0F)) {
+            ci.cancel();
         }
+        this.palladiumcore_cachedDamageSource = pDamageSource;
+        this.palladiumcore_cachedDamageValue = amount.get();
     }
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSleeping()Z"),
+    @Inject(at = @At("HEAD"),
             method = "hurt",
             cancellable = true)
-    private void hurt(DamageSource source, float pAmount, CallbackInfoReturnable<Boolean> cir) {
+    private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         var entity = (LivingEntity) (Object) this;
 
-        var ref = new AtomicReference<>(pAmount);
-        if (LivingEntityEvents.INCOMING_DAMAGE.invoker().livingIncomingDamage(entity, source, ref).cancelsEvent()) {
+        if (!(entity instanceof Player || !LivingEntityEvents.ATTACK.invoker().livingEntityAttack(entity, source, amount).cancelsEvent())) {
             cir.setReturnValue(false);
         }
-        this.cachedDamage = ref.get();
     }
 
-    @ModifyVariable(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSleeping()Z", shift = At.Shift.AFTER), ordinal = 0, argsOnly = true)
-    private float changeDamageAmount(float amount) {
-        return this.cachedDamage;
+    @ModifyVariable(method = "actuallyHurt", at = @At(value = "STORE", ordinal = 0), ordinal = 0, argsOnly = true)
+    private float modifiedDamageAmount(float damageAmount) {
+        return this.getDamageAfterArmorAbsorb(this.palladiumcore_cachedDamageSource, this.palladiumcore_cachedDamageValue);
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getUseDuration(Lnet/minecraft/world/entity/LivingEntity;)I", shift = At.Shift.AFTER),

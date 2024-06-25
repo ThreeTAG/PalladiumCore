@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -75,17 +76,19 @@ public class PalladiumCoreEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void livingIncomingDamage(LivingIncomingDamageEvent e) {
-        var ref = new AtomicReference<>(e.getAmount());
-        if (LivingEntityEvents.INCOMING_DAMAGE.invoker().livingIncomingDamage(e.getEntity(), e.getSource(), ref).cancelsEvent()) {
+    public static void livingHurt(LivingHurtEvent e) {
+        AtomicReference<Float> amount = new AtomicReference<>(e.getAmount());
+        if (LivingEntityEvents.HURT.invoker().livingEntityHurt(e.getEntity(), e.getSource(), amount).cancelsEvent()) {
             e.setCanceled(true);
         }
-        e.setAmount(ref.get());
+        e.setAmount(amount.get());
     }
 
-        @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void livingHurt(LivingDamageEvent.Post e) {
-        LivingEntityEvents.DAMAGE_POST.invoker().livingDamagePost(e.getEntity(), e.getSource(), e.getNewDamage());
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void livingAttack(LivingAttackEvent e) {
+        if (LivingEntityEvents.ATTACK.invoker().livingEntityAttack(e.getEntity(), e.getSource(), e.getAmount()).cancelsEvent()) {
+            e.setCanceled(true);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
