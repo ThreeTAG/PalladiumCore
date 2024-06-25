@@ -13,7 +13,6 @@
     "LocalPlayerMixin",
     "MinecraftMixin",
     "MouseHandlerMixin",
-    "RemotePlayerMixin",
     "ScreenMixin"
   ],
   "mixins": [

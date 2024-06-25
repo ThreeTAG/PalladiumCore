@@ -16,14 +16,18 @@ public interface LivingEntityEvents {
     Event<Death> DEATH = new Event<>(Death.class, listeners -> (e, s) -> Event.result(listeners, death -> death.livingEntityDeath(e, s)));
 
     /**
-     * @see Hurt#livingEntityHurt(LivingEntity, DamageSource, AtomicReference)
+     * @see IncomingDamage#livingIncomingDamage(LivingEntity, DamageSource, AtomicReference)
      */
-    Event<Hurt> HURT = new Event<>(Hurt.class, listeners -> (e, s, a) -> Event.result(listeners, hurt -> hurt.livingEntityHurt(e, s, a)));
+    Event<IncomingDamage> INCOMING_DAMAGE = new Event<>(IncomingDamage.class, listeners -> (e, s, a) -> Event.result(listeners, hurt -> hurt.livingIncomingDamage(e, s, a)));
 
     /**
-     * @see Attack#livingEntityAttack(LivingEntity, DamageSource, float)
+     * @see DamagePost#livingDamagePost(LivingEntity, DamageSource, float)
      */
-    Event<Attack> ATTACK = new Event<>(Attack.class, listeners -> (e, s, a) -> Event.result(listeners, hurt -> hurt.livingEntityAttack(e, s, a)));
+    Event<DamagePost> DAMAGE_POST = new Event<>(DamagePost.class, listeners -> (e, d, a) -> {
+        for (DamagePost listener : listeners) {
+            listener.livingDamagePost(e, d, a);
+        }
+    });
 
     /**
      * Called when a player starts using an item, usually when holding rightclick with it
@@ -73,32 +77,31 @@ public interface LivingEntityEvents {
     }
 
     @FunctionalInterface
-    interface Hurt {
+    interface IncomingDamage {
 
         /**
-         * Called every time when an Entity is set to be hurt.
-         *
-         * @param entity       The entity that is about to be hurt
-         * @param damageSource The {@link DamageSource} that caused the entity to be hurt
-         * @param amount       The amount of damage dealt to the hurt entity
-         * @return An {@link EventResult} determining whether to cancel the hurting process
-         */
-        EventResult livingEntityHurt(LivingEntity entity, DamageSource damageSource, AtomicReference<Float> amount);
-
-    }
-
-    @FunctionalInterface
-    interface Attack {
-
-        /**
-         * Called every time when an Entity is attacked
+         * Called every time before an Entity is hurt
          *
          * @param entity       The entity that is attacked
          * @param damageSource The {@link DamageSource} of the attack
          * @param amount       The amount of damage dealt to the entity
          * @return An {@link EventResult} determining whether to cancel the attacking process
          */
-        EventResult livingEntityAttack(LivingEntity entity, DamageSource damageSource, float amount);
+        EventResult livingIncomingDamage(LivingEntity entity, DamageSource damageSource, AtomicReference<Float> amount);
+
+    }
+
+    @FunctionalInterface
+    interface DamagePost {
+
+        /**
+         * Called every time when an Entity has been hurt
+         *
+         * @param entity       The entity that was hurt
+         * @param damageSource The {@link DamageSource} that caused the entity to be hurt
+         * @param amount       The amount of damage dealt to the hurt entity
+         */
+        void livingDamagePost(LivingEntity entity, DamageSource damageSource, float amount);
 
     }
 

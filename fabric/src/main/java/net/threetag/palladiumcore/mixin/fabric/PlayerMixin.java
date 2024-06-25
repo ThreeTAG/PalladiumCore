@@ -13,9 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -32,12 +30,6 @@ public abstract class PlayerMixin implements PlayerUtilImpl.RefreshableDisplayNa
     @Unique
     private Component palladiumcore_displayname;
 
-    @Unique
-    private float palladiumcore_cachedDamageValue = 0F;
-
-    @Unique
-    private DamageSource palladiumcore_cachedDamageSource = null;
-
     @Inject(at = @At("HEAD"),
             method = "die",
             cancellable = true)
@@ -47,32 +39,12 @@ public abstract class PlayerMixin implements PlayerUtilImpl.RefreshableDisplayNa
         }
     }
 
-    @Inject(at = @At("HEAD"),
-            method = "actuallyHurt",
-            cancellable = true)
-    private void actuallyHurt(DamageSource pDamageSource, float pDamageAmount, CallbackInfo ci) {
+    @Inject(at = @At("TAIL"),
+            method = "actuallyHurt")
+    private void actuallyHurt(DamageSource damageSource, float damageAmount, CallbackInfo ci) {
         var entity = (LivingEntity) (Object) this;
-        AtomicReference<Float> amount = new AtomicReference<>(pDamageAmount);
-        if (!entity.isInvulnerableTo(pDamageSource) && (LivingEntityEvents.HURT.invoker().livingEntityHurt(entity, pDamageSource, amount).cancelsEvent() || amount.get() < 0F)) {
-            ci.cancel();
-        }
-        this.palladiumcore_cachedDamageSource = pDamageSource;
-        this.palladiumcore_cachedDamageValue = amount.get();
-    }
-
-    @ModifyVariable(method = "actuallyHurt", at = @At(value = "STORE", ordinal = 0), ordinal = 0, argsOnly = true)
-    private float modifiedDamageAmount(float damageAmount) {
-        var entity = (LivingEntity) (Object) this;
-        return entity.getDamageAfterArmorAbsorb(this.palladiumcore_cachedDamageSource, this.palladiumcore_cachedDamageValue);
-    }
-
-    @Inject(at = @At("HEAD"),
-            method = "hurt",
-            cancellable = true)
-    private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        var entity = (LivingEntity) (Object) this;
-        if (LivingEntityEvents.ATTACK.invoker().livingEntityAttack(entity, source, amount).cancelsEvent()) {
-            cir.setReturnValue(false);
+        if (!entity.isInvulnerableTo(damageSource)) {
+            LivingEntityEvents.DAMAGE_POST.invoker().livingDamagePost(entity, damageSource, damageAmount);
         }
     }
 
