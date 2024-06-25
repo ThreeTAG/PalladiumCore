@@ -1,16 +1,14 @@
 package net.threetag.palladiumcore.item;
 
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 public class SimpleToolTier implements Tier {
 
-    private final TagKey<Block> incorrectBlocksForDrops;
+    private final int level;
     private final int uses;
     private final float speed;
     private final float attackDamageBonus;
@@ -18,8 +16,8 @@ public class SimpleToolTier implements Tier {
     @NotNull
     private final Supplier<Ingredient> repairIngredient;
 
-    public SimpleToolTier(TagKey<Block> incorrectBlocksForDrops, int uses, float speed, float attackDamageBonus, int enchantmentValue, @NotNull Supplier<Ingredient> repairIngredient) {
-        this.incorrectBlocksForDrops = incorrectBlocksForDrops;
+    public SimpleToolTier(int level, int uses, float speed, float attackDamageBonus, int enchantmentValue, @NotNull Supplier<Ingredient> repairIngredient) {
+        this.level = level;
         this.uses = uses;
         this.speed = speed;
         this.attackDamageBonus = attackDamageBonus;
@@ -43,8 +41,8 @@ public class SimpleToolTier implements Tier {
     }
 
     @Override
-    public @NotNull TagKey<Block> getIncorrectBlocksForDrops() {
-        return this.incorrectBlocksForDrops;
+    public int getLevel() {
+        return this.level;
     }
 
     @Override
@@ -61,7 +59,7 @@ public class SimpleToolTier implements Tier {
     @Override
     public String toString() {
         return "SimpleToolTier{" +
-                "incorrectBlocksForDrops=" + incorrectBlocksForDrops +
+                "level=" + level +
                 ", uses=" + uses +
                 ", speed=" + speed +
                 ", attackDamageBonus=" + attackDamageBonus +

@@ -92,6 +92,12 @@ public abstract class LivingEntityMixin {
         return this.getDamageAfterArmorAbsorb(this.palladiumcore_cachedDamageSource, this.palladiumcore_cachedDamageValue);
     }
 
+    @Inject(at = @At("HEAD"), method = "tick")
+    private void tick(CallbackInfo callbackInfo) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        LivingEntityEvents.TICK.invoker().livingEntityTick(entity);
+    }
+
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getUseDuration()I", shift = At.Shift.AFTER),
             method = "startUsingItem",
             cancellable = true)

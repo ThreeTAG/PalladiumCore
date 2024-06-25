@@ -3,6 +3,11 @@ accessWidener   v2  named
 # BlockEntityType
 transitive-accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
 
+# ToolItems
+transitive-accessible method net/minecraft/world/item/PickaxeItem <init> (Lnet/minecraft/world/item/Tier;IFLnet/minecraft/world/item/Item$Properties;)V
+transitive-accessible method net/minecraft/world/item/AxeItem <init> (Lnet/minecraft/world/item/Tier;FFLnet/minecraft/world/item/Item$Properties;)V
+transitive-accessible method net/minecraft/world/item/HoeItem <init> (Lnet/minecraft/world/item/Tier;IFLnet/minecraft/world/item/Item$Properties;)V
+
 # RecordItem
 accessible field net/minecraft/world/item/RecordItem BY_NAME Ljava/util/Map;
 
@@ -20,7 +25,7 @@ transitive-accessible method net/minecraft/client/gui/screens/MenuScreens regist
 transitive-accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
 
 # SpawnPlacements
-transitive-accessible method net/minecraft/world/entity/SpawnPlacements register (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/SpawnPlacementType;Lnet/minecraft/world/level/levelgen/Heightmap$Types;Lnet/minecraft/world/entity/SpawnPlacements$SpawnPredicate;)V
+transitive-accessible method net/minecraft/world/entity/SpawnPlacements register (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/SpawnPlacements$Type;Lnet/minecraft/world/level/levelgen/Heightmap$Types;Lnet/minecraft/world/entity/SpawnPlacements$SpawnPredicate;)V
 
 # PoiTypes
 transitive-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes getBlockStates (Lnet/minecraft/world/level/block/Block;)Ljava/util/Set;
@@ -67,6 +72,3 @@ accessible class net/minecraft/client/renderer/FogRenderer$FogData
 # Camera
 accessible field net/minecraft/client/Camera xRot F
 accessible field net/minecraft/client/Camera yRot F
-
-# MultiPlayerGameMode
-accessible field net/minecraft/client/multiplayer/MultiPlayerGameMode connection Lnet/minecraft/client/multiplayer/ClientPacketListener;

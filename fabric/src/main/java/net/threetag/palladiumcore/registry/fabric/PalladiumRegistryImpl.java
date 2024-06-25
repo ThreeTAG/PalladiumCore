@@ -6,18 +6,16 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PalladiumRegistryImpl<T> extends PalladiumRegistry<T> {
 
-    public static <T> PalladiumRegistry<T> createInternal(ResourceKey<Registry<T>> resourceKey) {
-        return new PalladiumRegistryImpl<>(FabricRegistryBuilder.createSimple(resourceKey).buildAndRegister());
+    public static <T> PalladiumRegistry<T> createInternal(Class<T> clazz, ResourceLocation id) {
+        return new PalladiumRegistryImpl<>(FabricRegistryBuilder.createSimple(clazz, id).buildAndRegister());
     }
 
     private final MappedRegistry<T> parent;
@@ -54,10 +52,5 @@ public class PalladiumRegistryImpl<T> extends PalladiumRegistry<T> {
     @Override
     public Collection<T> getValues() {
         return this.parent.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
-    }
-
-    @Override
-    public @NotNull Iterator<T> iterator() {
-        return this.parent.iterator();
     }
 }

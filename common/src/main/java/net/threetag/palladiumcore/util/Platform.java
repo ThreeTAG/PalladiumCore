@@ -37,7 +37,7 @@ public class Platform {
     }
 
     @ExpectPlatform
-    public static boolean isNeoForge() {
+    public static boolean isForge() {
         throw new AssertionError();
     }
 

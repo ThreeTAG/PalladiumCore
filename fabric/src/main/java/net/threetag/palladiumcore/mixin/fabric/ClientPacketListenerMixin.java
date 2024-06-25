@@ -14,12 +14,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPacketListener.class)
 public class ClientPacketListenerMixin {
 
+    @Shadow
+    @Final
+    private Minecraft minecraft;
+
     @Inject(at = @At(value = "INVOKE",
             target = "Lnet/minecraft/network/protocol/game/ClientboundLoginPacket;playerId()I",
             ordinal = 0),
             method = "handleLogin")
     private void handleLogin(ClientboundLoginPacket pPacket, CallbackInfo ci) {
-        PlayerEvents.CLIENT_JOIN.invoker().playerJoin(Minecraft.getInstance().player);
+        PlayerEvents.CLIENT_JOIN.invoker().playerJoin(this.minecraft.player);
     }
 
 }

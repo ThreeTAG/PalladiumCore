@@ -1,14 +1,17 @@
 package net.threetag.palladiumcore.mixin.fabric;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
-import net.minecraft.world.level.block.GameMasterBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.threetag.palladiumcore.event.BlockEvents;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,28 +35,46 @@ public class ServerPlayerGameModeMixin {
 
     @Inject(method = "destroyBlock", at = @At("HEAD"), cancellable = true)
     public void destroyBlock(BlockPos pos, CallbackInfoReturnable<Boolean> ci) {
-        boolean preCancelEvent = false;
-        BlockState state = this.level.getBlockState(pos);
-
-        ItemStack itemstack = player.getMainHandItem();
-        if (!itemstack.isEmpty() && !itemstack.getItem().canAttackBlock(state, level, pos, player)) {
-            preCancelEvent = true;
+        // Logic from tryHarvestBlock for pre-canceling the event
+        boolean cancelEvent = false;
+        ItemStack itemstack = this.player.getMainHandItem();
+        if (!itemstack.isEmpty() && !itemstack.getItem().canAttackBlock(this.level.getBlockState(pos), level, pos, this.player)) {
+            cancelEvent = true;
         }
 
-        if (player.blockActionRestricted(level, pos, this.gameModeForPlayer)) {
-            preCancelEvent = true;
+        if (this.gameModeForPlayer.isBlockPlacingRestricted()) {
+            if (this.gameModeForPlayer == GameType.SPECTATOR)
+                cancelEvent = true;
+
+            if (!this.player.mayBuild()) {
+                if (itemstack.isEmpty() || !itemstack.hasAdventureModeBreakTagForBlock(level.registryAccess().registryOrThrow(Registries.BLOCK), new BlockInWorld(level, pos, false)))
+                    cancelEvent = true;
+            }
         }
 
-        if (state.getBlock() instanceof GameMasterBlock && !player.canUseGameMasterBlocks()) {
-            preCancelEvent = true;
+        // Tell client the block is gone immediately then process events
+        if (level.getBlockEntity(pos) == null) {
+            this.player.connection.send(new ClientboundBlockUpdatePacket(pos, level.getFluidState(pos).createLegacyBlock()));
         }
 
         // Post the block break event
-        preCancelEvent = preCancelEvent || BlockEvents.BREAK.invoker().breakBlock(this.level, pos, state, this.player).cancelsEvent();
+        BlockState state = level.getBlockState(pos);
+        cancelEvent = cancelEvent || BlockEvents.BREAK.invoker().breakBlock(this.level, pos, state, this.player).cancelsEvent();
 
-        // If the event is canceled, let the client know the block still exists
-        if (preCancelEvent) {
-            player.connection.send(new ClientboundBlockUpdatePacket(pos, state));
+        // Handle if the event is canceled
+        if (cancelEvent) {
+            // Let the client know the block still exists
+            this.player.connection.send(new ClientboundBlockUpdatePacket(level, pos));
+
+            // Update any tile entity data for this block
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity != null) {
+                Packet<?> pkt = blockEntity.getUpdatePacket();
+                if (pkt != null) {
+                    this.player.connection.send(pkt);
+                }
+            }
+
             ci.setReturnValue(false);
         }
     }

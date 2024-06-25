@@ -15,9 +15,8 @@ import net.threetag.palladiumcore.event.CommandEvents;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.item.PalladiumRecordItem;
 import net.threetag.palladiumcore.item.PalladiumSpawnEggItem;
-import net.threetag.palladiumcore.network.fabric.ExtendedEntitySpawnDataPacket;
 import net.threetag.palladiumcore.registry.DeferredRegister;
-import net.threetag.palladiumcore.registry.RegistryHolder;
+import net.threetag.palladiumcore.registry.RegistrySupplier;
 import net.threetag.palladiumcore.registry.fabric.EntityAttributeRegistryImpl;
 import net.threetag.palladiumcore.util.fabric.PlatformImpl;
 
@@ -28,7 +27,6 @@ public class PalladiumCoreFabric implements ModInitializer {
         PalladiumCore.init();
         PlatformImpl.init();
         this.events();
-        ExtendedEntitySpawnDataPacket.register();
     }
 
     private void events() {
@@ -47,7 +45,7 @@ public class PalladiumCoreFabric implements ModInitializer {
             EntityAttributeRegistryImpl.modifyAttributes();
             PalladiumRecordItem.registerRecords();
 
-            for (RegistryHolder<PoiType, ? extends PoiType> supplier : DeferredRegister.POI_TYPES_TO_FIX) {
+            for (RegistrySupplier<PoiType> supplier : DeferredRegister.POI_TYPES_TO_FIX) {
                 var key = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, supplier.getId());
                 PoiTypes.registerBlockStates(BuiltInRegistries.POINT_OF_INTEREST_TYPE.getHolderOrThrow(key), supplier.get().matchingStates());
             }

@@ -30,9 +30,9 @@ public interface InputEvents {
     });
 
     /**
-     * @see MouseScrolling#mouseScrolling(Minecraft, double, double, boolean, boolean, boolean, double, double)
+     * @see MouseScrolling#mouseScrolling(Minecraft, double, boolean, boolean, boolean, double, double)
      */
-    Event<MouseScrolling> MOUSE_SCROLLING = new Event<>(MouseScrolling.class, listeners -> (m, sx, sy, l, md, r, x, y) -> Event.result(listeners, scrolling -> scrolling.mouseScrolling(m, sx, sy, l, md, r, x, y)));
+    Event<MouseScrolling> MOUSE_SCROLLING = new Event<>(MouseScrolling.class, listeners -> (m, s, l, md, r, x, y) -> Event.result(listeners, scrolling -> scrolling.mouseScrolling(m, s, l, md, r, x, y)));
 
     /**
      * @see MovementInputUpdate#movementInputUpdate(Player, Input)
@@ -96,17 +96,16 @@ public interface InputEvents {
         /**
          * Fired when a mouse scroll wheel is used outside a screen and a player is loaded, before being processed by vanilla.
          *
-         * @param client       The current Minecraft instance
-         * @param scrollDeltaX Returns the amount of change / delta of the mouse scroll on the X axis
-         * @param scrollDeltaY Returns the amount of change / delta of the mouse scroll on the Y axis
-         * @param leftDown     Returns if the left mouse button is pressed
-         * @param middleDown   Returns if the middle mouse button is pressed
-         * @param rightDown    Returns if the right mouse button is pressed
-         * @param mouseX       Returns the x position of the cursor
-         * @param mouseY       Returns the y position of the cursor
+         * @param client      The current Minecraft instance
+         * @param scrollDelta Returns the amount of change / delta of the mouse scroll.
+         * @param leftDown    Returns if the left mouse button is pressed
+         * @param middleDown  Returns if the middle mouse button is pressed
+         * @param rightDown   Returns if the right mouse button is pressed
+         * @param mouseX      Returns the x position of the cursor
+         * @param mouseY      Returns the y position of the cursor
          * @return A {@link EventResult} representing the result of the event, if cancelled the vanilla mechanics will be interrupted
          */
-        EventResult mouseScrolling(Minecraft client, double scrollDeltaX, double scrollDeltaY, boolean leftDown, boolean middleDown, boolean rightDown, double mouseX, double mouseY);
+        EventResult mouseScrolling(Minecraft client, double scrollDelta, boolean leftDown, boolean middleDown, boolean rightDown, double mouseX, double mouseY);
 
     }
 

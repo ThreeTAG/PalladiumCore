@@ -7,12 +7,14 @@ import net.minecraft.client.Minecraft;
 import net.threetag.palladiumcore.PalladiumCoreClient;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.item.PalladiumSpawnEggItem;
+import net.threetag.palladiumcore.network.fabric.SpawnEntityPacket;
 
 public class PalladiumCoreClientFabric implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
         PalladiumCoreClient.init();
+        SpawnEntityPacket.Client.register();
 
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             LifecycleEvents.SETUP.invoker().run();

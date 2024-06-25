@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayer.class)
 public class ServerPlayerMixin {
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;gameEvent(Lnet/minecraft/core/Holder;)V", shift = At.Shift.AFTER), method = "die", cancellable = true)
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;gameEvent(Lnet/minecraft/world/level/gameevent/GameEvent;)V", shift = At.Shift.AFTER), method = "die", cancellable = true)
     private void die(DamageSource source, CallbackInfo ci) {
         if (LivingEntityEvents.DEATH.invoker().livingEntityDeath((ServerPlayer) (Object) this, source).cancelsEvent()) {
             ci.cancel();

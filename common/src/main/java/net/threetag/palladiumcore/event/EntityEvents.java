@@ -9,24 +9,6 @@ import java.util.List;
 public interface EntityEvents {
 
     /**
-     * @see Tick#entityTick(Entity)
-     */
-    Event<Tick> TICK_PRE = new Event<>(Tick.class, listeners -> (e) -> {
-        for (Tick listener : listeners) {
-            listener.entityTick(e);
-        }
-    });
-
-    /**
-     * @see Tick#entityTick(Entity)
-     */
-    Event<Tick> TICK_POST = new Event<>(Tick.class, listeners -> (e) -> {
-        for (Tick listener : listeners) {
-            listener.entityTick(e);
-        }
-    });
-
-    /**
      * @see JoinLevel#entityJoinLevel(Entity, Level)
      */
     Event<JoinLevel> JOIN_LEVEL = new Event<>(JoinLevel.class, listeners -> (e, l) -> {
@@ -43,18 +25,6 @@ public interface EntityEvents {
             listener.lightningStrike(e, l);
         }
     });
-
-    @FunctionalInterface
-    interface Tick {
-
-        /**
-         * Called during every tick of an entity, duh
-         *
-         * @param entity The entity.
-         */
-        void entityTick(Entity entity);
-
-    }
 
     @FunctionalInterface
     interface JoinLevel {

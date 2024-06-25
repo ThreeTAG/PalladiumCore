@@ -2,7 +2,6 @@ package net.threetag.palladiumcore.mixin.fabric;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.threetag.palladiumcore.event.EntityEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,16 +15,6 @@ public class ServerLevelMixin {
     @Inject(at = @At("HEAD"), method = "addPlayer")
     private void addPlayer(ServerPlayer pPlayer, CallbackInfo ci) {
         EntityEvents.JOIN_LEVEL.invoker().entityJoinLevel(pPlayer, (ServerLevel) (Object) this);
-    }
-
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V"), method = "tickNonPassenger")
-    private void tickPre(Entity entity, CallbackInfo ci) {
-        EntityEvents.TICK_PRE.invoker().entityTick(entity);
-    }
-
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V", shift = At.Shift.AFTER), method = "tickNonPassenger")
-    private void tickPost(Entity entity, CallbackInfo ci) {
-        EntityEvents.TICK_POST.invoker().entityTick(entity);
     }
 
 }

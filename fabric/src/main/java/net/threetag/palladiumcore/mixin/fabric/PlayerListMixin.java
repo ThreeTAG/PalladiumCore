@@ -2,7 +2,6 @@ package net.threetag.palladiumcore.mixin.fabric;
 
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.players.PlayerList;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
@@ -17,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerListMixin {
 
     @Inject(at = @At("RETURN"), method = "placeNewPlayer")
-    private void placeNewPlayerReturn(Connection connection, ServerPlayer player, CommonListenerCookie cookie, CallbackInfo ci) {
-        PlayerEvents.JOIN.invoker().playerJoin(player);
+    private void placeNewPlayerReturn(Connection pNetManager, ServerPlayer pPlayer, CallbackInfo ci) {
+        PlayerEvents.JOIN.invoker().playerJoin(pPlayer);
     }
 
     @Inject(at = @At("HEAD"), method = "remove")
@@ -37,7 +36,7 @@ public class PlayerListMixin {
     }
 
     @Inject(method = "placeNewPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;)V", ordinal = 5))
-    private void placeNewPlayerSync(Connection connection, ServerPlayer player, CommonListenerCookie cookie, CallbackInfo ci) {
+    private void placeNewPlayerSync(Connection netManager, ServerPlayer player, CallbackInfo ci) {
         LifecycleEvents.DATAPACK_SYNC.invoker().onDatapackSync((PlayerList) (Object) this, player);
     }
 

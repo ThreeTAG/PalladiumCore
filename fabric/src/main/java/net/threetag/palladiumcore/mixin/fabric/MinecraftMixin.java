@@ -51,10 +51,10 @@ public abstract class MinecraftMixin {
     public abstract void updateTitle();
 
     @Inject(at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/GameRenderer;resetData()V",
-            shift = At.Shift.AFTER),
-            method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V")
-    private void disconnect(Screen nextScreen, boolean keepResourcePacks, CallbackInfo ci) {
+            target = "Lnet/minecraft/client/Minecraft;updateScreenAndTick(Lnet/minecraft/client/gui/screens/Screen;)V",
+            ordinal = 0),
+            method = "clearLevel(Lnet/minecraft/client/gui/screens/Screen;)V")
+    private void clearLevel(Screen pScreen, CallbackInfo ci) {
         PlayerEvents.CLIENT_QUIT.invoker().playerQuit(this.player);
     }
 

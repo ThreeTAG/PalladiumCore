@@ -9,7 +9,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public interface PlayerEvents {
@@ -109,7 +108,7 @@ public interface PlayerEvents {
     });
 
     /**
-     * @see AnvilUpdate#anvilUpdate(Player, ItemStack, ItemStack, String, AtomicLong, AtomicInteger, AtomicReference)
+     * @see AnvilUpdate#anvilUpdate(Player, ItemStack, ItemStack, String, AtomicInteger, AtomicInteger, AtomicReference)
      */
     Event<AnvilUpdate> ANVIL_UPDATE = new Event<>(AnvilUpdate.class, listeners -> (p, l, r, n, c, m, o) -> Event.result(listeners, anvilUpdate -> anvilUpdate.anvilUpdate(p, l, r, n, c, m, o)));
 
@@ -214,7 +213,7 @@ public interface PlayerEvents {
          * @param materialCost Material cost for this operation
          * @param output       Output of this operation
          */
-        EventResult anvilUpdate(Player player, ItemStack left, ItemStack right, @Nullable String name, AtomicLong cost, AtomicInteger materialCost, AtomicReference<ItemStack> output);
+        EventResult anvilUpdate(Player player, ItemStack left, ItemStack right, @Nullable String name, AtomicInteger cost, AtomicInteger materialCost, AtomicReference<ItemStack> output);
 
     }
 
