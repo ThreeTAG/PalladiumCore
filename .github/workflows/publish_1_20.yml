@@ -1,10 +1,9 @@
-name: Build and Release
+name: Build and Release (1.20)
 
 on:
   push:
     branches:
       - "1.20/main"
-      - "1.21/main"
 
 jobs:
   build:
