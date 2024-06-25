@@ -1,9 +1,9 @@
 package net.threetag.palladiumcore.mixin.fabric;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.portal.DimensionTransition;
 import net.threetag.palladiumcore.event.LivingEntityEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,10 +23,19 @@ public class ServerPlayerMixin {
         }
     }
 
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;sendAllPlayerInfo(Lnet/minecraft/server/level/ServerPlayer;)V", shift = At.Shift.AFTER), method = "teleportTo(Lnet/minecraft/server/level/ServerLevel;DDDFF)V")
+    private void teleportTo(ServerLevel newLevel, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
+        PlayerEvents.CHANGED_DIMENSION.invoker().playerChangedDimension((ServerPlayer) (Object) this, newLevel.dimension());
+    }
+
     @Inject(method = "changeDimension",
-            at = @At(value = "RETURN", ordinal = 2))
-    private void changeDimension(DimensionTransition dimensionTransition, CallbackInfoReturnable<Entity> cir) {
-        PlayerEvents.CHANGED_DIMENSION.invoker().playerChangedDimension((ServerPlayer) (Object) this, dimensionTransition.newLevel().dimension());
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;)V",
+                    shift = At.Shift.AFTER,
+                    ordinal = 5))
+    private void changeDimension(ServerLevel destination, CallbackInfoReturnable<Entity> cir) {
+        PlayerEvents.CHANGED_DIMENSION.invoker().playerChangedDimension((ServerPlayer) (Object) this, destination.dimension());
     }
 
     @Inject(at = @At("TAIL"), method = "restoreFrom")

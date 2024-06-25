@@ -3,11 +3,11 @@
   "package": "net.threetag.palladiumcore.mixin.fabric",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "CameraMixin",
     "ClientLevelMixin",
     "ClientPacketListenerMixin",
     "EntityRenderDispatcherMixin",
     "FogRendererMixin",
+    "GameRendererMixin",
     "IntegratedServerMixin",
     "KeyboardHandlerMixin",
     "LocalPlayerMixin",

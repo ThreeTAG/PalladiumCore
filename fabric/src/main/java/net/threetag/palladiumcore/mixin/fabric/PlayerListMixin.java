@@ -4,7 +4,6 @@ import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.players.PlayerList;
-import net.minecraft.world.entity.Entity;
 import net.threetag.palladiumcore.event.LifecycleEvents;
 import net.threetag.palladiumcore.event.PlayerEvents;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,8 +27,8 @@ public class PlayerListMixin {
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;setHealth(F)V", shift = At.Shift.AFTER), method = "respawn")
-    private void respawn(ServerPlayer serverPlayer, boolean keepEverything, Entity.RemovalReason removalReason, CallbackInfoReturnable<ServerPlayer> cir) {
-        PlayerEvents.RESPAWN.invoker().playerRespawn(serverPlayer, keepEverything);
+    private void respawn(ServerPlayer player, boolean keepEverything, CallbackInfoReturnable<ServerPlayer> ci) {
+        PlayerEvents.RESPAWN.invoker().playerRespawn(player, keepEverything);
     }
 
     @Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastAll(Lnet/minecraft/network/protocol/Packet;)V"))

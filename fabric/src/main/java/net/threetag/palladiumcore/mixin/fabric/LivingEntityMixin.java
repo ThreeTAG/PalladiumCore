@@ -92,13 +92,13 @@ public abstract class LivingEntityMixin {
         return this.getDamageAfterArmorAbsorb(this.palladiumcore_cachedDamageSource, this.palladiumcore_cachedDamageValue);
     }
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getUseDuration(Lnet/minecraft/world/entity/LivingEntity;)I", shift = At.Shift.AFTER),
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getUseDuration()I", shift = At.Shift.AFTER),
             method = "startUsingItem",
             cancellable = true)
     private void startUsingItem(InteractionHand hand, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
         ItemStack stack = this.getItemInHand(hand);
-        AtomicInteger duration = new AtomicInteger(stack.getUseDuration(entity));
+        AtomicInteger duration = new AtomicInteger(stack.getUseDuration());
         if (LivingEntityEvents.ITEM_USE_START.invoker().livingEntityItemUse(entity, stack, duration).cancelsEvent() || duration.get() <= 0) {
             this.useItem = ItemStack.EMPTY;
             this.useItemRemaining = 0;
@@ -144,7 +144,7 @@ public abstract class LivingEntityMixin {
     }
 
     @Inject(method = "getEquipmentSlotForItem", at = @At("HEAD"), cancellable = true)
-    private void getEquipmentSlotForItem(ItemStack item, CallbackInfoReturnable<EquipmentSlot> ci) {
+    private static void getEquipmentSlotForItem(ItemStack item, CallbackInfoReturnable<EquipmentSlot> ci) {
         if (item.getItem() instanceof PalladiumItem palladiumItem) {
             var slot = palladiumItem.getSlotForItem(item);
 

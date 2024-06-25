@@ -11,11 +11,11 @@ import java.util.concurrent.atomic.AtomicReference;
 public interface ViewportEvents {
 
     /**
-     * @see ComputeCameraAngles#computeCameraAngles(Camera, double, AtomicReference, AtomicReference, AtomicReference)
+     * @see ComputeCameraAngles#computeCameraAngles(GameRenderer, Camera, double, AtomicReference, AtomicReference, AtomicReference) 
      */
-    Event<ComputeCameraAngles> COMPUTE_CAMERA_ANGLES = new Event<>(ComputeCameraAngles.class, listeners -> (c, pt, y, p, r) -> {
+    Event<ComputeCameraAngles> COMPUTE_CAMERA_ANGLES = new Event<>(ComputeCameraAngles.class, listeners -> (gr, c, pt, y, p, r) -> {
         for (ComputeCameraAngles listener : listeners) {
-            listener.computeCameraAngles(c, pt, y, p, r);
+            listener.computeCameraAngles(gr, c, pt, y, p, r);
         }
     });
     
@@ -37,7 +37,7 @@ public interface ViewportEvents {
     @FunctionalInterface
     interface ComputeCameraAngles {
 
-        void computeCameraAngles(Camera camera, double partialTick,
+        void computeCameraAngles(GameRenderer gameRenderer, Camera camera, double partialTick,
                                  AtomicReference<Float> yaw, AtomicReference<Float> pitch, AtomicReference<Float> roll);
 
     }

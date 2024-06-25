@@ -45,7 +45,7 @@ public class FogRendererMixin {
         }
     }
 
-    @Inject(method = "setupColor", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clearColor(FFFF)V", ordinal = 1, remap = false))
+    @Inject(method = "setupColor", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clearColor(FFFF)V", ordinal = 1))
     private static void setupColor(Camera activeRenderInfo, float partialTicks, ClientLevel level, int renderDistanceChunks, float bossColorModifier, CallbackInfo ci) {
         AtomicReference<Float> red = new AtomicReference<>(fogRed);
         AtomicReference<Float> green = new AtomicReference<>(fogGreen);

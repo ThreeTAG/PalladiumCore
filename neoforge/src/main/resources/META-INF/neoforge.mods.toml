@@ -20,14 +20,14 @@ catalogueImageIcon = "palladiumcore_icon.png"
 [[dependencies.palladiumcore]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21,)"
+versionRange = "[20.4,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.palladiumcore]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "[1.20.4,)"
 ordering = "NONE"
 side = "BOTH"
 
