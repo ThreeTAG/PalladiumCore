@@ -21,13 +21,6 @@ subprojects {
             parchment("org.parchmentmc.data:parchment-${rootProject.mappings}")
         }
     }
-
-    java {
-        withSourcesJar()
-
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
 }
 
 allprojects {
