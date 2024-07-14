@@ -94,8 +94,8 @@ public abstract class DeferredRegister<T> implements Iterable<RegistryHolder<T, 
      * @param <T>      Generic type of the registry
      * @return A new instance of a {@link DeferredRegister}
      */
-    public static <T> DeferredRegister<T> create(String modId, RegistryBuilder<T> registry) {
-        return create(modId, registry.getRegistryKey());
+    public static <T> DeferredRegister<T> create(String modId, Registry<T> registry) {
+        return create(modId, registry.key());
     }
 
 }
