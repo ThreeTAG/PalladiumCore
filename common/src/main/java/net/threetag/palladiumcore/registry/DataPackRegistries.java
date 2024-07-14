@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * <p>
  * Data JSONs will be loaded from {@code data/<datapack_namespace>/modid/registryname/}, where {@code modid} is the namespace of the registry key.
  */
-public class PalladiumDataPackRegistry {
+public class DataPackRegistries {
 
     /**
      * Registers the registry key as a datapack registry, which will cause data to be loaded from

@@ -87,14 +87,14 @@ public abstract class DeferredRegister<T> implements Iterable<RegistryHolder<T, 
     }
 
     /**
-     * Creates a new instance of a {@link DeferredRegister} with the given {@link PalladiumRegistry}
+     * Creates a new instance of a {@link DeferredRegister} with the given {@link RegistryBuilder}
      *
      * @param modId    The namespace that will be applied to all registered entries
-     * @param registry Instance of a custom {@link PalladiumRegistry} that will be used
+     * @param registry Instance of a custom {@link RegistryBuilder} that will be used
      * @param <T>      Generic type of the registry
      * @return A new instance of a {@link DeferredRegister}
      */
-    public static <T> DeferredRegister<T> create(String modId, PalladiumRegistry<T> registry) {
+    public static <T> DeferredRegister<T> create(String modId, RegistryBuilder<T> registry) {
         return create(modId, registry.getRegistryKey());
     }
 

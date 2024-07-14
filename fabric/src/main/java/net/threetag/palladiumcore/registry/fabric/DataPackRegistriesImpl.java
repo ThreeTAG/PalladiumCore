@@ -6,7 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.Nullable;
 
-public class PalladiumDataPackRegistryImpl {
+public class DataPackRegistriesImpl {
 
     public static <T> void create(ResourceKey<? extends Registry<T>> key, Codec<T> dataCodec, @Nullable Codec<T> networkCodec) {
         if (networkCodec == null) {
