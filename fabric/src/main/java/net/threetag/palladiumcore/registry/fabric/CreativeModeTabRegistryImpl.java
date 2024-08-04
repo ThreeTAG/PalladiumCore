@@ -32,7 +32,6 @@ public class CreativeModeTabRegistryImpl {
         key.ifPresent(creativeModeTabResourceKey -> ItemGroupEvents.modifyEntriesEvent(creativeModeTabResourceKey).register(entries -> entriesConsumer.accept(new ItemGroupEntriesWrapper(entries))));
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     private record ItemGroupEntriesWrapper(
             FabricItemGroupEntries entries) implements CreativeModeTabRegistry.ItemGroupEntries {
 

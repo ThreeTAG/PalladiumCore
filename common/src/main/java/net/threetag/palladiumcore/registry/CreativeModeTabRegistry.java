@@ -1,6 +1,7 @@
 package net.threetag.palladiumcore.registry;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -48,6 +49,16 @@ public class CreativeModeTabRegistry {
      */
     public static void addToTab(CreativeModeTab tab, Consumer<ItemGroupEntries> entriesConsumer) {
         addToTab(() -> tab, entriesConsumer);
+    }
+
+    /**
+     * Allows to add items to existing creative mode tabs
+     *
+     * @param tab             The tab you want to add to
+     * @param entriesConsumer {@link Consumer} which allows for modifications to the tab
+     */
+    public static void addToTab(Holder<CreativeModeTab> tab, Consumer<ItemGroupEntries> entriesConsumer) {
+        addToTab(tab::value, entriesConsumer);
     }
 
     /**
