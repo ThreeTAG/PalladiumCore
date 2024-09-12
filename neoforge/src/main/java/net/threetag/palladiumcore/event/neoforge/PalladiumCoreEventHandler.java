@@ -27,7 +27,7 @@ public class PalladiumCoreEventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void registerCommands(RegisterCommandsEvent e) {
-        CommandEvents.REGISTER.invoker().register(e.getDispatcher(), e.getCommandSelection());
+        CommandEvents.REGISTER.invoker().register(e.getDispatcher(), e.getBuildContext(), e.getCommandSelection());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

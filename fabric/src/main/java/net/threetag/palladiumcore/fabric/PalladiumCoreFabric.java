@@ -33,7 +33,7 @@ public class PalladiumCoreFabric implements ModInitializer {
     private void events() {
         PalladiumSpawnEggItem.setupEvents();
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> CommandEvents.REGISTER.invoker().register(dispatcher, environment));
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> CommandEvents.REGISTER.invoker().register(dispatcher, registryAccess, environment));
 
         ServerLifecycleEvents.SERVER_STARTING.register(server -> LifecycleEvents.SERVER_ABOUT_TO_START.invoker().server(server));
         ServerLifecycleEvents.SERVER_STARTED.register(server -> LifecycleEvents.SERVER_STARTED.invoker().server(server));
