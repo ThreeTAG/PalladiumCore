@@ -7,7 +7,7 @@ import net.threetag.palladiumcore.registry.RegistryBuilder;
 
 public class RegistryBuilderImpl {
 
-    private static <T> Registry<T> createRegistry(RegistryBuilder<T> registryBuilder) {
+    public static <T> Registry<T> createRegistry(RegistryBuilder<T> registryBuilder) {
         var builder = registryBuilder.getDefaultKey() != null ? FabricRegistryBuilder.createDefaulted(registryBuilder.getResourceKey(), registryBuilder.getDefaultKey()) : FabricRegistryBuilder.createSimple(registryBuilder.getResourceKey());
 
         if (registryBuilder.isSynced()) {
