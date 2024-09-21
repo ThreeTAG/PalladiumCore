@@ -35,12 +35,13 @@ public class NetworkManagerImpl extends NetworkManager {
         return new NetworkManagerImpl();
     }
 
-    @Environment(EnvType.CLIENT)
     public <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.Handler<T> receiver) {
         PayloadTypeRegistry.playS2C().register(type, codec);
-        ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) -> {
-            receiver.receive(payload, makeContext(context.player(), context.client(), true));
-        });
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static <T extends CustomPacketPayload> void registerClientReceiver(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.Handler<T> receiver) {
+        ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) -> receiver.receive(payload, makeContext(context.player(), context.client(), true)));
     }
 
     public <T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.Handler<T> receiver) {
