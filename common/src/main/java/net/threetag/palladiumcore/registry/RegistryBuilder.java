@@ -1,6 +1,7 @@
 package net.threetag.palladiumcore.registry;
 
 
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +13,7 @@ public class RegistryBuilder<T> {
         return new RegistryBuilder<>(resourceKey);
     }
 
+    @ExpectPlatform
     private static <T> Registry<T> createRegistry(RegistryBuilder<T> registryBuilder) {
         throw new AssertionError();
     }
