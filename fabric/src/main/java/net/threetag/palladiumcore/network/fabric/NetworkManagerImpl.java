@@ -37,6 +37,10 @@ public class NetworkManagerImpl extends NetworkManager {
 
     public <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.Handler<T> receiver) {
         PayloadTypeRegistry.playS2C().register(type, codec);
+
+        if (Platform.isClient()) {
+            registerClientReceiver(type, codec, receiver);
+        }
     }
 
     @Environment(EnvType.CLIENT)
