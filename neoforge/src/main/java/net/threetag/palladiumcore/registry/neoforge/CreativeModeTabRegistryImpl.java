@@ -15,6 +15,7 @@ import net.threetag.palladiumcore.registry.CreativeModeTabRegistry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -52,9 +53,9 @@ public class CreativeModeTabRegistryImpl {
         public ItemStack findLast(ItemLike itemLike) {
             ItemStack stack = null;
 
-            for (Map.Entry<ItemStack, CreativeModeTab.TabVisibility> entry : this.e.getEntries()) {
-                if (entry.getKey().is(itemLike.asItem())) {
-                    stack = entry.getKey();
+            for (ItemStack entry : this.e.getParentEntries()) {
+                if (entry.is(itemLike.asItem())) {
+                    stack = entry;
                 }
             }
 
@@ -62,9 +63,9 @@ public class CreativeModeTabRegistryImpl {
         }
 
         public ItemStack findFirst(ItemLike itemLike) {
-            for (Map.Entry<ItemStack, CreativeModeTab.TabVisibility> entry : this.e.getEntries()) {
-                if (entry.getKey().is(itemLike.asItem())) {
-                    return entry.getKey();
+            for (ItemStack entry : this.e.getParentEntries()) {
+                if (entry.is(itemLike.asItem())) {
+                    return entry;
                 }
             }
             return null;
@@ -92,7 +93,7 @@ public class CreativeModeTabRegistryImpl {
         @Override
         public void addAfter(ItemLike afterLast, CreativeModeTab.TabVisibility visibility, ItemLike... item) {
             for (ItemLike itemLike : Lists.reverse(Arrays.asList(item))) {
-                this.e.getEntries().putAfter(findLast(afterLast), itemLike.asItem().getDefaultInstance(), visibility);
+                this.e.insertAfter(findLast(afterLast), itemLike.asItem().getDefaultInstance(), visibility);
             }
         }
 
@@ -104,7 +105,7 @@ public class CreativeModeTabRegistryImpl {
         @Override
         public void addBefore(ItemLike beforeFirst, CreativeModeTab.TabVisibility visibility, ItemLike... item) {
             for (ItemLike itemLike : item) {
-                this.e.getEntries().putBefore(findFirst(beforeFirst), itemLike.asItem().getDefaultInstance(), visibility);
+                this.e.insertBefore(Objects.requireNonNull(findFirst(beforeFirst)), itemLike.asItem().getDefaultInstance(), visibility);
             }
         }
 
@@ -130,7 +131,7 @@ public class CreativeModeTabRegistryImpl {
         @Override
         public void addAfter(ItemLike afterLast, CreativeModeTab.TabVisibility visibility, ItemStack... item) {
             for (ItemStack stack : Lists.reverse(Arrays.asList(item))) {
-                this.e.getEntries().putAfter(findLast(afterLast), stack, visibility);
+                this.e.insertAfter(findLast(afterLast), stack, visibility);
             }
         }
 
@@ -142,7 +143,7 @@ public class CreativeModeTabRegistryImpl {
         @Override
         public void addBefore(ItemLike beforeFirst, CreativeModeTab.TabVisibility visibility, ItemStack... item) {
             for (ItemStack stack : item) {
-                this.e.getEntries().putBefore(findFirst(beforeFirst), stack, visibility);
+                this.e.insertBefore(Objects.requireNonNull(findFirst(beforeFirst)), stack, visibility);
             }
         }
     }
