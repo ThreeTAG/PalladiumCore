@@ -14,7 +14,6 @@ import net.threetag.palladiumcore.neoforge.PalladiumCoreNeoForge;
 import java.util.ArrayList;
 import java.util.List;
 
-@EventBusSubscriber(modid = PalladiumCore.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataPackRegistriesImpl {
 
     public static <T> void create(ResourceKey<Registry<T>> key, Codec<T> dataCodec, Codec<T> networkCodec) {
