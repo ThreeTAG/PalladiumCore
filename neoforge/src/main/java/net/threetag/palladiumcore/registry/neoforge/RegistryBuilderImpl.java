@@ -22,7 +22,9 @@ public class RegistryBuilderImpl {
             neoBuilder.defaultKey(registryBuilder.getDefaultKey());
         }
 
-        return neoBuilder.create();
+        var registry = neoBuilder.create();
+        REGISTRIES.add(registry);
+        return registry;
     }
 
     @SubscribeEvent
